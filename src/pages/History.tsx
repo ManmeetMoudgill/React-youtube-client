@@ -5,10 +5,10 @@ import { RootState } from "../shell/reudx";
 import Card from "../components/Card";
 import { useApi } from "../shell/hooks/custom-http";
 import { VideoHistoryResponseType } from "../models/video";
-import { Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addToVideoHistory } from "../shell/reudx/slicers/video";
 import { useHttpLoading } from "../shell/hooks/use-http-loading";
+import { NotFound } from "../components/NotFound";
 
 const Container = styled.div`
   display: flex;
@@ -30,12 +30,14 @@ const History = () => {
   });
 
   useEffect(() => {
-    getVideosHistory().then((res) => {
-      if (res?.status === 200 || res?.status === 201) {
-        dispatch(addToVideoHistory(res?.videosHistory));
-      }
-    });
-  }, [dispatch, getVideosHistory]);
+    if (user?._id) {
+      getVideosHistory().then((res) => {
+        if (res?.status === 200 || res?.status === 201) {
+          dispatch(addToVideoHistory(res?.videosHistory));
+        }
+      });
+    }
+  }, [dispatch, getVideosHistory, user?._id]);
 
   return (
     <Container>
@@ -49,9 +51,7 @@ const History = () => {
           />
         );
       })}
-      {!isLoading && videoHistory?.length === 0 && (
-        <Typography variant="h5">No videos found</Typography>
-      )}
+      {!isLoading && videoHistory?.length === 0 && <NotFound />}
     </Container>
   );
 };

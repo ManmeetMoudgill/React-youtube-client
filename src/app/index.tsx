@@ -30,6 +30,8 @@ const SignInLazyLoadComponent = lazy(() => import("../pages/SignIn"));
 const VideoLazyLoadComponent = lazy(() => import("../pages/Video"));
 const SearchLazyLoadComponent = lazy(() => import("../pages/Search"));
 const HistoryLazyLoadComponent = lazy(() => import("../pages/History"));
+
+const CategoryLazyLoadComponent = lazy(() => import("../pages/Category"));
 function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
   const { isLoading } = useHttpLoading();
 
@@ -107,6 +109,12 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
                         </PrivateRoute>
                       }
                     />
+                    <Route path="category">
+                      <Route
+                        path=":category"
+                        element={<CategoryLazyLoadComponent />}
+                      />
+                    </Route>
 
                     <Route path="video">
                       <Route path=":id" element={<VideoLazyLoadComponent />} />

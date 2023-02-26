@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useHttpLoading } from "../use-http-loading";
 import { useAxios } from "../../../utils/axios/useAxios";
-
+import { useEventCallback } from "@mui/material";
 interface ApiConfig {
   url: string;
   method: AxiosRequestConfig["method"];
@@ -30,27 +30,24 @@ export function useApi<BackendResponse = any>({
   const { addLoading, removeLoading } = useHttpLoading();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const makeCall = useCallback(
-    async (params?: AxiosRequestConfig) => {
-      try {
-        addLoading();
-        setIsLoading(true);
-        const response: AxiosResponse<BackendResponse> = await instance({
-          url,
-          method,
-          data,
-          ...params,
-        });
-        removeLoading();
-        setIsLoading(false);
-        return response?.data;
-      } catch (error: any) {
-        setIsLoading(false);
-        removeLoading();
-      }
-    },
-    [url, method, data, addLoading, removeLoading, instance]
-  );
+  const makeCall = useEventCallback(async (params?: AxiosRequestConfig) => {
+    try {
+      addLoading();
+      setIsLoading(true);
+      const response: AxiosResponse<BackendResponse> = await instance({
+        url,
+        method,
+        data,
+        ...params,
+      });
+      removeLoading();
+      setIsLoading(false);
+      return response?.data;
+    } catch (error: any) {
+      setIsLoading(false);
+      removeLoading();
+    }
+  });
 
   useEffect(() => {
     if (onBootstrap) {

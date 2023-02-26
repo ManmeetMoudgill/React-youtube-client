@@ -17,6 +17,10 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import { useDispatch } from "react-redux";
 import { logout } from "../shell/reudx/slicers/user";
 import UploadVideo from "./Upload";
+import {
+  emptyVideosFromHistory,
+  removeVideo,
+} from "../shell/reudx/slicers/video";
 const Container = styled.div`
   position: sticky;
   top: 0;
@@ -93,12 +97,13 @@ const Navbar = ({ darkMode }: Props) => {
     setAnchorEl(null);
   });
 
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const handleLogout = useEventCallback(() => {
-    dispath(logout());
+    dispatch(logout());
+    dispatch(emptyVideosFromHistory());
+    dispatch(removeVideo());
     localStorage.clear();
-    localStorage.removeItem("persist:root");
     handleClose();
   });
   const [openDialog, setOpenDialog] = useState<boolean>(false);

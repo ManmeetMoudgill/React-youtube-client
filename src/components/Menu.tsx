@@ -10,7 +10,6 @@ import SportsEsportsOutlinedIcon from "@mui/icons-material/SportsEsportsOutlined
 import SportsBasketballOutlinedIcon from "@mui/icons-material/SportsBasketballOutlined";
 import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import LiveTvOutlinedIcon from "@mui/icons-material/LiveTvOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
@@ -150,29 +149,25 @@ const Menu = ({ darkMode, setDarkMode }: MenuProps) => {
         ) : undefined}
         <Hr />
         <Title>BEST OF LAMATUBE</Title>
-        <Item>
+        <Item onClick={() => navigate(`/category/music`)}>
           <LibraryMusicOutlinedIcon />
           Music
         </Item>
-        <Item>
+        <Item onClick={() => navigate(`/category/sports`)}>
           <SportsBasketballOutlinedIcon />
           Sports
         </Item>
-        <Item>
+        <Item onClick={() => navigate(`/category/gaming`)}>
           <SportsEsportsOutlinedIcon />
           Gaming
         </Item>
-        <Item>
+        <Item onClick={() => navigate(`/category/movies`)}>
           <MovieOutlinedIcon />
           Movies
         </Item>
-        <Item>
+        <Item onClick={() => navigate(`/category/news`)}>
           <ArticleOutlinedIcon />
           News
-        </Item>
-        <Item>
-          <LiveTvOutlinedIcon />
-          Live
         </Item>
         <Hr />
         <Item>

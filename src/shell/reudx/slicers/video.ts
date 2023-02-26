@@ -70,6 +70,12 @@ export const videoSlice = createSlice({
         state.data.video.views = state.data.video.views + 1;
       }
     },
+    emptyVideosFromHistory: (state) => {
+      state.videoHistory = [];
+    },
+    removeVideo: (state) => {
+      state.data = null;
+    },
   },
 });
 
@@ -82,6 +88,8 @@ export const {
   incrementSubscribersAction,
   addToVideoHistory,
   incrementViewsAction,
+  removeVideo,
+  emptyVideosFromHistory,
   removeFromVideoHistory,
 } = videoSlice.actions;
 

@@ -25,7 +25,6 @@ export const AxiosProvider = ({ children }: any) => {
 
   // Add a response interceptor
 
-  console.log("response");
   instance.interceptors.response.use(
     function (response) {
       setAxiosError(null);
