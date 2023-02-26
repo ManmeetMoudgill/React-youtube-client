@@ -122,7 +122,7 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
             src={video?.user?.img ? video?.user?.img : "/images/userProva.jfif"}
           />
           <Texts>
-            <Title>{video?.title}</Title>
+            <Title>{video?.title?.slice(0, 25)}..</Title>
             <ChannelName>{video?.user?.name}</ChannelName>
             <Info>
               {video?.views} views •{" "}
@@ -133,6 +133,7 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
             <>
               <Box
                 sx={{
+                  zIndex: 1000,
                   position: "absolute",
                   top: 0,
                   right: 0,

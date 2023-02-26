@@ -185,7 +185,7 @@ const Video = () => {
         }
       }
     });
-  }, [dispatch, getVideo, insertVideoIntoHistory, user?.user]);
+  }, [dispatch, getVideo, insertVideoIntoHistory, user?.user, params?.id]);
 
   const handleLike = useEventCallback(async () => {
     likeVideo().then((res: { success: boolean; status: number }) => {
