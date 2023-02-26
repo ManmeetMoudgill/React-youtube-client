@@ -48,7 +48,7 @@ export const NotFound = () => {
                 marginTop: "2rem",
               }}
             >
-              No Videos Found
+              No Data Found
             </Typography>
           </Box>
         </Box>
