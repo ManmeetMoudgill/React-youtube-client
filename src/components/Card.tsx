@@ -113,7 +113,10 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
 
   return (
     <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
-      <Container type={type}>
+      <Container
+        type={type}
+        className="animate__animated animate__fadeIn animate__delay-0.5s "
+      >
         <Image type={type} src={video?.imgUrl} title={video?.title} />
 
         <Details type={type} isHistoryPageCard={isHistoryPageCard}>
