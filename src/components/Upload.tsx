@@ -74,6 +74,9 @@ const Button = styled.button`
   cursor: pointer;
   background-color: ${({ theme }) => theme.soft};
   color: ${({ theme }) => theme.textSoft};
+  &:hover {
+    background-color: ${({ theme }) => theme.softHover};
+  }
 `;
 const Label = styled.label`
   font-size: 14px;
@@ -172,6 +175,10 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
 
   const navigate = useNavigate();
   const handleUpload = useEventCallback(() => {
+    if (imgPerc !== 100 || videoPerc !== 100) {
+      toast("Wait for the upload to complete", { type: "error" });
+      return;
+    }
     createVideo({
       data: { ...inputs, tags, userId: user?._id },
     })

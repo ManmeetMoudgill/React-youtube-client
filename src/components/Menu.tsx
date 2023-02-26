@@ -12,8 +12,6 @@ import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -87,6 +85,7 @@ interface MenuProps {
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
 }
+
 const Menu = ({ darkMode, setDarkMode }: MenuProps) => {
   const { user } = useSelector((state: RootState) => state?.user);
   const navigate = useNavigate();
@@ -174,14 +173,7 @@ const Menu = ({ darkMode, setDarkMode }: MenuProps) => {
           <SettingsOutlinedIcon />
           Settings
         </Item>
-        <Item>
-          <FlagOutlinedIcon />
-          Report
-        </Item>
-        <Item>
-          <HelpOutlineOutlinedIcon />
-          Help
-        </Item>
+
         <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlinedIcon />
           {darkMode ? "Light" : "Dark"} Mode

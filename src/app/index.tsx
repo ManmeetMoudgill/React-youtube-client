@@ -8,6 +8,7 @@ import { CircularProgress, LinearProgress } from "@mui/material";
 import { lazy, Suspense } from "react";
 import { PrivateRoute } from "../components/PrivateRoute";
 import { NonPrivateRoute } from "../components/NonPrivateRoute";
+import "./app.css";
 const Container = styled.div`
   display: flex;
 `;
