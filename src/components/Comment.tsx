@@ -1,9 +1,10 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import styled from "styled-components";
 import { Comment } from "../models/comment";
 import { useApi } from "../shell/hooks/custom-http";
 import { UserResponse } from "../models/user";
-import { format } from "timeago.js";
+import { formatDistanceToNow } from "date-fns";
+
 const Container = styled.div`
   display: flex;
   gap: 10px;
@@ -27,7 +28,7 @@ const Name = styled.span`
   font-weight: 500;
 `;
 
-const Date = styled.span`
+const DateComponent = styled.span`
   font-size: 12px;
   font-weight: 400;
   color: ${({ theme }) => theme.textSoft};
@@ -47,12 +48,19 @@ const CommentComponent = ({ comment }: CommentProps) => {
     method: "get",
     onBootstrap: true,
   });
+
+  const commentedAt: string = useMemo(() => {
+    if (!comment?.comment) return "";
+    return formatDistanceToNow(new Date(comment?.createdAt), {
+      addSuffix: true,
+    });
+  }, [comment]);
   return (
     <Container>
       <Avatar src={user?.user?.img} />
       <Details>
         <Name>
-          {user?.user?.name} <Date>{format(comment?.createdAt)}</Date>
+          {user?.user?.name} <DateComponent>{commentedAt}</DateComponent>
         </Name>
         <Text>{comment?.comment}</Text>
       </Details>

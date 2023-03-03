@@ -1,8 +1,8 @@
+import { formatDistanceToNow } from "date-fns";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Video } from "../models/video";
-import { format } from "timeago.js";
 import { Box, IconButton, Tooltip, useEventCallback } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
@@ -129,7 +129,11 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
             <ChannelName>{video?.user?.name}</ChannelName>
             <Info>
               {video?.views} views •{" "}
-              {video?.createdAt ? format(video.createdAt) : ""}
+              {video?.createdAt
+                ? formatDistanceToNow(new Date(video?.createdAt), {
+                    addSuffix: true,
+                  })
+                : ""}
             </Info>
           </Texts>
           {isHistoryPageCard ? (

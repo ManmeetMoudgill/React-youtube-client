@@ -4,11 +4,11 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
+import { formatDistanceToNow } from "date-fns";
 
 import { useParams } from "react-router-dom";
 import { VideoResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
-import { format } from "timeago.js";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -269,7 +269,14 @@ const Video = () => {
               <Details>
                 <Info>
                   {result?.data?.video?.views} views •{" "}
-                  {format(result?.data?.video?.createdAt)}
+                  {result?.data?.video?.createdAt
+                    ? formatDistanceToNow(
+                        new Date(result?.data?.video?.createdAt),
+                        {
+                          addSuffix: true,
+                        }
+                      )
+                    : ""}
                 </Info>
                 <Buttons>
                   <Button onClick={handleLike}>

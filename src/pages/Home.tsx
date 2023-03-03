@@ -27,7 +27,7 @@ const Home = ({ type }: HomeProps) => {
         setData(res?.videos);
       }
     });
-  }, [type]);
+  }, [type,getVideos]);
 
   return (
     <>
