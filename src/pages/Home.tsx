@@ -8,7 +8,7 @@ import { NotFound } from "../components/NotFound";
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem;
+  gap: 2rem;
 `;
 
 interface HomeProps {

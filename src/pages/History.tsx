@@ -13,7 +13,7 @@ import { NotFound } from "../components/NotFound";
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem;
+  gap: 1.5rem;
 `;
 
 const History = () => {

@@ -20,12 +20,12 @@ const Container = styled.div`
   flex: 1;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
-  overflow-y: auto;
   color: ${({ theme }) => theme.text};
   font-size: 14px;
-  position: sticky;
   min-width: 200px;
+  position: sticky;
   top: 0;
+  overflow-y: scroll;
 `;
 const Wrapper = styled.div`
   padding: 18px 26px;

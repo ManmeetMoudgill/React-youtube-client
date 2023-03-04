@@ -9,7 +9,7 @@ import { NotFound } from "../components/NotFound";
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 2rem;
 `;
 
 const Search = () => {
