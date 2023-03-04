@@ -14,12 +14,9 @@ const Container = styled.div`
 
 const Main = styled.div`
   width:100%
-  border: 2px solid green;
   background-color: ${({ theme }) => theme.bg};
 `;
-const Wrapper = styled.div`
-  border: 2px solid blue;
-`;
+const Wrapper = styled.div``;
 
 interface AppContainerProps {
   darkMode: boolean;
