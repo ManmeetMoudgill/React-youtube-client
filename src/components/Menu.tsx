@@ -3,7 +3,6 @@ import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
-import VideoLibraryOutlinedIcon from "@mui/icons-material/VideoLibraryOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import LibraryMusicOutlinedIcon from "@mui/icons-material/LibraryMusicOutlined";
 import SportsEsportsOutlinedIcon from "@mui/icons-material/SportsEsportsOutlined";
@@ -16,13 +15,15 @@ import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightne
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
+import ReorderIcon from "@mui/icons-material/Reorder";
 const Container = styled.div`
-  flex: 1;
+import ReorderIcon from "@mui/icons-material/Reorder";
+
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
   font-size: 14px;
-  min-width: 200px;
+  max-width: 250px;
   position: sticky;
   top: 0;
   overflow-y: scroll;
@@ -35,7 +36,6 @@ const Logo = styled.div`
   align-items: center;
   gap: 5px;
   font-weight: bold;
-  margin-bottom: 25px;
 `;
 
 const Img = styled.img`
@@ -51,6 +51,7 @@ const Item = styled.div`
 
   &:hover {
     background-color: ${({ theme }) => theme.soft};
+    border-radius: 0.4rem;
   }
 `;
 
@@ -81,27 +82,55 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
+const WrapperYoutube = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0rem 0 1rem 0rem;
+`;
 interface MenuProps {
+  isOpen: boolean;
+  setOpenSideBar: (value: boolean) => void;
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
 }
 
-const Menu = ({ darkMode, setDarkMode }: MenuProps) => {
+const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
   const { user } = useSelector((state: RootState) => state?.user);
   const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <Logo>
-            <Img
-              src={
-                "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
-              }
-            />
-            ManmeetYoutube
-          </Logo>
-        </Link>
+        <WrapperYoutube>
+          <div
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+            }}
+            onClick={() => setOpenSideBar(!isOpen)}
+          >
+            <ReorderIcon />
+          </div>
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              marginLeft: "1rem",
+            }}
+          >
+            <Logo>
+              <Img
+                src={
+                  "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
+                }
+              />
+              ManmeetYoutube
+            </Logo>
+          </Link>
+        </WrapperYoutube>
+
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <Item>
             <HomeIcon />

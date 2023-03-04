@@ -18,3 +18,14 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+ 
+ *{
+    overflow-x:auto;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ .no-scroll {
+  overflow-y: hidden;
+}

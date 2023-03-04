@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Menu from "../components/Menu";
 import Navbar from "../components/Navbar";
 import { useHttpLoading } from "../shell/hooks/use-http-loading";
 import { CircularProgress, LinearProgress } from "@mui/material";
@@ -14,12 +13,11 @@ const Container = styled.div`
 `;
 
 const Main = styled.div`
-  flex: 7;
+  width:100%
+  border: 2px solid green;
   background-color: ${({ theme }) => theme.bg};
 `;
-const Wrapper = styled.div`
-  padding: 22px 60px;
-`;
+const Wrapper = styled.div``;
 
 interface AppContainerProps {
   darkMode: boolean;
@@ -41,9 +39,8 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
       {isLoading ? <LinearProgress color="warning" /> : null}
       <Container>
         <BrowserRouter>
-          <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
           <Main>
-            <Navbar darkMode={darkMode} />
+            <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
             <Wrapper>
               <Suspense
                 fallback={

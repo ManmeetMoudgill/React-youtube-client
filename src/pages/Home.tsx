@@ -4,9 +4,19 @@ import Card from "../components/Card";
 import { Video, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
-
+import SideBar from "../components/SideBar";
 const Container = styled.div`
   display: flex;
+  margin-top: 3.5rem;
+  justify-content: center;
+  position: relative;
+`;
+
+const VideosWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  margin-left: 10rem;
+  margin-top: 4rem;
   flex-wrap: wrap;
   gap: 2rem;
 `;
@@ -33,10 +43,13 @@ const Home = ({ type }: HomeProps) => {
   return (
     <>
       <Container>
-        {data &&
-          data?.map((video) => {
-            return <Card key={video?._id} video={video} />;
-          })}
+        <SideBar />
+        <VideosWrapper>
+          {data &&
+            data?.map((video) => {
+              return <Card key={video?._id} video={video} />;
+            })}
+        </VideosWrapper>
       </Container>
       {!isLoading && data?.length === 0 && <NotFound />}
     </>
