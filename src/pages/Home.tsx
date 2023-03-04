@@ -16,15 +16,16 @@ const Container = styled.div`
 const VideosWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 10rem;
+  margin-left: 7rem;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex: 1;
+  border: 2px solid red;
   margin-top: 2rem;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 interface HomeProps {

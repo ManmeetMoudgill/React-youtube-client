@@ -37,6 +37,12 @@ const Container = styled.div<ContainerProps>`
       props?.type === "sm" ? "translateX(5px)" : "translateY(-5px)"};
     transition: all 0.3s ease;
   }
+  @media (min-width: 320px) and (max-width: 800px) {
+    width: auto;
+  }
+  @media (min-width: 1200px) and (max-width: 2400px) {
+    width: 270px;
+  }
 `;
 
 const Image = styled.img<ImageProps>`
