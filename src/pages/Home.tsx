@@ -21,6 +21,7 @@ const VideosWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  max-width: 100vw;
   flex: 1;
   margin-top: 2rem;
   flex-wrap: wrap;

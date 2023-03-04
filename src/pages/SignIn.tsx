@@ -19,6 +19,8 @@ import { auth, googleProvider } from "../firebase/config";
 import { signInWithPopup } from "firebase/auth";
 const Container = styled.div`
   display: flex;
+  min-width: 100vw;
+  min-height: 100vw;
   flex-direction: column;
   align-items: center;
   justify-content: center;

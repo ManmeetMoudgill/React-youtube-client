@@ -16,7 +16,11 @@ const Main = styled.div`
   width:100%
   background-color: ${({ theme }) => theme.bg};
 `;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface AppContainerProps {
   darkMode: boolean;

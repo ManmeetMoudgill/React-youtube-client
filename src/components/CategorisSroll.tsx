@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-wrap: no-wrap;
   overflow-x: auto;
-  widht: 100%;
+  max-width: 100vw;
 `;
 
 const CategoryButtonItem = styled.button`
