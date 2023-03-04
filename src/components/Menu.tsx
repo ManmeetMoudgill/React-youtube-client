@@ -124,10 +124,6 @@ const Menu = ({ darkMode, setDarkMode }: MenuProps) => {
           </Item>
         </Link>
         <Hr />
-        <Item>
-          <VideoLibraryOutlinedIcon />
-          Library
-        </Item>
         <Item onClick={() => navigate("/history")}>
           <HistoryOutlinedIcon />
           History

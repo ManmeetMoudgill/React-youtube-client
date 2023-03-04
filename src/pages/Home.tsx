@@ -6,8 +6,9 @@ import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
 `;
 
 interface HomeProps {
@@ -27,7 +28,7 @@ const Home = ({ type }: HomeProps) => {
         setData(res?.videos);
       }
     });
-  }, [type,getVideos]);
+  }, [type, getVideos]);
 
   return (
     <>

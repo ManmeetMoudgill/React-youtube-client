@@ -6,10 +6,9 @@ import { Video, VideosResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 const Container = styled.div`
-  flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 2.5rem;
 `;
 
 const Category = () => {
