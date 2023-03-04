@@ -5,6 +5,7 @@ import { Video, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
+import CategorisSroll from "../components/CategorisSroll";
 const Container = styled.div`
   display: flex;
   margin-top: 3.5rem;
@@ -14,9 +15,14 @@ const Container = styled.div`
 
 const VideosWrapper = styled.div`
   display: flex;
-  flex: 1;
+  flex-direction: column;
   margin-left: 10rem;
-  margin-top: 4rem;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex: 1;
+  margin-top: 2rem;
   flex-wrap: wrap;
   gap: 2rem;
 `;
@@ -45,10 +51,13 @@ const Home = ({ type }: HomeProps) => {
       <Container>
         <SideBar />
         <VideosWrapper>
-          {data &&
-            data?.map((video) => {
-              return <Card key={video?._id} video={video} />;
-            })}
+          <CategorisSroll />
+          <Wrapper>
+            {data &&
+              data?.map((video) => {
+                return <Card key={video?._id} video={video} />;
+              })}
+          </Wrapper>
         </VideosWrapper>
       </Container>
       {!isLoading && data?.length === 0 && <NotFound />}

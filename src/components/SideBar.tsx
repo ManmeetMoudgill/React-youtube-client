@@ -53,7 +53,7 @@ const SideBar = (props: Props) => {
             </Item>
           </Link>
           <Link
-            to="/"
+            to="/subscriptions"
             style={{
               textDecoration: "none",
               color: "inherit",
@@ -71,7 +71,7 @@ const SideBar = (props: Props) => {
             </Item>
           </Link>
           <Link
-            to="/"
+            to="/history"
             style={{
               textDecoration: "none",
               color: "inherit",
