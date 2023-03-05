@@ -31,12 +31,7 @@ const Container = styled.div<ContainerProps>`
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
   gap: 11px;
-  &:hover {
-    opacity: 0.8;
-    transform: ${(props) =>
-      props?.type === "sm" ? "translateX(5px)" : "translateY(-5px)"};
-    transition: all 0.3s ease;
-  }
+
   @media (min-width: 320px) and (max-width: 2600px) {
     width: auto;
   }

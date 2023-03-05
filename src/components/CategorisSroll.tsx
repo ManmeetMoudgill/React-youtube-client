@@ -5,6 +5,7 @@ type Props = {};
 const Container = styled.div`
   display: flex;
   flex-wrap: no-wrap;
+  margin-right: 1rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;
   max-width: 100vw;
