@@ -32,7 +32,16 @@ import CommentComponent from "../components/Comment";
 import RecommendationComponent from "../components/Recommendation";
 const Container = styled.div`
   display: flex;
-  gap: 24px;
+  min-width: 100vw;
+  margin-top: 3.5rem;
+  padding: 1.5rem 1.5rem;
+  justify-content: center;
+  position: relative;
+  gap: 1.5rem;
+  @media (min-width: 320px) and (max-width: 950px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const Content = styled.div`
@@ -45,23 +54,26 @@ const Title = styled.h1`
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const Details = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (min-width: 320px) and (max-width: 750px) {
+    padding: 0.5rem;
+  }
 `;
 
 const Info = styled.span`
-  color: ${({ theme }) => theme.textSoft};
+  color: #606060;
 `;
 
 const Buttons = styled.div`
   display: flex;
   gap: 20px;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const Button = styled.div`
@@ -69,11 +81,14 @@ const Button = styled.div`
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  @media (min-width: 320px) and (max-width: 450px) {
+    font-size: 0;
+  }
 `;
 
 const Hr = styled.hr`
   margin: 15px 0px;
-  border: 0.5px solid ${({ theme }) => theme.soft};
+  border: 0.5px solid #f5f5f5;
 `;
 
 const Channel = styled.div`
@@ -84,12 +99,18 @@ const Channel = styled.div`
 const ChannelInfo = styled.div`
   display: flex;
   gap: 20px;
+  @media (min-width: 320px) and (max-width: 750px) {
+    padding: 0.5rem;
+  }
 `;
 
 const Image = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  @media (min-width: 320px) and (max-width: 750px) {
+    display: none;
+  }
 `;
 
 const ChannelDetail = styled.div`
@@ -100,17 +121,21 @@ const ChannelDetail = styled.div`
 
 const ChannelName = styled.span`
   font-weight: 500;
+  font-size: 1.2rem;
 `;
 
 const ChannelCounter = styled.span`
   margin-top: 5px;
   margin-bottom: 20px;
-  color: ${({ theme }) => theme.textSoft};
+  color: #606060;
   font-size: 12px;
 `;
 
 const Description = styled.p`
   font-size: 14px;
+  @media (min-width: 320px) and (max-width: 750px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Subscribe = styled.button`
@@ -122,14 +147,22 @@ const Subscribe = styled.button`
   height: max-content;
   padding: 10px 20px;
   cursor: pointer;
+  @media (min-width: 320px) and (max-width: 750px) {
+    min-width: 7rem;
+    margin-right: 0.5rem;
+  }
 `;
 
 const VideoFrame = styled.video`
-  max-height: 500px;
+  max-height: 100vh-20vh;
   width: 100%;
   object-fit: cover;
 `;
 
+const ReccomendationContainer = styled.div`
+  display: flex;
+  flex: 3;
+`;
 const Video = () => {
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
@@ -326,10 +359,12 @@ const Video = () => {
                 );
               })}
             </Content>
-            <RecommendationComponent
-              currrentVideoId={result?.data?.video?._id}
-              tags={result?.data?.video?.tags}
-            />
+            <ReccomendationContainer>
+              <RecommendationComponent
+                currrentVideoId={result?.data?.video?._id}
+                tags={result?.data?.video?.tags}
+              />
+            </ReccomendationContainer>
           </Container>
         </>
       ) : undefined}

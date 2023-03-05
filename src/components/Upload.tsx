@@ -36,8 +36,8 @@ const Wrapper = styled.div`
   border: 2px solid green;
   height: 590px;
   z-index: 10000;
-  background-color: ${({ theme }) => theme.bgLighter};
-  color: ${({ theme }) => theme.text};
+  background-color: white;
+  color: black;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -56,8 +56,8 @@ const Title = styled.h1`
 `;
 
 const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.text};
+  border: 1px solid #f5f5f5;
+  color: black;
   border-radius: 3px;
   padding: 10px;
   border: transparent;
@@ -67,8 +67,8 @@ const Input = styled.input`
   z-index: 99999;
 `;
 const Desc = styled.textarea`
-  border: 1px solid ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.text};
+  border: 1px solid #f5f5f5;
+  color: black;
   border-radius: 3px;
   padding: 10px;
   outline: none;
@@ -81,7 +81,7 @@ const Button = styled.button`
   padding: 10px 20px;
   font-weight: 500;
   cursor: pointer;
-  background-color: ${({ theme }) => theme.soft};
+  background-color: #f5f5f5;
   color: ${({ theme }) => theme.textSoft};
   &:hover {
     background-color: ${({ theme }) => theme.softHover};

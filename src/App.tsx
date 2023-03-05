@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { ThemeProvider } from "styled-components";
-
-import { darkTheme, lightTheme } from "./utils/Theme";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { HttpLoadingProvider } from "./shell/hooks/use-http-loading";
@@ -14,13 +11,12 @@ function App() {
   return (
     <>
       <ToastContainer hideProgressBar position="top-right" theme="colored" />
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <UserProvider>
-          <HttpLoadingProvider>
-            <AppContainer darkMode={darkMode} setDarkMode={setDarkMode} />
-          </HttpLoadingProvider>
-        </UserProvider>
-      </ThemeProvider>
+
+      <UserProvider>
+        <HttpLoadingProvider>
+          <AppContainer darkMode={darkMode} setDarkMode={setDarkMode} />
+        </HttpLoadingProvider>
+      </UserProvider>
     </>
   );
 }

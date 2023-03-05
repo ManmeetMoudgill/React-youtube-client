@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { useApi } from "../shell/hooks/custom-http";
 import { removeFromVideoHistory } from "../shell/reudx/slicers/video";
+import { User } from "../models/user";
 interface ContainerProps {
   type?: string;
 }
@@ -26,18 +27,21 @@ interface ChannelImageProps {
 
 const Container = styled.div<ContainerProps>`
   z-index: -1000;
-  margin-bottom: ${(props) => (props?.type === "sm" ? "20px" : "45px")};
+  border: 2px solid red;
+  width: ${(props) => (props?.type === "sm" ? "100%" : "auto")};
+  margin-bottom: 1.3rem;
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
   gap: 11px;
-  @media (min-width: 1201px) and (max-width: 2600px) {
-    max-width: 290px;
+  @media (min-width: 320px) and (max-width: 950px) {
+    width: ${(props) => (props?.type === "sm" ? "100%" : "auto")};
   }
 `;
 
 const Image = styled.img<ImageProps>`
-  width: ${(props) => (props?.type === "sm" ? "150px" : "100%")};
-  height: ${(props) => (props?.type === "sm" ? "120px" : "202px")};
+  width: ${(props) => (props?.type === "sm" ? "80%" : "100%")};
+  height: ${(props) => (props?.type === "sm" ? "8.5rem" : "202px")};
+  border: 2px solid green;
   object-fit: cover;
   background-color: #999;
   border-radius: 15px;
@@ -46,6 +50,7 @@ const Image = styled.img<ImageProps>`
 
 const Details = styled.div<DetailsProps>`
   display: flex;
+  border: 2px solid yellow;
   position: ${(props) => props?.isHistoryPageCard && "relative"};
   margin-top: ${(props) => props?.type !== "sm" && "16px"};
   gap: 12px;
@@ -68,18 +73,18 @@ const Title = styled.h1`
   font-size: 16px;
   margin: 0px;
   font-weight: 500;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const ChannelName = styled.h2`
   font-size: 14px;
-  color: ${({ theme }) => theme.textSoft};
+  color: #606060;
   margin: 5px 0px;
 `;
 
 const Info = styled.div`
   font-size: 14px;
-  color: ${({ theme }) => theme.textSoft};
+  color: #606060;
 `;
 
 interface CardProps {
@@ -87,8 +92,9 @@ interface CardProps {
   video?: Video;
   isHistoryPageCard?: boolean;
   id?: string;
+  user?: User;
 }
-const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
+const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
   const dispatch = useDispatch();
 
   const { makeCall: deleteVideoFromHistory } = useApi<{
@@ -107,6 +113,7 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
     });
   });
 
+  console.log(user);
   return (
     <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
       <Container
@@ -116,13 +123,27 @@ const Card = ({ type, video, isHistoryPageCard, id }: CardProps) => {
         <Image type={type} src={video?.imgUrl} title={video?.title} />
 
         <Details type={type} isHistoryPageCard={isHistoryPageCard}>
-          <ChannelImage
-            type={type}
-            src={video?.user?.img ? video?.user?.img : "/images/userProva.jfif"}
-          />
+          {type === "sm" && user ? (
+            <ChannelImage
+              type={type}
+              src={user?.img ? user?.img : "/images/userProva.jfif"}
+            />
+          ) : (
+            <ChannelImage
+              type={type}
+              src={
+                video?.user?.img ? video?.user?.img : "/images/userProva.jfif"
+              }
+            />
+          )}
+
           <Texts>
             <Title>{video?.title?.slice(0, 25)}..</Title>
-            <ChannelName>{video?.user?.name}</ChannelName>
+            {type === "sm" && user ? (
+              <ChannelName>{user?.name}</ChannelName>
+            ) : (
+              <ChannelName>{video?.user?.name}</ChannelName>
+            )}
             <Info>
               {video?.views} views •{" "}
               {video?.createdAt

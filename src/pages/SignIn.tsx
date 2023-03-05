@@ -24,7 +24,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const Wrapper = styled.div`
@@ -34,8 +34,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   top: 2rem;
-  background-color: ${({ theme }) => theme.bgLighter};
-  border: 1px solid ${({ theme }) => theme.soft};
+  background-color: white;
+  border: 1px solid #f5f5f5;
   padding: 20px 50px;
   gap: 10px;
 `;
@@ -50,12 +50,14 @@ const SubTitle = styled.h2`
 `;
 
 const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.soft};
+  border: 1px solid #f5f5f5;
   border-radius: 3px;
   padding: 10px;
+  outline: none;
+  border: 1px solid whitesmoke;
   background-color: transparent;
   width: 100%;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const Button = styled.button`
@@ -68,8 +70,8 @@ const Button = styled.button`
   padding: 10px 20px;
   font-weight: 500;
   cursor: pointer;
-  background-color: ${({ theme }) => theme.soft};
-  color: ${({ theme }) => theme.textSoft};
+  background-color: #f5f5f5;
+  color: #606060;
 `;
 
 interface SignUp {

@@ -19,9 +19,9 @@ import ReorderIcon from "@mui/icons-material/Reorder";
 import { useEventCallback } from "@mui/material";
 import "./css/index.css";
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.bgLighter};
+  background-color:white;
   height: 100vh;
-  color: ${({ theme }) => theme.text};
+  color: black;
   font-size: 14px;
   max-width: 250px;
   overflow-y: scroll;
@@ -57,14 +57,14 @@ const Item = styled.div`
   padding: 7.5px 0px;
 
   &:hover {
-    background-color: ${({ theme }) => theme.soft};
+    background-color: #f5f5f5;
     border-radius: 0.4rem;
   }
 `;
 
 const Hr = styled.hr`
   margin: 15px 0px;
-  border: 0.5px solid ${({ theme }) => theme.soft};
+  border: 0.5px solid #f5f5f5;
 `;
 
 const Login = styled.div``;

@@ -8,14 +8,8 @@ import { RootState } from "../shell/reudx";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { IconButton } from "@mui/material";
-import {
-  Menu,
-  MenuItem,
-  Button as MuiButton,
-  useEventCallback,
-} from "@mui/material";
+import { Menu, MenuItem, useEventCallback } from "@mui/material";
 import ReorderIcon from "@mui/icons-material/Reorder";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
 import { useDispatch } from "react-redux";
 import { logout } from "../shell/reudx/slicers/user";
 import UploadVideo from "./Upload";
@@ -33,7 +27,7 @@ const Container = styled.div`
   z-index: 1000;
   padding: 0 1rem 0 1rem;
   display: flex;
-  background-color: ${({ theme }) => theme.bgLighter};
+  background-color: white;
   height: 3.5rem;
   @media (min-width: 320px) and (max-width: 400px) {
     padding: 0 0rem 0 0;
@@ -100,7 +94,7 @@ const Input = styled.input`
   font-size: 1rem;
   background-color: transparent;
   outline: none;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 
 const Button = styled.button`
@@ -156,7 +150,7 @@ const User = styled.div`
   gap: 10px;
   cursor: pointer;
   font-weight: 500;
-  color: ${({ theme }) => theme.text};
+  color: black;
   @media (min-width: 320px) and (max-width: 400px) {
     padding-right: 1rem;
   }

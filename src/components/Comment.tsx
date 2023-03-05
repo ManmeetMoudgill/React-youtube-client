@@ -21,7 +21,7 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 const Name = styled.span`
   font-size: 13px;
@@ -31,7 +31,7 @@ const Name = styled.span`
 const DateComponent = styled.span`
   font-size: 12px;
   font-weight: 400;
-  color: ${({ theme }) => theme.textSoft};
+  color: #606060;
   margin-left: 5px;
 `;
 
