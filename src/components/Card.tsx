@@ -27,7 +27,6 @@ interface ChannelImageProps {
 
 const Container = styled.div<ContainerProps>`
   z-index: -1000;
-  border: 2px solid red;
   width: ${(props) => (props?.type === "sm" ? "100%" : "auto")};
   margin-bottom: 1.3rem;
   cursor: pointer;
@@ -41,7 +40,6 @@ const Container = styled.div<ContainerProps>`
 const Image = styled.img<ImageProps>`
   width: ${(props) => (props?.type === "sm" ? "80%" : "100%")};
   height: ${(props) => (props?.type === "sm" ? "8.5rem" : "202px")};
-  border: 2px solid green;
   object-fit: cover;
   background-color: #999;
   border-radius: 15px;
@@ -50,7 +48,6 @@ const Image = styled.img<ImageProps>`
 
 const Details = styled.div<DetailsProps>`
   display: flex;
-  border: 2px solid yellow;
   position: ${(props) => props?.isHistoryPageCard && "relative"};
   margin-top: ${(props) => props?.type !== "sm" && "16px"};
   gap: 12px;
