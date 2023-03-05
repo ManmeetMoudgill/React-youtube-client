@@ -16,17 +16,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import { useEventCallback } from "@mui/material";
+import "./css/menu/index.css";
 const Container = styled.div`
-import ReorderIcon from "@mui/icons-material/Reorder";
-
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;
   color: ${({ theme }) => theme.text};
   font-size: 14px;
   max-width: 250px;
-  position: sticky;
-  top: 0;
   overflow-y: scroll;
+  animation:slide-in 0.5s ease-in;
+  @keyframes slide-in {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity1;
+    }
+  
 `;
 const Wrapper = styled.div`
   padding: 18px 26px;
@@ -98,6 +105,10 @@ interface MenuProps {
 const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
   const { user } = useSelector((state: RootState) => state?.user);
   const navigate = useNavigate();
+  const closeSide = useEventCallback(() => {
+    setOpenSideBar(false);
+  });
+
   return (
     <Container>
       <Wrapper>
@@ -131,19 +142,28 @@ const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
           </Link>
         </WrapperYoutube>
 
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link
+          onClick={closeSide}
+          to="/"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
           <Item>
             <HomeIcon />
             Home
           </Item>
         </Link>
-        <Link to="trends" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link
+          onClick={closeSide}
+          to="trends"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
           <Item>
             <ExploreOutlinedIcon />
             Explore
           </Item>
         </Link>
         <Link
+          onClick={closeSide}
           to="subscriptions"
           style={{ textDecoration: "none", color: "inherit" }}
         >
@@ -173,26 +193,56 @@ const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
         ) : undefined}
         <Hr />
         <Title>BEST OF LAMATUBE</Title>
-        <Item onClick={() => navigate(`/category/music`)}>
-          <LibraryMusicOutlinedIcon />
-          Music
-        </Item>
-        <Item onClick={() => navigate(`/category/sports`)}>
-          <SportsBasketballOutlinedIcon />
-          Sports
-        </Item>
-        <Item onClick={() => navigate(`/category/gaming`)}>
-          <SportsEsportsOutlinedIcon />
-          Gaming
-        </Item>
-        <Item onClick={() => navigate(`/category/movies`)}>
-          <MovieOutlinedIcon />
-          Movies
-        </Item>
-        <Item onClick={() => navigate(`/category/news`)}>
-          <ArticleOutlinedIcon />
-          News
-        </Item>
+        <Link
+          onClick={closeSide}
+          to="category/music"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <LibraryMusicOutlinedIcon />
+            Music
+          </Item>
+        </Link>
+        <Link
+          onClick={closeSide}
+          to="category/sports"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <SportsBasketballOutlinedIcon />
+            Sports
+          </Item>
+        </Link>
+        <Link
+          onClick={closeSide}
+          to="category/gaming"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <SportsEsportsOutlinedIcon />
+            Gaming
+          </Item>
+        </Link>
+        <Link
+          onClick={closeSide}
+          to="category/movies"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <MovieOutlinedIcon />
+            Movies
+          </Item>
+        </Link>
+        <Link
+          onClick={closeSide}
+          to="category/news"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <ArticleOutlinedIcon />
+            News
+          </Item>
+        </Link>
         <Hr />
         <Item>
           <SettingsOutlinedIcon />

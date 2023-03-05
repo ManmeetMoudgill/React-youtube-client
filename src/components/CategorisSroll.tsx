@@ -21,7 +21,12 @@ const CategoryButtonItem = styled.button`
   margin: 0.5rem 1.5rem 0.5rem 0rem;
   padding: 0 1rem 0 1rem;
   border: transparent;
+  cursor: pointer;
   border-radius: 0.5rem;
+  transition: background-color 0.5s ease;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 `;
 
 const CategoriesData = [

@@ -9,6 +9,7 @@ import {
   emptyVideosFromHistory,
   removeVideo,
 } from "../shell/reudx/slicers/video";
+import { toast } from "react-toastify";
 
 interface Props {
   children: ReactElement | JSX.Element | React.ReactNode;
@@ -32,6 +33,9 @@ export const PrivateRoute = ({ children }: Props): ReactElement => {
   }
 
   if (!user?.user) {
+    toast("Un Authorized", {
+      type: "error",
+    });
     return <Navigate to="/" />;
   }
 

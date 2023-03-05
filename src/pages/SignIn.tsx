@@ -20,7 +20,7 @@ import { signInWithPopup } from "firebase/auth";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
-  min-height: 100vw;
+  min-height: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -30,7 +30,10 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  border: 2px solid green;
   flex-direction: column;
+  position: relative;
+  top: 2rem;
   background-color: ${({ theme }) => theme.bgLighter};
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px 50px;
