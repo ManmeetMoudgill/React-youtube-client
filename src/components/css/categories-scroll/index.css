@@ -1,5 +1,7 @@
-::-webkit-scrollbar {
+.filter--container::-webkit-scrollbar {
     height:0.3rem;
-    background: transparent; /* make scrollbar transparent */
 }
   
+
+ 
+ 

@@ -23,8 +23,15 @@
    margin: 0;
    padding: 0;
    box-sizing: border-box;
+  overflow-x:hidden;
+
  }
 
  .no-scroll {
   overflow-y: hidden;
+}
+body{
+  min-width:100vw;
+  min-height:100vh;
+  overflow-x:hidden;
 }

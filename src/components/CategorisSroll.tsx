@@ -6,6 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-wrap: no-wrap;
   overflow-x: auto;
+  padding-bottom: 0.5rem;
   max-width: 100vw;
 `;
 
@@ -87,7 +88,7 @@ const CategoriesData = [
 ];
 const CategorisSroll = (props: Props) => {
   return (
-    <Container>
+    <Container className="filter--container">
       {CategoriesData?.map((item) => {
         return <CategoryButton key={item?.id} name={item?.name} />;
       })}
