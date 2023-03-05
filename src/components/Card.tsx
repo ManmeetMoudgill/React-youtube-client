@@ -26,7 +26,6 @@ interface ChannelImageProps {
 
 const Container = styled.div<ContainerProps>`
   z-index: -1000;
-  border: 2px solid red;
   margin-bottom: ${(props) => (props?.type === "sm" ? "20px" : "45px")};
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
