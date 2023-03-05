@@ -20,7 +20,8 @@ import { RootState } from "../shell/reudx";
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  z-index: 1999;
+  border: 2px solid red;
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
@@ -32,13 +33,15 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 600px;
-  height: 550px;
+  border: 2px solid green;
+  height: 590px;
+  z-index: 10000;
   background-color: ${({ theme }) => theme.bgLighter};
   color: ${({ theme }) => theme.text};
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   position: relative;
 `;
 const Close = styled.div`
@@ -49,6 +52,7 @@ const Close = styled.div`
 `;
 const Title = styled.h1`
   text-align: center;
+  font-size: 1.3rem;
 `;
 
 const Input = styled.input`
@@ -56,14 +60,19 @@ const Input = styled.input`
   color: ${({ theme }) => theme.text};
   border-radius: 3px;
   padding: 10px;
+  border: transparent;
+  border: 1px solid whitesmoke;
+  outline: none;
   background-color: transparent;
-  z-index: 999;
+  z-index: 99999;
 `;
 const Desc = styled.textarea`
   border: 1px solid ${({ theme }) => theme.soft};
   color: ${({ theme }) => theme.text};
   border-radius: 3px;
   padding: 10px;
+  outline: none;
+  border: 1px solid whitesmoke;
   background-color: transparent;
 `;
 const Button = styled.button`

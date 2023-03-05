@@ -8,6 +8,7 @@ import SideBar from "../components/SideBar";
 import CategorisSroll from "../components/CategorisSroll";
 const Container = styled.div`
   display: flex;
+  min-width: 100vw;
   margin-top: 3.5rem;
   justify-content: center;
   position: relative;
@@ -15,6 +16,7 @@ const Container = styled.div`
 
 const VideosWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   margin-left: 7rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
