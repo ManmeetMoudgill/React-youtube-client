@@ -83,6 +83,7 @@ const Search = styled.div`
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 1px solid #ccc;
   border-radius: 20px;
+
   @media (min-width: 701px) and (max-width: 1000px) {
     width: 100%;
     margin-left: 5%;
@@ -110,6 +111,11 @@ const Button = styled.button`
   gap: 5px;
   @media (min-width: 320px) and (max-width: 520px) {
     font-size: 0.8rem;
+    padding: 1px 15px;
+  }
+  @media (min-width: 521px) and (max-width: 820px) {
+    font-size: 0.8rem;
+    padding: 3px 15px;
   }
 `;
 const SignInText = styled.h5`

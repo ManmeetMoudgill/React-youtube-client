@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Video } from "../models/video";
 import { User } from "../models/user";
-
+import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
 const Container = styled.div`
@@ -76,29 +76,31 @@ const Info = styled.div`
 
 const ReccomendationVideoSmall = ({ video, user }: RecomendationCardProps) => {
   return (
-    <Container>
-      <LeftContainer>
-        <Image src={video?.imgUrl} title={video?.title} />
-      </LeftContainer>
+    <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
+      <Container>
+        <LeftContainer>
+          <Image src={video?.imgUrl} title={video?.title} />
+        </LeftContainer>
 
-      <RightContainer>
-        <Details>
-          <Texts>
-            <Title>{video?.title}</Title>
-            <ChannelName>{user?.name}</ChannelName>
+        <RightContainer>
+          <Details>
+            <Texts>
+              <Title>{video?.title}</Title>
+              <ChannelName>{user?.name}</ChannelName>
 
-            <Info>
-              {video?.views} views •{" "}
-              {video?.createdAt
-                ? formatDistanceToNow(new Date(video?.createdAt), {
-                    addSuffix: true,
-                  })
-                : ""}
-            </Info>
-          </Texts>
-        </Details>
-      </RightContainer>
-    </Container>
+              <Info>
+                {video?.views} views •{" "}
+                {video?.createdAt
+                  ? formatDistanceToNow(new Date(video?.createdAt), {
+                      addSuffix: true,
+                    })
+                  : ""}
+              </Info>
+            </Texts>
+          </Details>
+        </RightContainer>
+      </Container>
+    </Link>
   );
 };
 

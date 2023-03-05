@@ -14,6 +14,7 @@ const Container = styled.div`
 
 const LargeDevicesVideos = styled.div`
   flex: 1;
+  flex-direction: column;
   display: none;
   @media (min-width: 1000px) and (max-width: 2600px) {
     display: flex;
@@ -22,6 +23,7 @@ const LargeDevicesVideos = styled.div`
 
 const SmallDevicesVideos = styled.div`
   flex: 1;
+  flex-direction: column;
   @media (min-width: 320px) and (max-width: 999px) {
     display: flex;
   }
