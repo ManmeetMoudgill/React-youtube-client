@@ -5,6 +5,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
+import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { IconButton } from "@mui/material";
 import {
@@ -125,11 +126,6 @@ const SignInText = styled.h5`
   }
 `;
 
-const WrapperUser = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
 const Logo = styled.div`
   display: flex;
   align-items: center;
@@ -154,6 +150,35 @@ const SideBar = styled.div`
   overflow-y: auto;
 `;
 
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text};
+  @media (min-width: 320px) and (max-width: 400px) {
+    padding-right: 1rem;
+  }
+`;
+
+const Avatar = styled.img`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #999;
+  @media (min-width: 320px) and (max-width: 720px) {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+`;
+
+const UserName = styled.h5`
+  font-size: 1rem;
+  @media (min-width: 320px) and (max-width: 1100px) {
+    display: none;
+  }
+`;
 interface Props {
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
@@ -275,34 +300,20 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
         </CenterContainer>
         <RightContainer>
           {user ? (
-            <WrapperUser>
-              <MuiButton onClick={uploadVideo}>
-                <VideoCallIcon
-                  sx={{
-                    color: darkMode ? "white" : "black",
-                  }}
-                />
-              </MuiButton>
-
-              <MuiButton
-                id="demo-positioned-button"
-                aria-controls={open ? "demo-positioned-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-                sx={{
-                  color: darkMode ? "white" : "black",
-                }}
-              >
-                <AccountCircleOutlinedIcon
-                  sx={{
-                    color: darkMode ? "white" : "black",
-                    marginRight: "2px",
-                  }}
-                />
-                {user?.name}
-              </MuiButton>
-            </WrapperUser>
+            <User
+              id="demo-positioned-button"
+              aria-controls={open ? "demo-positioned-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <VideoCallOutlinedIcon
+                className="video-icon"
+                onClick={uploadVideo}
+              />
+              <Avatar src={user?.img} />
+              <UserName>{user?.name}</UserName>
+            </User>
           ) : (
             <Link
               to="/signin"
