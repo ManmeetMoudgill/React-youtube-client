@@ -59,6 +59,11 @@ const Wrapper = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 `;
+const NotFoundComponent = styled.div`
+  position: absolute;
+  top: 20%;
+  left: 10%;
+`;
 const History = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const videoHistory = useSelector(
@@ -83,24 +88,28 @@ const History = () => {
   }, [dispatch, getVideosHistory, user?._id]);
 
   return (
-    <Container>
-      <SideBar />
-      <VideosWrapper>
-        <Wrapper>
-          {videoHistory?.map((video) => {
-            return (
-              <Card
-                key={video?.video?._id}
-                isHistoryPageCard
-                video={video?.video}
-                id={video?._id}
-              />
-            );
-          })}
-        </Wrapper>
-      </VideosWrapper>
-      {!isLoading && videoHistory?.length === 0 && <NotFound />}
-    </Container>
+    <>
+      <Container>
+        <SideBar />
+        <VideosWrapper>
+          <Wrapper>
+            {videoHistory?.map((video) => {
+              return (
+                <Card
+                  key={video?.video?._id}
+                  isHistoryPageCard
+                  video={video?.video}
+                  id={video?._id}
+                />
+              );
+            })}
+          </Wrapper>
+        </VideosWrapper>
+      </Container>
+      <NotFoundComponent>
+        {!isLoading && videoHistory?.length === 0 && <NotFound />}
+      </NotFoundComponent>
+    </>
   );
 };
 

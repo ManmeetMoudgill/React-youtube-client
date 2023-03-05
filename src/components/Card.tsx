@@ -26,14 +26,13 @@ interface ChannelImageProps {
 
 const Container = styled.div<ContainerProps>`
   z-index: -1000;
-  width: ${(props) => props?.type !== "sm" && "290px"};
+  border: 2px solid red;
   margin-bottom: ${(props) => (props?.type === "sm" ? "20px" : "45px")};
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
   gap: 11px;
-
-  @media (min-width: 320px) and (max-width: 2600px) {
-    width: auto;
+  @media (min-width: 1201px) and (max-width: 2600px) {
+    max-width: 290px;
   }
 `;
 

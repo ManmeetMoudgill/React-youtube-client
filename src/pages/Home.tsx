@@ -19,17 +19,15 @@ const VideosWrapper = styled.div`
   flex: 1;
   flex-direction: column;
   margin-left: 7rem;
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem 1rem 0.5rem 1.5rem;
   @media (min-width: 320px) and (max-width: 400px) {
     margin-left: 3rem;
   }
   @media (min-width: 401px) and (max-width: 720px) {
     margin-left: 4.5rem;
-    padding: 0.5rem 1rem 0.5rem 0.2rem;
   }
   @media (min-width: 721px) and (max-width: 1000px) {
     margin-left: 5rem;
-    padding: 0.5rem 1rem 0.5rem 0.2rem;
   }
   @media (min-width: 1001px) and (max-width: 1200px) {
     margin-left: 5rem;
@@ -41,23 +39,32 @@ const VideosWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
   max-width: 100%;
   padding-right: 1rem;
   margin-top: 2rem;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  @media (min-width: 320px) and (max-width: 649px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-
-  @media (max-width: 576px) {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  @media (min-width: 650px) and (max-width: 820px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (min-width: 320px) and (max-width: 500px) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  @media (min-width: 821px) and (max-width: 1000px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (min-width: 1001px) and (max-width: 1200px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (min-width: 1201px) and (max-width: 2600px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 `;
-
+const NotFoundComponent = styled.div`
+  position: absolute;
+  top: 20%;
+  left: 10%;
+`;
 interface HomeProps {
   type?: string;
 }
@@ -91,7 +98,9 @@ const Home = ({ type }: HomeProps) => {
           </Wrapper>
         </VideosWrapper>
       </Container>
-      {!isLoading && data?.length === 0 && <NotFound />}
+      <NotFoundComponent>
+        {!isLoading && data?.length === 0 && <NotFound />}
+      </NotFoundComponent>
     </>
   );
 };
