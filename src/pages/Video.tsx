@@ -34,7 +34,7 @@ const Container = styled.div`
   display: flex;
   min-width: 100vw;
   margin-top: 3.5rem;
-  padding: 1.5rem 1.5rem;
+  padding: 2rem 2rem;
   justify-content: center;
   position: relative;
   gap: 1.5rem;
