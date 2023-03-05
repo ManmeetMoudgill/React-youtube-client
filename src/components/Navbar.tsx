@@ -275,7 +275,11 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
             />
             {query ? (
               <IconButton
-                className="navbar-search-remove-icon"
+                sx={{
+                  position: "absolute",
+                  right: "2.5rem",
+                  top: "0.1rem",
+                }}
                 onClick={() => {
                   setQuery("");
                 }}
