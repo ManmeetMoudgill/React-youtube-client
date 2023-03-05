@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import { useEventCallback } from "@mui/material";
-import "./css/menu/index.css";
+import "./css/index.css";
 const Container = styled.div`
   background-color: ${({ theme }) => theme.bgLighter};
   height: 100vh;

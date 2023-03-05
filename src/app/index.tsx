@@ -7,7 +7,7 @@ import { CircularProgress, LinearProgress } from "@mui/material";
 import { lazy, Suspense } from "react";
 import { PrivateRoute } from "../components/PrivateRoute";
 import { NonPrivateRoute } from "../components/NonPrivateRoute";
-import "./app.css";
+import "./css/app.css";
 const Container = styled.div`
   display: flex;
 `;
@@ -44,6 +44,7 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
         <BrowserRouter>
           <Main>
             <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+
             <Wrapper>
               <Suspense
                 fallback={

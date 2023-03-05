@@ -32,6 +32,7 @@
     "framer-motion": "^10.0.0",
     "js-cookie": "^3.0.1",
     "luxon": "^3.2.1",
+    "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -48,7 +49,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sass":"npm run sass-app && sass-comp",
+    "sass-app":"node-sass -o src/app/css src/app/app.scss",
+    "sass-app:watch":"node-sass -o src/app/css src/app/app.scss -w",
+    "sass-comp":"node-sass -o src/components/css src/components/css/index.scss",
+    "sass-comp:watch":"node-sass -o src/components/css src/components/css/index.scss -w"
   },
   "eslintConfig": {
     "extends": [

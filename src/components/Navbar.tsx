@@ -23,7 +23,7 @@ import {
   emptyVideosFromHistory,
   removeVideo,
 } from "../shell/reudx/slicers/video";
-import "./css/navbar/index.css";
+import "./css/index.css";
 import MenuComponent from "./Menu";
 import { useClickOutside } from "../shell/hooks/click-outside/useClickOutside";
 const Container = styled.div`
@@ -34,6 +34,9 @@ const Container = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.bgLighter};
   height: 3.5rem;
+  @media (min-width: 320px) and (max-width: 400px) {
+    padding: 0 0rem 0 0;
+  }
 `;
 
 const LeftContainer = styled.div`
@@ -41,6 +44,9 @@ const LeftContainer = styled.div`
   flex: 1;
   padding-left: 0.5rem;
   align-items: center;
+  @media (min-width: 320px) and (max-width: 1000px) {
+    flex: 2;
+  }
 `;
 
 const CenterContainer = styled.div`
@@ -48,8 +54,18 @@ const CenterContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex: 2;
+  @media (min-width: 320px) and (max-width: 700px) {
+    display: none;
+  }
 `;
 
+const YoutubeName = styled.h5`
+  display: block;
+  font-weight: bold;
+  @media (min-width: 320px) and (max-width: 400px) {
+    font-size: 0.8rem;
+  }
+`;
 const RightContainer = styled.div`
   display: flex;
   flex: 1;
@@ -57,6 +73,9 @@ const RightContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 0px 20px;
+  @media (min-width: 320px) and (max-width: 400px) {
+    padding: 0 5px;
+  }
 `;
 const Search = styled.div`
   width: 70%;
@@ -69,6 +88,10 @@ const Search = styled.div`
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 1px solid #ccc;
   border-radius: 20px;
+  @media (min-width: 701px) and (max-width: 1000px) {
+    width: 100%;
+    margin-left: 5%;
+  }
 `;
 
 const Input = styled.input`
@@ -90,6 +113,16 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
+  @media (min-width: 320px) and (max-width: 520px) {
+    font-size: 0.8rem;
+  }
+`;
+const SignInText = styled.h5`
+  color: #3ea6ff;
+  font-size: 0.8rem;
+  @media (min-width: 320px) and (max-width: 520px) {
+    display: none;
+  }
 `;
 
 const WrapperUser = styled.div`
@@ -120,6 +153,7 @@ const SideBar = styled.div`
   min-height: 100vh;
   overflow-y: auto;
 `;
+
 interface Props {
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
@@ -188,10 +222,10 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
           </IconButton>
           <Link
             to="/"
+            className="link"
             style={{
               textDecoration: "none",
               color: "inherit",
-              marginLeft: "1rem",
             }}
           >
             <Logo>
@@ -200,7 +234,7 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
                   "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
                 }
               />
-              ManmeetYoutube
+              <YoutubeName>ManmeetYoutube</YoutubeName>
             </Logo>
           </Link>
         </LeftContainer>
@@ -278,7 +312,7 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
             >
               <Button>
                 <AccountCircleOutlinedIcon />
-                SIGN IN
+                <SignInText>SIGN IN</SignInText>
               </Button>
             </Link>
           )}

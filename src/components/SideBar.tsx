@@ -11,10 +11,19 @@ const SideBarContainer = styled.div`
   top: 3.5rem;
   left: 0.2rem;
   height: 100%;
+  @media (min-width: 320px) and (max-width: 400px) {
+    left: 0rem;
+  }
+  @media (min-width: 401px) and (max-width: 1200px) {
+    left: 1rem;
+  }
+  @media (min-width: 1201px) and (max-width: 2600px) {
+    left: 0rem;
+  }
 `;
 const Item = styled.div`
   display: flex;
-  font-size: 0.8rem;
+
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -28,6 +37,16 @@ const Item = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 320px) and (max-width: 1200px) {
+    max-width: 3.5rem;
+  }
+`;
+const IconName = styled.div`
+  font-size: 1rem;
+  @media (min-width: 320px) and (max-width: 1200px) {
+    display: none;
+  }
 `;
 const SideBar = (props: Props) => {
   return (
@@ -36,56 +55,41 @@ const SideBar = (props: Props) => {
         <Wrapper>
           <Link
             to="/"
+            className="link-sidebar"
             style={{
               textDecoration: "none",
               color: "inherit",
-              margin: "0.3rem 0rem 0.3rem 0rem",
             }}
           >
             <Item>
-              <HomeIcon
-                sx={{
-                  fontSize: "2rem",
-                  marginTop: "0.5rem",
-                }}
-              />
-              Home
+              <HomeIcon className="sidebar-icon" />
+              <IconName>Home</IconName>
             </Item>
           </Link>
           <Link
+            className="link-sidebar"
             to="/subscriptions"
             style={{
               textDecoration: "none",
               color: "inherit",
-              margin: "0.3rem 0rem 0.3rem 0rem",
             }}
           >
             <Item>
-              <SubscriptionsOutlinedIcon
-                sx={{
-                  fontSize: "2rem",
-                  marginTop: "0.5rem",
-                }}
-              />
-              Subscriptions
+              <SubscriptionsOutlinedIcon className="sidebar-icon" />
+              <IconName>Subscriptions</IconName>
             </Item>
           </Link>
           <Link
+            className="link-sidebar"
             to="/history"
             style={{
               textDecoration: "none",
               color: "inherit",
-              margin: "0.3rem 0rem 0.3rem 0rem",
             }}
           >
             <Item>
-              <HistoryOutlinedIcon
-                sx={{
-                  fontSize: "2rem",
-                  marginTop: "0.5rem",
-                }}
-              />
-              History
+              <HistoryOutlinedIcon className="sidebar-icon" />
+              <IconName>History</IconName>
             </Item>
           </Link>
         </Wrapper>

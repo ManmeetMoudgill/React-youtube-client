@@ -1,0 +1,49 @@
+.filter--container::-webkit-scrollbar {
+    height:0.3rem;
+}
+  
+
+.navbar-search-remove-icon{
+    position: absolute;
+    right: 2.5rem;
+    top: 0.1rem;
+}
+.navbar-search-icon{
+    position: absolute;
+    right: 0.2rem;
+    top: 0.1rem;
+}
+
+.link{
+    margin-left: 1rem;
+    @media screen and (min-width:320px) and (max-width:520px){
+        margin-left:0.1rem;
+    }
+
+}
+
+.link-sidebar{
+    margin: 0.3rem 0rem 0.3rem 0rem,
+}
+.sidebar-icon{
+    width: 2rem !important;
+    height:2rem !important;
+    margin-top: 0.5rem;
+    margin-bottom:0.5rem;
+    @media screen and (min-width:320px) and (max-width:700px){
+        width: 1.2rem !important;
+        height:1.2rem !important;
+    }
+    @media screen and (min-width:721px) and (max-width:1000px){
+        width: 1.5rem !important;
+        height:1.5rem !important;
+    }
+    @media screen and (min-width:1001px) and (max-width:1200px){
+        width: 1.6rem !important;
+        height:1.6rem !important;
+    }
+    @media screen and (min-width:1201px) and (max-width:2600px){
+        width: 1.8rem !important;
+    height:1.8rem !important;
+    }
+}
