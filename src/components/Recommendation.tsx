@@ -45,7 +45,6 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
     onBootstrap: true,
   });
 
-  console.log(videos);
   return (
     <Container>
       <LargeDevicesVideos>

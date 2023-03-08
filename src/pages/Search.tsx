@@ -40,8 +40,12 @@ const VideosWrapper = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
-  display: grid;
+interface WrapperProps {
+  isOnlyOneElement?: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
+  display: ${({ isOnlyOneElement }) => (isOnlyOneElement ? "flex" : "grid")};
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
   max-width: 100%;
@@ -87,7 +91,7 @@ const Search = () => {
       <Container>
         <SideBar />
         <VideosWrapper>
-          <Wrapper>
+          <Wrapper isOnlyOneElement={data?.length === 1}>
             {data?.map((video) => {
               return <Card key={video?._id} video={video} />;
             })}

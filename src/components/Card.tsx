@@ -110,7 +110,6 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
     });
   });
 
-  console.log(user);
   return (
     <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
       <Container
