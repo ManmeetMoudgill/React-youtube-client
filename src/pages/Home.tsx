@@ -7,6 +7,7 @@ import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import CategorisSroll from "../components/CategorisSroll";
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
+import { filterVideos } from "./utils";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
@@ -70,7 +71,7 @@ interface HomeProps {
   type?: string;
 }
 const Home = ({ type }: HomeProps) => {
-  const [data, setData] = useState<Video[] | undefined>(undefined);
+  const [data, setData] = useState<Video[]>([]);
   const { filters } = useFilters();
   const { makeCall: getVideos, isLoading } = useApi<VideosResponse>({
     url: `/videos/${type}`,
@@ -81,21 +82,17 @@ const Home = ({ type }: HomeProps) => {
   useEffect(() => {
     getVideos().then((res) => {
       if (res?.status === 200 || res?.status === 201) {
-        setData(res?.videos);
+        setData(res.videos);
       }
     });
-  }, [type, getVideos]);
-
-  console.log(data);
+  }, [getVideos]);
 
   const filteredData = useMemo(() => {
-    if (filters?.tag && filters?.tag !== "all") {
-      return data?.filter((item) => {
-        return item?.tags?.find((item) => item === filters?.tag);
-      });
-    }
-    return data;
-  }, [data, filters]);
+    return filterVideos({
+      data,
+      tag: filters?.tag,
+    });
+  }, [data, filters.tag]);
 
   return (
     <>
