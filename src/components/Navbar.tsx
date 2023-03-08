@@ -126,6 +126,7 @@ const Navbar = () => {
                 return;
               }
               navigate(`/search?q=${query}`);
+              setQuery("");
             }}
           >
             <Search>
