@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useApi } from "../shell/hooks/custom-http";
 import { removeFromVideoHistory } from "../shell/reudx/slicers/video";
 import { User } from "../models/user";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 interface ContainerProps {
   type?: string;
 }
@@ -105,7 +106,10 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
   const handleDelete = useEventCallback(() => {
     const videohistoryId = id as string;
     deleteVideoFromHistory().then((res) => {
-      if (res?.status === 200 || res?.status === 201) {
+      if (
+        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+      ) {
         dispatch(removeFromVideoHistory(videohistoryId));
       }
     });

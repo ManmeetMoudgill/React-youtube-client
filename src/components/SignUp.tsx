@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { useApi } from "../shell/hooks/custom-http";
 import { useEventCallback, CircularProgress } from "@mui/material";
 import { UserResponse } from "../models/user";
-import { toast } from "react-toastify";
 import { signUpSuccess } from "../shell/reudx/slicers/user";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createToastError } from "../utils/errors";
 const FormComponent = styled.form`
   width: 70%;
 `;
@@ -73,15 +74,18 @@ const SignUp = () => {
     try {
       singUpMakeCall().then((response) => {
         const user = (response as UserResponse)?.user;
-        if (response?.status === 200 || response?.status === 201) {
+        if (
+          response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+          response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+        ) {
           dispatch(signUpSuccess(user));
-          toast("Signup success", { type: "success" });
+          createToastError("Signup Successfull", "success");
         } else {
-          toast("Signup failed", { type: "error" });
+          createToastError("Signup failed", "error");
         }
       });
     } catch (err) {
-      toast("Something went wrong", { type: "error" });
+      createToastError("Something went wrong", "error");
     }
   });
 
@@ -99,7 +103,7 @@ const SignUp = () => {
   const registar = useEventCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user.email || !user.password || !user?.name) {
-      return toast("Please, provide credentials", { type: "warning" });
+      return createToastError("Please, provide credentials", "warning");
     }
 
     signup();

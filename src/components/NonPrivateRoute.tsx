@@ -1,6 +1,7 @@
 import { ReactElement, useEffect } from "react";
 import { useAxios } from "../utils/axios/useAxios";
-import { toast } from "react-toastify";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createToastError } from "../utils/errors";
 
 interface Props {
   children: ReactElement | JSX.Element | React.ReactNode;
@@ -11,13 +12,15 @@ export const NonPrivateRoute = ({ children }: Props): ReactElement => {
 
   useEffect(() => {
     if (axiosError) {
-      toast(
+      createToastError(
         `Error: ${axiosError?.response?.status} ${axiosError?.response?.statusText}`,
-        {
-          type: `${
-            axiosError?.response?.status === 401 || 400 ? "error" : "warning"
-          }`,
-        }
+        `${
+          axiosError?.response?.status ===
+            HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED ||
+          HTTP_RESPONSE_STATUS_CODE.BAD_REQUEST
+            ? "error"
+            : "warning"
+        }`
       );
     }
   }, [axiosError]);

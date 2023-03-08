@@ -10,6 +10,7 @@ import { addToVideoHistory } from "../shell/reudx/slicers/video";
 import { useHttpLoading } from "../shell/hooks/use-http-loading";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 
 const Container = styled.div`
   display: flex;
@@ -80,7 +81,10 @@ const History = () => {
   useEffect(() => {
     if (user?._id) {
       getVideosHistory().then((res) => {
-        if (res?.status === 200 || res?.status === 201) {
+        if (
+          res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+          res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+        ) {
           dispatch(addToVideoHistory(res?.videosHistory));
         }
       });

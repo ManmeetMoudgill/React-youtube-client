@@ -11,12 +11,13 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase/config";
-import { toast } from "react-toastify";
 import { useApi } from "../shell/hooks/custom-http";
 import { Video } from "../models/video";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createToastError } from "../utils/errors";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -157,7 +158,7 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
           : setVideoPerc(Math.round(progress));
       },
       (error) => {
-        toast(error.message, { type: "error" });
+        createToastError(error.message, "error");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -185,7 +186,7 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
   const navigate = useNavigate();
   const handleUpload = useEventCallback(() => {
     if (imgPerc !== 100 || videoPerc !== 100) {
-      toast("Wait for the upload to complete", { type: "error" });
+      createToastError("Wait for the uploading to be completed", "error");
       return;
     }
     createVideo({
@@ -193,13 +194,14 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
     })
       .then((res) => {
         const { video } = res as UploadVideoResponse;
-        if (res?.status === 200) {
-          toast("Video uploaded successfully", { type: "success" });
+        if (res?.status === HTTP_RESPONSE_STATUS_CODE.OK) {
+          createToastError("Video uploaded successfully", "success");
+
           setOpenDialog(false);
           navigate(`/video/${video._id}`);
         }
       })
-      .catch(async (err) => {
+      .catch(async () => {
         if (storageDirPlusFileNameData) {
           const storage = getStorage(app);
 

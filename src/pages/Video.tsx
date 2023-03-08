@@ -30,6 +30,7 @@ import {
 import { CommentsResponse } from "../models/comment";
 import CommentComponent from "../components/Comment";
 import RecommendationComponent from "../components/Recommendation";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
@@ -222,7 +223,7 @@ const Video = () => {
 
   const handleLike = useEventCallback(async () => {
     likeVideo().then((res: { success: boolean; status: number }) => {
-      if (res.success && res.status === 200) {
+      if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
         dispatch(likeVideoAction(user?.user?._id as string));
       }
     });
@@ -230,7 +231,7 @@ const Video = () => {
 
   const handleDislike = useEventCallback(async () => {
     dislikeVideo().then((res: { success: boolean; status: number }) => {
-      if (res.success && res.status === 200) {
+      if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
         dispatch(dislikeVideoAction(user?.user?._id as string));
       }
     });

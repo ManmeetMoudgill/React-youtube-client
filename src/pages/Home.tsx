@@ -8,6 +8,7 @@ import SideBar from "../components/SideBar";
 import CategorisSroll from "../components/CategorisSroll";
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import { filterVideos } from "./utils";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
@@ -81,7 +82,10 @@ const Home = ({ type }: HomeProps) => {
 
   useEffect(() => {
     getVideos().then((res) => {
-      if (res?.status === 200 || res?.status === 201) {
+      if (
+        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+      ) {
         setData(res.videos);
       }
     });
@@ -99,7 +103,7 @@ const Home = ({ type }: HomeProps) => {
       <Container>
         <SideBar />
         <VideosWrapper>
-          <CategorisSroll />
+          {type === "random" ? <CategorisSroll /> : undefined}
           <Wrapper>
             {filteredData &&
               filteredData?.map((video) => {

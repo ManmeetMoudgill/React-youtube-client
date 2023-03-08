@@ -6,6 +6,7 @@ import { Video, VideosResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 
 const Container = styled.div`
   display: flex;
@@ -74,7 +75,10 @@ const Category = () => {
   useEffect(() => {
     if (!params?.category) return;
     getVideoBasedOnCategory().then((res) => {
-      if (res?.status === 200 || res?.status === 201) {
+      if (
+        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+      ) {
         setData(res?.videos);
       }
     });

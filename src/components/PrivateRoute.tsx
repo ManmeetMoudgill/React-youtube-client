@@ -9,6 +9,7 @@ import {
   emptyVideosFromHistory,
   removeVideo,
 } from "../shell/reudx/slicers/video";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 
 interface Props {
   children: ReactElement | JSX.Element | React.ReactNode;
@@ -27,7 +28,10 @@ export const PrivateRoute = ({ children }: Props): ReactElement => {
     navigate("/");
   }, [dispatch, navigate]);
 
-  if (axiosError !== null && axiosError?.response?.status === 401) {
+  if (
+    axiosError !== null &&
+    axiosError?.response?.status === HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED
+  ) {
     handleUnauthorizedAccess();
   }
 

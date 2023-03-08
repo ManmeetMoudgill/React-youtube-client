@@ -6,8 +6,9 @@ import { useDispatch } from "react-redux";
 import { useEventCallback, CircularProgress } from "@mui/material";
 import { useApi } from "../shell/hooks/custom-http";
 import { UserResponse } from "../models/user";
-import { toast } from "react-toastify";
 import { signInSuccess } from "../shell/reudx/slicers/user";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createToastError } from "../utils/errors";
 const Input = styled.input`
   border: 1px solid #f5f5f5;
   border-radius: 3px;
@@ -77,15 +78,18 @@ const SingIn = () => {
     try {
       singInMakeCall().then((response) => {
         const user = (response as UserResponse)?.user;
-        if (response?.status === 200 || response?.status === 201) {
+        if (
+          response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+          response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+        ) {
           dispatch(signInSuccess(user));
-          toast("Login success", { type: "success" });
+          createToastError("Login Successfull", "success");
         } else {
-          toast("Login failed", { type: "error" });
+          createToastError("Login failed", "error");
         }
       });
     } catch (err) {
-      toast("Something went wrong", { type: "error" });
+      createToastError("Something went wrong", "error");
     }
   });
 
@@ -99,7 +103,7 @@ const SingIn = () => {
   const login = useEventCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!signIn.email || !signIn.password) {
-      return toast("Please, provide credentials", { type: "warning" });
+      return createToastError("Please, provide credentials", "error");
     }
 
     signInFunc();

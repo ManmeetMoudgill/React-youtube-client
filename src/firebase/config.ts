@@ -1,17 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { FIREBASE_CONFIG } from "../constants/index";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAEXWjf7hzusZ79XEJk4kt0wv_1h3-zVi4",
-  authDomain: "video-player-md.firebaseapp.com",
-  projectId: "video-player-md",
-  storageBucket: "video-player-md.appspot.com",
-  messagingSenderId: "273552662433",
-  appId: "1:273552662433:web:b54162a22e930c592175e0",
+  apiKey: FIREBASE_CONFIG.API_KEY,
+  authDomain: FIREBASE_CONFIG.AUTH_DOMAIN,
+  projectId: FIREBASE_CONFIG.PROJECT_ID,
+  storageBucket: FIREBASE_CONFIG.STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_CONFIG.MESSAGING_SENDER_ID,
+  appId: FIREBASE_CONFIG.API_ID,
 };
 
 // Initialize Firebase

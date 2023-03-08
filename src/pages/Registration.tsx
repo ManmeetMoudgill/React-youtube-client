@@ -18,6 +18,7 @@ import { auth, googleProvider } from "../firebase/config";
 import { signInWithPopup } from "firebase/auth";
 import SignUpComponent from "../components/SignUp";
 import SignInComponent from "../components/SingIn";
+import { createToastError } from "../utils/errors";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
@@ -80,6 +81,7 @@ const RegistrationPage = () => {
       }).then((res) => {
         const user = (res as UserResponse)?.user;
         dispatch(signInSuccess(user));
+        createToastError("login successfull", "success");
       });
     });
   });
