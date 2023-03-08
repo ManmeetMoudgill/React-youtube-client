@@ -24,7 +24,7 @@ interface SignUp {
   email: string;
 }
 
-const SignUp = () => {
+const SignUpComponent = () => {
   const [user, setUser] = React.useState<SignUp>(signUpInitalData);
 
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const SignUp = () => {
   };
 
   //signup
-  const signup = useEventCallback(async () => {
+  const signupFunc = useEventCallback(async () => {
     try {
       singUpMakeCall().then((response) => {
         const user = (response as UserResponse)?.user;
@@ -71,7 +71,7 @@ const SignUp = () => {
       return createToastError("Please, provide credentials", "warning");
     }
 
-    signup();
+    signupFunc();
   });
 
   return (
@@ -105,4 +105,4 @@ const SignUp = () => {
   );
 };
 
-export default memo(SignUp);
+export default memo(SignUpComponent);
