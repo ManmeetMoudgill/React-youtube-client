@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 const Container = styled.div`
   background-color:white;
-  height: 100vh;
+  min-height: 100vh;
   color: black;
+  position:fixed;
   font-size: 14px;
   max-width: 250px;
   overflow-y: scroll;
