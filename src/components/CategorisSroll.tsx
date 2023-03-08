@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import "./css/index.css";
-type Props = {};
+import { useEventCallback } from "@mui/material";
+import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 const Container = styled.div`
   display: flex;
   flex-wrap: no-wrap;
@@ -17,19 +18,24 @@ const Container = styled.div`
   }
 `;
 
-const CategoryButtonItem = styled.button`
+interface ButtonProps {
+  isClicked?: boolean;
+}
+const CategoryButtonItem = styled.button<ButtonProps>`
   width: 5rem;
   height: 2.5rem;
   font-size: 0.8rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  background-color: whitesmoke;
+  background-color: ${({ isClicked }) =>
+    isClicked ? "lightgray" : "whitesmoke"};
   margin: 0.5rem 1.5rem 0.5rem 0rem;
   padding: 0 1rem 0 1rem;
   border: transparent;
   cursor: pointer;
   border-radius: 0.5rem;
+
   transition: background-color 0.5s ease;
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
@@ -118,7 +124,7 @@ const CategoriesData = [
     name: "IRS",
   },
 ];
-const CategorisSroll = (props: Props) => {
+const CategorisSroll = () => {
   return (
     <Container className="filter--container">
       {CategoriesData?.map((item) => {
@@ -132,9 +138,23 @@ interface CategoryButtonProps {
   name: string;
 }
 const CategoryButton = ({ name }: CategoryButtonProps) => {
+  const { setFilters, filters } = useFilters();
+
+  const changeFilters = useEventCallback(() => {
+    setFilters({
+      ...filters,
+      tag: name?.toLocaleLowerCase(),
+    });
+  });
+
   return (
     <>
-      <CategoryButtonItem>{name}</CategoryButtonItem>
+      <CategoryButtonItem
+        isClicked={filters?.tag === name?.toLocaleLowerCase()}
+        onClick={changeFilters}
+      >
+        {name}
+      </CategoryButtonItem>
     </>
   );
 };

@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { HttpLoadingProvider } from "./shell/hooks/use-http-loading";
 import AppContainer from "./app/index";
 import { UserProvider } from "./shell/providers/user/user-provider";
+import { FilterProvider } from "./shell/providers/filter-provider/filter-provider";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -14,7 +15,9 @@ function App() {
 
       <UserProvider>
         <HttpLoadingProvider>
-          <AppContainer darkMode={darkMode} setDarkMode={setDarkMode} />
+          <FilterProvider>
+            <AppContainer darkMode={darkMode} setDarkMode={setDarkMode} />
+          </FilterProvider>
         </HttpLoadingProvider>
       </UserProvider>
     </>

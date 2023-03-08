@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { Video, VideosResponse } from "../models/video";
@@ -6,6 +6,7 @@ import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import CategorisSroll from "../components/CategorisSroll";
+import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 const Container = styled.div`
   display: flex;
   min-width: 100vw;
@@ -70,6 +71,7 @@ interface HomeProps {
 }
 const Home = ({ type }: HomeProps) => {
   const [data, setData] = useState<Video[] | undefined>(undefined);
+  const { filters } = useFilters();
   const { makeCall: getVideos, isLoading } = useApi<VideosResponse>({
     url: `/videos/${type}`,
     method: "get",
@@ -84,6 +86,17 @@ const Home = ({ type }: HomeProps) => {
     });
   }, [type, getVideos]);
 
+  console.log(data);
+
+  const filteredData = useMemo(() => {
+    if (filters?.tag && filters?.tag !== "all") {
+      return data?.filter((item) => {
+        return item?.tags?.find((item) => item === filters?.tag);
+      });
+    }
+    return data;
+  }, [data, filters]);
+
   return (
     <>
       <Container>
@@ -91,15 +104,15 @@ const Home = ({ type }: HomeProps) => {
         <VideosWrapper>
           <CategorisSroll />
           <Wrapper>
-            {data &&
-              data?.map((video) => {
+            {filteredData &&
+              filteredData?.map((video) => {
                 return <Card key={video?._id} video={video} />;
               })}
           </Wrapper>
         </VideosWrapper>
       </Container>
       <NotFoundComponent>
-        {!isLoading && data?.length === 0 && <NotFound />}
+        {!isLoading && filteredData?.length === 0 && <NotFound />}
       </NotFoundComponent>
     </>
   );
