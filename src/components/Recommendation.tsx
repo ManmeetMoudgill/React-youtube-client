@@ -1,36 +1,18 @@
 import React, { memo } from "react";
-import styled from "styled-components";
 import { VideoType } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
+import {
+  Container,
+  LargeDevicesVideos,
+  SmallDevicesVideos,
+} from "./styled-components/Reccomendation";
 import Card from "./Card";
 import ReccomendationVideoSmall from "./ReccomendationVideoSmall";
 type Props = {
   tags: string[];
   currrentVideoId: string;
 };
-const Container = styled.div`
-  flex: 1;
-`;
 
-const LargeDevicesVideos = styled.div`
-  flex: 1;
-  flex-direction: column;
-  display: none;
-  @media (min-width: 1000px) and (max-width: 2600px) {
-    display: flex;
-  }
-`;
-
-const SmallDevicesVideos = styled.div`
-  flex: 1;
-  flex-direction: column;
-  @media (min-width: 320px) and (max-width: 999px) {
-    display: flex;
-  }
-  @media (min-width: 1000px) and (max-width: 2600px) {
-    display: none;
-  }
-`;
 interface TagsBackendResponse {
   message: string;
   status: number;

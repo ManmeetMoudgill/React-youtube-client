@@ -1,52 +1,17 @@
 import React, { ChangeEvent, memo } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import { useApi } from "../shell/hooks/custom-http";
 import { useEventCallback, CircularProgress } from "@mui/material";
 import { UserResponse } from "../models/user";
 import { signUpSuccess } from "../shell/reudx/slicers/user";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import { createToastError } from "../utils/errors";
-const FormComponent = styled.form`
-  width: 70%;
-`;
-
-const Input = styled.input`
-  border: 1px solid #f5f5f5;
-  border-radius: 3px;
-  padding: 10px;
-  margin: 0.3rem 0 0.3rem 0;
-  outline: none;
-  border: 1px solid whitesmoke;
-  background-color: transparent;
-  width: 100%;
-  color: black;
-`;
-
-const Button = styled.button`
-  border-radius: 3px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px 20px;
-  font-weight: 500;
-  cursor: pointer;
-  background-color: #f5f5f5;
-  color: #606060;
-  transition: background-color 0.5s ease-in;
-  &:hover {
-    background-color: lightgray;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
+import {
+  FormComponent,
+  Input,
+  Button,
+  ButtonContainer,
+} from "./styled-components/SignUp";
 const signUpInitalData = {
   name: "",
   password: "",

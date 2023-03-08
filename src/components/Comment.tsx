@@ -1,44 +1,16 @@
 import React, { memo, useMemo } from "react";
-import styled from "styled-components";
 import { Comment } from "../models/comment";
 import { useApi } from "../shell/hooks/custom-http";
 import { UserResponse } from "../models/user";
 import { formatDistanceToNow } from "date-fns";
-
-const Container = styled.div`
-  display: flex;
-  gap: 10px;
-  margin: 30px 0px;
-`;
-
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`;
-
-const Details = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: black;
-`;
-const Name = styled.span`
-  font-size: 13px;
-  font-weight: 500;
-`;
-
-const DateComponent = styled.span`
-  font-size: 12px;
-  font-weight: 400;
-  color: #606060;
-  margin-left: 5px;
-`;
-
-const Text = styled.span`
-  font-size: 14px;
-`;
-
+import {
+  Container,
+  Avatar,
+  Details,
+  Name,
+  DateComponent,
+  Text,
+} from "./styled-components/Comment";
 interface CommentProps {
   comment: Comment;
 }
