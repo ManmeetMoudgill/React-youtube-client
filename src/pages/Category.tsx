@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../shell/hooks/custom-http";
-import { Video, VideosResponse } from "../models/video";
+import { VideoType } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
@@ -12,15 +12,16 @@ import {
   Wrapper,
   NotFoundComponent,
 } from "./styled-components/Category";
+import { TagsBackendResponse } from "../components/Recommendation";
 const Category = () => {
   const params = useParams();
   const { isLoading, makeCall: getVideoBasedOnCategory } =
-    useApi<VideosResponse>({
+    useApi<TagsBackendResponse>({
       url: `/videos/tags/?tags=${params?.category}`,
       method: "get",
       onBootstrap: false,
     });
-  const [data, setData] = useState<Video[] | undefined>(undefined);
+  const [data, setData] = useState<Array<VideoType>>([]);
 
   useEffect(() => {
     if (!params?.category) return;
@@ -43,7 +44,13 @@ const Category = () => {
             {!isLoading &&
               data &&
               data?.map((video) => {
-                return <Card key={video?._id} video={video} />;
+                return (
+                  <Card
+                    key={video?.video?._id}
+                    video={video?.video}
+                    user={video?.user}
+                  />
+                );
               })}
           </Wrapper>
         </VideosWrapper>

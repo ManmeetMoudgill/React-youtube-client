@@ -7,16 +7,13 @@ import { UserProvider } from "./shell/providers/user/user-provider";
 import { FilterProvider } from "./shell/providers/filter-provider/filter-provider";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-
   return (
     <>
       <ToastContainer hideProgressBar position="top-right" theme="colored" />
-
       <UserProvider>
         <HttpLoadingProvider>
           <FilterProvider>
-            <AppContainer darkMode={darkMode} setDarkMode={setDarkMode} />
+            <AppContainer />
           </FilterProvider>
         </HttpLoadingProvider>
       </UserProvider>

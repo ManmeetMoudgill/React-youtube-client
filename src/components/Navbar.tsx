@@ -40,12 +40,7 @@ import {
   YoutubeName,
 } from "./styled-components/Navbar";
 
-interface Props {
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
-}
-
-const Navbar = ({ darkMode, setDarkMode }: Props) => {
+const Navbar = () => {
   const { user } = useSelector((state: RootState) => state?.user);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -62,7 +57,6 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
 
   useEffect(() => {
     if (openSideBar) {
-      //documentElement to get the root node of the element
       document.documentElement.style.overflowY = "hidden";
     }
 
@@ -236,8 +230,6 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
             <MenuComponent
               isOpen={openSideBar}
               setOpenSideBar={setOpenSideBar}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
             />
           </SideBar>
         </>

@@ -32,11 +32,9 @@ import {
 interface MenuProps {
   isOpen: boolean;
   setOpenSideBar: (value: boolean) => void;
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
 }
 
-const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
+const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
   const { user } = useSelector((state: RootState) => state?.user);
   const navigate = useNavigate();
   const closeSide = useEventCallback(() => {
@@ -181,11 +179,6 @@ const Menu = ({ darkMode, setDarkMode, isOpen, setOpenSideBar }: MenuProps) => {
         <Item>
           <SettingsOutlinedIcon />
           Settings
-        </Item>
-
-        <Item onClick={() => setDarkMode(!darkMode)}>
-          <SettingsBrightnessOutlinedIcon />
-          {darkMode ? "Light" : "Dark"} Mode
         </Item>
       </Wrapper>
     </Container>

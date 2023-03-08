@@ -13,7 +13,7 @@ type Props = {
   currrentVideoId: string;
 };
 
-interface TagsBackendResponse {
+export interface TagsBackendResponse {
   message: string;
   status: number;
   success: boolean;

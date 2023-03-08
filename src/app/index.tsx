@@ -6,6 +6,7 @@ import { useHttpLoading } from "../shell/hooks/use-http-loading";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import { lazy, Suspense } from "react";
 import { PrivateRoute } from "../components/PrivateRoute";
+import { memo } from "react";
 import { NonPrivateRoute } from "../components/NonPrivateRoute";
 import "./css/app.css";
 const Container = styled.div`
@@ -22,11 +23,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-interface AppContainerProps {
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
-}
-
 const HomeLazyLoadComponent = lazy(() => import("../pages/Home"));
 const RegistrationComponent = lazy(() => import("../pages/Registration"));
 const VideoLazyLoadComponent = lazy(() => import("../pages/Video"));
@@ -34,7 +30,7 @@ const SearchLazyLoadComponent = lazy(() => import("../pages/Search"));
 const HistoryLazyLoadComponent = lazy(() => import("../pages/History"));
 
 const CategoryLazyLoadComponent = lazy(() => import("../pages/Category"));
-function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
+const AppContainer = () => {
   const { isLoading } = useHttpLoading();
 
   return (
@@ -43,7 +39,7 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
       <Container>
         <BrowserRouter>
           <Main>
-            <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+            <Navbar />
 
             <Wrapper>
               <Suspense
@@ -130,6 +126,6 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
       </Container>
     </>
   );
-}
+};
 
-export default AppContainer;
+export default memo(AppContainer);
