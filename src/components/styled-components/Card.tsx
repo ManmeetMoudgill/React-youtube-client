@@ -17,7 +17,7 @@ interface ChannelImageProps {
 const Container = styled.div<ContainerProps>`
   z-index: -1000;
   width: ${(props) => (props?.type === "sm" ? "100%" : "auto")};
-  max-width: 250px;
+  max-width: ${(props) => props?.type !== "sm" && "250px"};
   margin-bottom: 1.3rem;
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
