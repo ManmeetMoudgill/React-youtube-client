@@ -28,7 +28,7 @@ interface AppContainerProps {
 }
 
 const HomeLazyLoadComponent = lazy(() => import("../pages/Home"));
-const SignInLazyLoadComponent = lazy(() => import("../pages/SignIn"));
+const RegistrationComponent = lazy(() => import("../pages/Registration"));
 const VideoLazyLoadComponent = lazy(() => import("../pages/Video"));
 const SearchLazyLoadComponent = lazy(() => import("../pages/Search"));
 const HistoryLazyLoadComponent = lazy(() => import("../pages/History"));
@@ -98,7 +98,7 @@ function AppContainer({ darkMode, setDarkMode }: AppContainerProps) {
                       path="signin"
                       element={
                         <NonPrivateRoute>
-                          <SignInLazyLoadComponent />
+                          <RegistrationComponent />
                         </NonPrivateRoute>
                       }
                     />

@@ -1,4 +1,10 @@
-import React, { memo, useState, useRef, useEffect } from "react";
+import React, {
+  memo,
+  useState,
+  useRef,
+  useEffect,
+  FormEventHandler,
+} from "react";
 import styled from "styled-components";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -179,6 +185,10 @@ const UserName = styled.h5`
     display: none;
   }
 `;
+
+const FormComponent = styled.form`
+  flex: 1;
+`;
 interface Props {
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
@@ -264,43 +274,53 @@ const Navbar = ({ darkMode, setDarkMode }: Props) => {
           </Link>
         </LeftContainer>
         <CenterContainer>
-          <Search>
-            <Input
-              style={{
-                fontSize: "1.0rem",
-              }}
-              placeholder="Search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            {query ? (
+          <FormComponent
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!query) {
+                return;
+              }
+              navigate(`/search?q=${query}`);
+            }}
+          >
+            <Search>
+              <Input
+                style={{
+                  fontSize: "1.0rem",
+                }}
+                placeholder="Search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {query ? (
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: "2.5rem",
+                    top: "0.1rem",
+                  }}
+                  onClick={() => {
+                    setQuery("");
+                  }}
+                >
+                  <ClearIcon />
+                </IconButton>
+              ) : undefined}
               <IconButton
                 sx={{
                   position: "absolute",
-                  right: "2.5rem",
+                  right: "0.2rem",
                   top: "0.1rem",
                 }}
                 onClick={() => {
+                  navigate(`/search?q=${query}`);
                   setQuery("");
                 }}
               >
-                <ClearIcon />
+                <SearchOutlinedIcon />
               </IconButton>
-            ) : undefined}
-            <IconButton
-              sx={{
-                position: "absolute",
-                right: "0.2rem",
-                top: "0.1rem",
-              }}
-              onClick={() => {
-                navigate(`/search?q=${query}`);
-                setQuery("");
-              }}
-            >
-              <SearchOutlinedIcon />
-            </IconButton>
-          </Search>
+            </Search>
+          </FormComponent>
         </CenterContainer>
         <RightContainer>
           {user ? (
