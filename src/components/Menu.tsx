@@ -28,6 +28,7 @@ import {
   Title,
   WrapperYoutube,
 } from "./styled-components/Menu";
+import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 interface MenuProps {
   isOpen: boolean;
   setOpenSideBar: (value: boolean) => void;
@@ -39,6 +40,7 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
   const closeSide = useEventCallback(() => {
     setOpenSideBar(false);
   });
+  const { setFilters, filters } = useFilters();
 
   return (
     <Container>
@@ -62,7 +64,14 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
               marginLeft: "1rem",
             }}
           >
-            <Logo>
+            <Logo
+              onClick={() => {
+                setFilters({
+                  ...filters,
+                  tag: "",
+                });
+              }}
+            >
               <Img
                 src={
                   "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
@@ -78,7 +87,14 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
           to="/"
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          <Item>
+          <Item
+            onClick={() => {
+              setFilters({
+                ...filters,
+                tag: "",
+              });
+            }}
+          >
             <HomeIcon />
             Home
           </Item>

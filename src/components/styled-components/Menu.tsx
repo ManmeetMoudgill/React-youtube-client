@@ -7,7 +7,7 @@ const Container = styled.div`
   position:fixed;
   font-size: 14px;
   max-width: 250px;
-  overflow-y: scroll;
+  overflow-y: auto;
   animation:slide-in 0.5s ease-in;
   @keyframes slide-in {
     from {

@@ -9,7 +9,9 @@ import {
   Wrapper,
   IconName,
 } from "./styled-components/Sidebar";
+import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 const SideBar = () => {
+  const { setFilters, filters } = useFilters();
   return (
     <>
       <SideBarContainer>
@@ -22,7 +24,14 @@ const SideBar = () => {
               color: "inherit",
             }}
           >
-            <Item>
+            <Item
+              onClick={() => {
+                setFilters({
+                  ...filters,
+                  tag: "",
+                });
+              }}
+            >
               <HomeIcon className="sidebar-icon" />
               <IconName>Home</IconName>
             </Item>

@@ -39,6 +39,7 @@ import {
   Search,
   YoutubeName,
 } from "./styled-components/Navbar";
+import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 
 const Navbar = () => {
   const { user } = useSelector((state: RootState) => state?.user);
@@ -92,6 +93,7 @@ const Navbar = () => {
   });
 
   const navigate = useNavigate();
+  const { setFilters, filters } = useFilters();
 
   return (
     <>
@@ -108,7 +110,14 @@ const Navbar = () => {
               color: "inherit",
             }}
           >
-            <Logo>
+            <Logo
+              onClick={() => {
+                setFilters({
+                  ...filters,
+                  tag: "",
+                });
+              }}
+            >
               <Img
                 src={
                   "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
