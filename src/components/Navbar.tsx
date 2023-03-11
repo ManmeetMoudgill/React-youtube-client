@@ -40,6 +40,9 @@ import {
   YoutubeName,
 } from "./styled-components/Navbar";
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
+import { useApi } from "../shell/hooks/custom-http";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createToastError } from "../utils/errors";
 
 const Navbar = () => {
   const { user } = useSelector((state: RootState) => state?.user);
@@ -79,12 +82,29 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
 
+  const { makeCall: logOutUser } = useApi({
+    url: "/auth/logout",
+    method: "POST",
+  });
   const handleLogout = useEventCallback(() => {
-    dispatch(logout());
-    dispatch(emptyVideosFromHistory());
-    dispatch(removeVideo());
-    localStorage.clear();
-    handleClose();
+    logOutUser()
+      .then((res) => {
+        const data = res as {
+          message: string;
+          success: boolean;
+          status: number;
+        };
+        if (data.success && data.status === HTTP_RESPONSE_STATUS_CODE.OK) {
+          dispatch(logout());
+          dispatch(emptyVideosFromHistory());
+          dispatch(removeVideo());
+          localStorage.clear();
+          handleClose();
+        }
+      })
+      .catch(() => {
+        createToastError("Something went wrong", "error");
+      });
   });
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -184,14 +204,14 @@ const Navbar = () => {
               aria-controls={open ? "demo-positioned-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
             >
               <VideoCallOutlinedIcon
                 className="video-icon"
                 onClick={uploadVideo}
               />
-              <Avatar src={user?.img} />
-              <UserName>{user?.name}</UserName>
+
+              <Avatar onClick={handleClick} src={user?.img} />
+              <UserName onClick={handleClick}>{user?.name}</UserName>
             </User>
           ) : (
             <Link

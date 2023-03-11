@@ -16,7 +16,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: 600px;
   border: 2px solid green;
-  height: 590px;
+  min-height: 500px;
   z-index: 10000;
   background-color: white;
   color: black;
@@ -41,11 +41,11 @@ const Input = styled.input`
   border: 1px solid #f5f5f5;
   color: black;
   border-radius: 3px;
-  padding: 10px;
+  padding: 0.5rem;
   border: transparent;
   border: 1px solid whitesmoke;
   outline: none;
-  background-color: transparent;
+  background-color: none;
   z-index: 99999;
 `;
 const Desc = styled.textarea`
