@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
 import { useHttpLoading } from "../shell/hooks/use-http-loading";
-import { CircularProgress, LinearProgress } from "@mui/material";
-import { lazy, Suspense } from "react";
-import { PrivateRoute } from "../components/PrivateRoute";
+import { LinearProgress } from "@mui/material";
 import { memo } from "react";
-import { NonPrivateRoute } from "../components/NonPrivateRoute";
 import "./css/app.css";
+import AppRoutes from "../router";
+
 const Container = styled.div`
   display: flex;
 `;
@@ -23,13 +22,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const HomeLazyLoadComponent = lazy(() => import("../pages/Home"));
-const RegistrationComponent = lazy(() => import("../pages/Registration"));
-const VideoLazyLoadComponent = lazy(() => import("../pages/Video"));
-const SearchLazyLoadComponent = lazy(() => import("../pages/Search"));
-const HistoryLazyLoadComponent = lazy(() => import("../pages/History"));
-
-const CategoryLazyLoadComponent = lazy(() => import("../pages/Category"));
 const AppContainer = () => {
   const { isLoading } = useHttpLoading();
 
@@ -40,86 +32,8 @@ const AppContainer = () => {
         <BrowserRouter>
           <Main>
             <Navbar />
-
             <Wrapper>
-              <Suspense
-                fallback={
-                  <CircularProgress
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                    }}
-                    color="warning"
-                  />
-                }
-              >
-                <Routes>
-                  <Route path="/">
-                    <Route
-                      index
-                      element={
-                        <NonPrivateRoute>
-                          <HomeLazyLoadComponent type="random" />
-                        </NonPrivateRoute>
-                      }
-                    />
-                    <Route
-                      path="trends"
-                      element={
-                        <NonPrivateRoute>
-                          <HomeLazyLoadComponent type="trend" />
-                        </NonPrivateRoute>
-                      }
-                    />
-
-                    <Route
-                      path="subscriptions"
-                      element={
-                        <PrivateRoute>
-                          <HomeLazyLoadComponent type="sub" />
-                        </PrivateRoute>
-                      }
-                    />
-
-                    <Route
-                      path="search"
-                      element={
-                        <NonPrivateRoute>
-                          <SearchLazyLoadComponent />
-                        </NonPrivateRoute>
-                      }
-                    />
-                    <Route
-                      path="signin"
-                      element={
-                        <NonPrivateRoute>
-                          <RegistrationComponent />
-                        </NonPrivateRoute>
-                      }
-                    />
-
-                    <Route
-                      path="history"
-                      element={
-                        <PrivateRoute>
-                          <HistoryLazyLoadComponent />{" "}
-                        </PrivateRoute>
-                      }
-                    />
-                    <Route path="category">
-                      <Route
-                        path=":category"
-                        element={<CategoryLazyLoadComponent />}
-                      />
-                    </Route>
-
-                    <Route path="video">
-                      <Route path=":id" element={<VideoLazyLoadComponent />} />
-                    </Route>
-                  </Route>
-                </Routes>
-              </Suspense>
+              <AppRoutes />
             </Wrapper>
           </Main>
         </BrowserRouter>
