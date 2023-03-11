@@ -1,22 +1,38 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  background-color:white;
+  background-color: white;
   min-height: 100vh;
   color: black;
-  position:fixed;
+  position: fixed;
   font-size: 14px;
   max-width: 250px;
   overflow-y: auto;
-  animation:slide-in 0.5s ease-in;
+  transition: opacity 0.5s ease-in;
+  animation: slide-in 0.5s ease-in;
   @keyframes slide-in {
     from {
-        opacity:0;
+      opacity: 0;
+      transform: translateX(-100%);
     }
     to {
-        opacity1;
+      opacity: 1;
+      transform: translateX(0);
     }
-  
+  }
+  &.hide {
+    animation: slide-out 0.5s ease-in;
+  }
+  @keyframes slide-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
 `;
 const Wrapper = styled.div`
   padding: 18px 26px;

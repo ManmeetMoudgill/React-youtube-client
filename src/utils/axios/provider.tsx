@@ -33,6 +33,7 @@ export const AxiosProvider = ({ children }: any) => {
       return response;
     },
     function (error: AxiosError) {
+      console.log(error);
       setAxiosError(error);
 
       // Any status codes that falls outside the range of 2xx cause this function to trigger

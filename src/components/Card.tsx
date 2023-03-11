@@ -52,7 +52,7 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
 
   const playVideo = useEventCallback(() => {
     if (videoRef.current) {
-      videoRef.current?.play();
+      videoRef.current.play();
     }
   });
 
