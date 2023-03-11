@@ -4,18 +4,24 @@ import { HttpLoadingProvider } from "./shell/hooks/use-http-loading";
 import AppContainer from "./app/index";
 import { UserProvider } from "./shell/providers/user/user-provider";
 import { FilterProvider } from "./shell/providers/filter-provider/filter-provider";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorFallback from "./components/ErrorFallBack";
 
 function App() {
+  //what should i do on reset?
+
   return (
     <>
-      <ToastContainer hideProgressBar position="top-right" theme="colored" />
-      <UserProvider>
-        <HttpLoadingProvider>
-          <FilterProvider>
-            <AppContainer />
-          </FilterProvider>
-        </HttpLoadingProvider>
-      </UserProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ToastContainer hideProgressBar position="top-right" theme="colored" />
+        <UserProvider>
+          <HttpLoadingProvider>
+            <FilterProvider>
+              <AppContainer />
+            </FilterProvider>
+          </HttpLoadingProvider>
+        </UserProvider>
+      </ErrorBoundary>
     </>
   );
 }
