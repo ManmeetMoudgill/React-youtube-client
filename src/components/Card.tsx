@@ -48,33 +48,14 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
     });
   });
 
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
-
-  const playVideo = useEventCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-  });
-
-  const pauseVideo = useEventCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.pause();
-    }
-  });
-
   return (
     <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
       <Container
         type={type}
         className="animate__animated animate__fadeIn animate__delay-0.5s "
-        onMouseEnter={playVideo}
-        onMouseLeave={pauseVideo}
       >
         <VideoComponent
-          ref={videoRef}
           muted
-          title="Keep hovering to play the video"
           type={type}
           src={video?.videoUrl}
           poster={video?.imgUrl}
