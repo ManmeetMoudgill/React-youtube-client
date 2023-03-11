@@ -26,7 +26,7 @@ const Container = styled.div<ContainerProps>`
   }
 `;
 
-const Image = styled.img<ImageProps>`
+const Video = styled.video<ImageProps>`
   width: ${(props) => (props?.type === "sm" ? "80%" : "100%")};
   height: ${(props) => (props?.type === "sm" ? "8.5rem" : "202px")};
   object-fit: cover;
@@ -75,7 +75,7 @@ const Info = styled.div`
 
 export {
   Container,
-  Image,
+  Video,
   Details,
   ChannelImage,
   Texts,
