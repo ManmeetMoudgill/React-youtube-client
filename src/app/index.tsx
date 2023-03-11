@@ -27,7 +27,6 @@ const AppContainer = () => {
 
   return (
     <>
-      {new Error("Somethng went wrong")}
       {isLoading ? <LinearProgress color="warning" /> : null}
 
       <Container>
