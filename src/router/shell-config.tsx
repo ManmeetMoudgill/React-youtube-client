@@ -1,10 +1,10 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LinearProgress } from "@mui/material";
 import { RoutesConfig } from "./routes-config";
 import { PrivateRoute } from "../components/PrivateRoute";
-
+import VideoPage from "../pages/Video";
 interface CreateShellRoutesParams {
   addLoading: () => void;
   removeLoading: () => void;
@@ -29,11 +29,6 @@ export const createShellRoutes = ({
   const RegistrationComponent = lazy(() => {
     addLoading();
     return import("../pages/Registration").finally(() => removeLoading());
-  });
-
-  const VideoLazyLoadComponent = lazy(() => {
-    addLoading();
-    return import("../pages/Video").finally(() => removeLoading());
   });
 
   const HistoryLazyLoadComponent = lazy(() => {
@@ -93,7 +88,7 @@ export const createShellRoutes = ({
         },
         {
           path: "/video/:id",
-          element: <VideoLazyLoadComponent />,
+          element: <VideoPage />,
         },
         {
           path: "/signin",

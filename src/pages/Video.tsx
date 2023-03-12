@@ -51,7 +51,8 @@ import {
   Content,
   Title,
 } from "./styled-components/Video";
-const Video = () => {
+
+const VideoPage = () => {
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
 
@@ -260,4 +261,4 @@ const Video = () => {
   );
 };
 
-export default memo(Video);
+export default memo(VideoPage);
