@@ -1,23 +1,45 @@
 import styled from "styled-components";
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+`;
+
 const Image = styled.img`
   width: 30%;
   height: 30%;
   object-fit: contain;
-  transform: translateZ(0);
-  animation: animateDown infinite  1.5s;
-  @keyframes animateDown {
-    0% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(-20px, 0);
-    }
-    50% {
-      transform: translate(-20px, 20px);
-    }
-    100% {
-      transform: translate(0, 20px);
-    }
+  @media (min-width: 320px) and (max-width: 500px) {
+    display: none;
+  }
 `;
 
-export { Image };
+const NotFound = styled.h3`
+  font-size: 3em;
+  font-weight: 500;
+  @media (min-width: 320px) and (max-width: 350px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 351px) and (max-width: 500px) {
+    font-size: 2rem;
+  }
+`;
+
+const TryAgain = styled.h5`
+  font-size: 2rem;
+  font-weight: 400;
+  @media (min-width: 320px) and (max-width: 500px) {
+    font-size: 1rem;
+  }
+`;
+
+export { Image, NotFound, TryAgain, Container, MainContainer };

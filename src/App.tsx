@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <ToastContainer hideProgressBar position="top-right" theme="colored" />
+        <ToastContainer position="top-right" theme="colored" />
         <UserProvider>
           <HttpLoadingProvider>
             <FilterProvider>

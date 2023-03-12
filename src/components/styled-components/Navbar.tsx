@@ -47,7 +47,7 @@ const RightContainer = styled.div`
   align-items: center;
   padding: 0px 20px;
   @media (min-width: 320px) and (max-width: 400px) {
-    padding: 0 5px;
+    padding: 0 15px;
   }
 `;
 const Search = styled.div`

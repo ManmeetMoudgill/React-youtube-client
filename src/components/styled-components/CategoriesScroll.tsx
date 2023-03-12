@@ -6,8 +6,14 @@ const Container = styled.div`
   overflow-x: auto;
   padding-bottom: 0.5rem;
   max-width: 100vw;
-  @media (min-width: 320px) and (max-width: 720px) {
+
+  @media (min-width: 320px) and (max-width: 400px) {
     padding-bottom: 0.1rem;
+    margin-right: 0rem;
+  }
+  @media (min-width: 401px) and (max-width: 720px) {
+    padding-bottom: 0.1rem;
+    margin-right: 2rem;
   }
   @media (min-width: 721px) and (max-width: 1000px) {
     padding-bottom: 0.2rem;
@@ -32,9 +38,10 @@ const CategoryButtonItem = styled.button<ButtonProps>`
   cursor: pointer;
   border-radius: 0.5rem;
 
-  transition: background-color 0.5s ease;
+  transition: all 0.2s ease-in-out;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: ${({ isClicked }) => !isClicked && "rgba(0,0,0,0.5)"};
+    color: ${({ isClicked }) => !isClicked && "white"};
   }
   @media (min-width: 320px) and (max-width: 720px) {
     min-width: 4rem;
