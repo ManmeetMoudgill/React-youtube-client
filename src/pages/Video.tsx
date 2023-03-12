@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
@@ -180,81 +180,75 @@ const Video = () => {
   return (
     <>
       {result?.data ? (
-        <>
-          <Container>
-            <Content>
-              <VideoWrapper>
-                <VideoFrame src={result?.data?.video?.videoUrl} controls />
-              </VideoWrapper>
-              <Title></Title>
-              <Details>
-                <Info>
-                  {result?.data?.video?.views} views •{" "}
-                  {result?.data?.video?.createdAt
-                    ? formatDistanceToNow(
-                        new Date(result?.data?.video?.createdAt),
-                        {
-                          addSuffix: true,
-                        }
-                      )
-                    : ""}
-                </Info>
-                <Buttons>
-                  <Button onClick={handleLike}>
-                    <LikeComponent /> {result?.data?.video?.likes?.length}
-                  </Button>
-                  <Button onClick={handleDislike}>
-                    <DislikeComponent /> {result?.data?.video?.dislikes?.length}
-                  </Button>
-                  <Button>
-                    <ReplyOutlinedIcon /> Share
-                  </Button>
-                  <Button>
-                    <AddTaskOutlinedIcon /> Save
-                  </Button>
-                </Buttons>
-              </Details>
-              <Hr />
-              <Channel>
-                <ChannelInfo>
-                  <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
-                  <ChannelDetail>
-                    <ChannelName>{result?.data?.user?.name}</ChannelName>
-                    <ChannelCounter>
-                      {result?.data?.user?.subscribers} subscribers
-                    </ChannelCounter>
-                    <Description>
-                      {result?.data?.video?.description}
-                    </Description>
-                  </ChannelDetail>
-                </ChannelInfo>
-                {user?.user?._id !== result?.data?.user?._id ? (
-                  <Subscribe
-                    onClick={
-                      haveISubscribed
-                        ? unSubscribeChannelFunc
-                        : subscribeChannelFunc
-                    }
-                  >
-                    {haveISubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
-                  </Subscribe>
-                ) : undefined}
-              </Channel>
-              <Hr />
-              {comments?.comments?.map((comment) => {
-                return (
-                  <CommentComponent comment={comment} key={comment?._id} />
-                );
-              })}
-            </Content>
-            <ReccomendationContainer>
-              <RecommendationComponent
-                currrentVideoId={result?.data?.video?._id}
-                tags={result?.data?.video?.tags}
-              />
-            </ReccomendationContainer>
-          </Container>
-        </>
+        <Container>
+          <Content>
+            <VideoWrapper>
+              <VideoFrame src={result?.data?.video?.videoUrl} controls />
+            </VideoWrapper>
+            <Title></Title>
+            <Details>
+              <Info>
+                {result?.data?.video?.views} views •{" "}
+                {result?.data?.video?.createdAt
+                  ? formatDistanceToNow(
+                      new Date(result?.data?.video?.createdAt),
+                      {
+                        addSuffix: true,
+                      }
+                    )
+                  : ""}
+              </Info>
+              <Buttons>
+                <Button onClick={handleLike}>
+                  <LikeComponent /> {result?.data?.video?.likes?.length}
+                </Button>
+                <Button onClick={handleDislike}>
+                  <DislikeComponent /> {result?.data?.video?.dislikes?.length}
+                </Button>
+                <Button>
+                  <ReplyOutlinedIcon /> Share
+                </Button>
+                <Button>
+                  <AddTaskOutlinedIcon /> Save
+                </Button>
+              </Buttons>
+            </Details>
+            <Hr />
+            <Channel>
+              <ChannelInfo>
+                <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
+                <ChannelDetail>
+                  <ChannelName>{result?.data?.user?.name}</ChannelName>
+                  <ChannelCounter>
+                    {result?.data?.user?.subscribers} subscribers
+                  </ChannelCounter>
+                  <Description>{result?.data?.video?.description}</Description>
+                </ChannelDetail>
+              </ChannelInfo>
+              {user?.user?._id !== result?.data?.user?._id ? (
+                <Subscribe
+                  onClick={
+                    haveISubscribed
+                      ? unSubscribeChannelFunc
+                      : subscribeChannelFunc
+                  }
+                >
+                  {haveISubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
+                </Subscribe>
+              ) : undefined}
+            </Channel>
+            <Hr />
+            {comments?.comments?.map((comment) => {
+              return <CommentComponent comment={comment} key={comment?._id} />;
+            })}
+          </Content>
+          <ReccomendationContainer>
+            <RecommendationComponent
+              currrentVideoId={result?.data?.video?._id}
+              tags={result?.data?.video?.tags}
+            />
+          </ReccomendationContainer>
+        </Container>
       ) : undefined}
     </>
   );

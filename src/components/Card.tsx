@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import React, { memo } from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Video } from "../models/video";
 import { Box, IconButton, Tooltip, useEventCallback } from "@mui/material";
