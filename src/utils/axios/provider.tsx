@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useEventCallback } from "@mui/material";
 import { logout } from "../../shell/reudx/slicers/user";
+
 import {
   emptyVideosFromHistory,
   removeVideo,
 } from "../../shell/reudx/slicers/video";
 import { HTTP_RESPONSE_STATUS_CODE } from "../../constants";
+import { ErrorResponseType } from "./types";
+import { createToastError } from "../errors";
 export const AxiosProvider = ({ children }: any) => {
   const [axiosError, setAxiosError] = useState<AxiosError | null>(null);
 
@@ -21,7 +24,7 @@ export const AxiosProvider = ({ children }: any) => {
   });
 
   const instance = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL}`,
+    baseURL: ``,
     headers: {
       "Content-Type": "application/json",
     },
@@ -44,8 +47,7 @@ export const AxiosProvider = ({ children }: any) => {
   instance.interceptors.response.use(
     function (response) {
       setAxiosError(null);
-      // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response data
+
       return response;
     },
     function (error: AxiosError) {
@@ -53,6 +55,15 @@ export const AxiosProvider = ({ children }: any) => {
       if (error.response?.status === HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED) {
         handleUnauthorizedAccess();
       }
+      const { response } = error;
+
+      const backendResponseError = response?.data as ErrorResponseType;
+      createToastError(
+        `${backendResponseError?.status || error?.response?.status} - ${
+          backendResponseError?.message || error?.message
+        }`,
+        "error"
+      );
 
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error

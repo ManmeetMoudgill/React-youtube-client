@@ -32,7 +32,7 @@ const SingIn = () => {
 
   const { makeCall: singInMakeCall, isLoading: singInLoading } =
     useApi<UserResponse>({
-      url: "/auth/sign-in",
+      url: "/auth/sign-",
       method: "post",
       data: {
         email: signIn.email,
@@ -42,22 +42,16 @@ const SingIn = () => {
 
   //login request
   const signInFunc = useEventCallback(async () => {
-    try {
-      singInMakeCall().then((response) => {
-        const user = (response as UserResponse)?.user;
-        if (
-          response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-          response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-        ) {
-          dispatch(signInSuccess(user));
-          createToastError("Login Successfull", "success");
-        } else {
-          createToastError("Login failed", "error");
-        }
-      });
-    } catch (err) {
-      createToastError("Something went wrong", "error");
-    }
+    singInMakeCall().then((response) => {
+      const user = (response as UserResponse)?.user;
+      if (
+        response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+        response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+      ) {
+        dispatch(signInSuccess(user));
+        createToastError("Login Successfull", "success");
+      }
+    });
   });
 
   const onChangeSignIn = useEventCallback(

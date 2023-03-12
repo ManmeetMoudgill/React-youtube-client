@@ -42,7 +42,6 @@ import {
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import { useApi } from "../shell/hooks/custom-http";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
-import { createToastError } from "../utils/errors";
 
 const Navbar = () => {
   const { user } = useSelector((state: RootState) => state?.user);
@@ -87,24 +86,20 @@ const Navbar = () => {
     method: "POST",
   });
   const handleLogout = useEventCallback(() => {
-    logOutUser()
-      .then((res) => {
-        const data = res as {
-          message: string;
-          success: boolean;
-          status: number;
-        };
-        if (data.success && data.status === HTTP_RESPONSE_STATUS_CODE.OK) {
-          dispatch(logout());
-          dispatch(emptyVideosFromHistory());
-          dispatch(removeVideo());
-          localStorage.clear();
-          handleClose();
-        }
-      })
-      .catch(() => {
-        createToastError("Something went wrong", "error");
-      });
+    logOutUser().then((res) => {
+      const data = res as {
+        message: string;
+        success: boolean;
+        status: number;
+      };
+      if (data.success && data.status === HTTP_RESPONSE_STATUS_CODE.OK) {
+        dispatch(logout());
+        dispatch(emptyVideosFromHistory());
+        dispatch(removeVideo());
+        localStorage.clear();
+        handleClose();
+      }
+    });
   });
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 

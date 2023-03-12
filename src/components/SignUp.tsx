@@ -36,22 +36,16 @@ const SignUpComponent = () => {
 
   //signup
   const signupFunc = useEventCallback(async () => {
-    try {
-      singUpMakeCall().then((response) => {
-        const user = (response as UserResponse)?.user;
-        if (
-          response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-          response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-        ) {
-          dispatch(signUpSuccess(user));
-          createToastError("Signup Successfull", "success");
-        } else {
-          createToastError("Signup failed", "error");
-        }
-      });
-    } catch (err) {
-      createToastError("Something went wrong", "error");
-    }
+    singUpMakeCall().then((response) => {
+      const user = (response as UserResponse)?.user;
+      if (
+        response?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+        response?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+      ) {
+        dispatch(signUpSuccess(user));
+        createToastError("Signup Successfull", "success");
+      }
+    });
   });
 
   const { makeCall: singUpMakeCall, isLoading: signUpLoading } =

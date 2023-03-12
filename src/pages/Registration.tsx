@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useApi } from "../shell/hooks/custom-http";
 import { UserResponse } from "../models/user";
 import { useDispatch } from "react-redux";
@@ -24,6 +24,7 @@ import {
   Title,
   SubTitle,
 } from "./styled-components/Registration";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 const RegistrationPage = () => {
   const dispatch = useDispatch();
   const { user: userSlicer } = useSelector((state: RootState) => state?.user);
@@ -54,8 +55,13 @@ const RegistrationPage = () => {
         data,
       }).then((res) => {
         const user = (res as UserResponse)?.user;
-        dispatch(signInSuccess(user));
-        createToastError("login successfull", "success");
+        if (
+          res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+          res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+        ) {
+          dispatch(signInSuccess(user));
+          createToastError("login successfull", "success");
+        }
       });
     });
   });
