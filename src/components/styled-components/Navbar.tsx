@@ -62,8 +62,12 @@ const Search = styled.div`
   border: 1px solid #ccc;
   border-radius: 20px;
 
-  @media (min-width: 701px) and (max-width: 1000px) {
-    width: 100%;
+  @media (min-width: 320px) and (max-width: 820px) {
+    width: 85%;
+    margin-left: 5%;
+  }
+  @media (min-width: 803px) and (max-width: 1000px) {
+    width: 85%;
     margin-left: 5%;
   }
 `;
