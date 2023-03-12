@@ -10,7 +10,5 @@ export const useAxios = (): AxiosContextType => {
   }
   return {
     instance: ctx?.instance,
-    axiosError: ctx?.axiosError,
-    setAxiosError: ctx?.setAxiosError,
   };
 };

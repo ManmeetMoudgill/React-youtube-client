@@ -1,11 +1,7 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { createContext } from "react";
 export interface AxiosContextType {
   instance: AxiosInstance;
-  axiosError: AxiosError | null;
-  setAxiosError: React.Dispatch<
-    React.SetStateAction<AxiosError<unknown, any> | null>
-  >;
 }
 
 const initialState: AxiosContextType = {
@@ -15,8 +11,6 @@ const initialState: AxiosContextType = {
       "Content-Type": "application/json",
     },
   }),
-  axiosError: null,
-  setAxiosError: () => {},
 };
 
 const AxiosContext = createContext<AxiosContextType>(initialState);

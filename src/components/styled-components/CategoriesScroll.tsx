@@ -43,12 +43,7 @@ const CategoryButtonItem = styled.button<ButtonProps>`
     background-color: ${({ isClicked }) => !isClicked && "rgba(0,0,0,0.5)"};
     color: ${({ isClicked }) => !isClicked && "white"};
   }
-  @media (min-width: 320px) and (max-width: 720px) {
-    min-width: 4rem;
-    font-size: 0.6rem;
-    height: 1.6rem;
-  }
-  @media (min-width: 721px) and (max-width: 1000px) {
+  @media (min-width: 320px) and (max-width: 1000px) {
     min-width: 5rem;
     font-size: 0.8rem;
     height: 1.6rem;

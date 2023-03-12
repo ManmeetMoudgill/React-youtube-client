@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import AxiosContext from "./context";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useEventCallback } from "@mui/material";
 import { logout } from "../../shell/reudx/slicers/user";
@@ -13,8 +12,6 @@ import { HTTP_RESPONSE_STATUS_CODE } from "../../constants";
 import { ErrorResponseType } from "./types";
 import { createToastError } from "../errors";
 export const AxiosProvider = ({ children }: any) => {
-  const [axiosError, setAxiosError] = useState<AxiosError | null>(null);
-
   const dispatch = useDispatch();
 
   const handleUnauthorizedAccess = useEventCallback(() => {
@@ -46,12 +43,9 @@ export const AxiosProvider = ({ children }: any) => {
 
   instance.interceptors.response.use(
     function (response) {
-      setAxiosError(null);
-
       return response;
     },
     function (error: AxiosError) {
-      setAxiosError(error);
       if (error.response?.status === HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED) {
         handleUnauthorizedAccess();
       }
@@ -72,7 +66,7 @@ export const AxiosProvider = ({ children }: any) => {
   );
 
   return (
-    <AxiosContext.Provider value={{ instance, axiosError, setAxiosError }}>
+    <AxiosContext.Provider value={{ instance }}>
       {children}
     </AxiosContext.Provider>
   );
