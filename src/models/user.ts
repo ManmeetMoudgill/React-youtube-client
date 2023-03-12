@@ -10,9 +10,15 @@ export interface User {
   isGoogleAuth?: boolean;
 }
 
-export interface UserResponse {
+export interface UserResponse extends CustomResponse {
   user: User;
-  status: number;
+}
+
+export interface CustomResponse extends CustomSuccessResponse {
   message: string;
+}
+
+export interface CustomSuccessResponse {
   success: boolean;
+  status: number;
 }

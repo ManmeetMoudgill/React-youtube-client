@@ -9,7 +9,7 @@ import {
   removeVideo,
 } from "../../shell/reudx/slicers/video";
 import { HTTP_RESPONSE_STATUS_CODE } from "../../constants";
-import { ErrorResponseType } from "./types";
+import { CustomResponse as ErrorResponse } from "../../models/user";
 import { createToastError } from "../errors";
 export const AxiosProvider = ({ children }: any) => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ export const AxiosProvider = ({ children }: any) => {
       }
       const { response } = error;
 
-      const backendResponseError = response?.data as ErrorResponseType;
+      const backendResponseError = response?.data as ErrorResponse;
       createToastError(
         `${backendResponseError?.status || error?.response?.status} - ${
           backendResponseError?.message || error?.message

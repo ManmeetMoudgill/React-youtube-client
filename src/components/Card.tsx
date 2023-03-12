@@ -65,14 +65,12 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
           {type === "sm" && user ? (
             <ChannelImage
               type={type}
-              src={user?.img ? user?.img : "/images/userProva.jfif"}
+              src={user?.img ? user?.img : "/images/user.png"}
             />
           ) : (
             <ChannelImage
               type={type}
-              src={
-                video?.user?.img ? video?.user?.img : "/images/userProva.jfif"
-              }
+              src={video?.user?.img ? video?.user?.img : "/images/user.png"}
             />
           )}
 

@@ -205,7 +205,10 @@ const Navbar = () => {
                 onClick={uploadVideo}
               />
 
-              <Avatar onClick={handleClick} src={user?.img} />
+              <Avatar
+                onClick={handleClick}
+                src={user?.img || "/images/user.png"}
+              />
               <UserName onClick={handleClick}>{user?.name}</UserName>
             </User>
           ) : (

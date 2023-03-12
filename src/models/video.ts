@@ -1,6 +1,6 @@
 import { User } from "./user";
-
-export interface Video {
+import { CustomSuccessResponse } from "./user";
+export interface Video extends CustomUser {
   _id: string;
   userId: string;
   title: string;
@@ -13,31 +13,27 @@ export interface Video {
   quantityDislikes: number;
   likes: string[];
   dislikes: string[];
-  user: User;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface VideosResponse {
-  success: boolean;
-  status: number;
+export interface CustomUser {
+  user: User;
+}
+
+export interface VideosResponse extends CustomSuccessResponse {
   videos: Array<Video>;
 }
 
-export interface VideoResponse {
-  success: boolean;
-  status: number;
+export interface VideoResponse extends CustomSuccessResponse {
   data: VideoType;
 }
 
-export interface VideoType {
-  user: User;
+export interface VideoType extends CustomUser {
   video: Video;
 }
 
-export interface VideoHistoryResponseType {
-  success: boolean;
-  status: number;
+export interface VideoHistoryResponseType extends CustomSuccessResponse {
   videosHistory: Array<SingleVideoHistoryType>;
 }
 
