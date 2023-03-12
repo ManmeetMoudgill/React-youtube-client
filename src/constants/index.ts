@@ -1,12 +1,3 @@
-export enum FIREBASE_CONFIG {
-  API_KEY = "AIzaSyAEXWjf7hzusZ79XEJk4kt0wv_1h3-zVi4",
-  AUTH_DOMAIN = "video-player-md.firebaseapp.com",
-  PROJECT_ID = "video-player-md",
-  STORAGE_BUCKET = "video-player-md.appspot.com",
-  MESSAGING_SENDER_ID = "273552662433",
-  API_ID = "1:273552662433:web:b54162a22e930c592175e0",
-}
-
 export enum HTTP_RESPONSE_STATUS_CODE {
   OK = 200,
   CREATED = 201,
