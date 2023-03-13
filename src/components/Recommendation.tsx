@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { VideoType } from "../models/video";
+import React, { memo, useMemo } from "react";
+import { VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import {
   Container,
@@ -13,48 +13,48 @@ type Props = {
   currrentVideoId: string;
 };
 
-export interface TagsBackendResponse {
-  message: string;
-  status: number;
-  success: boolean;
-  videos: Array<VideoType>;
-}
-
 const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
-  const { result: videos } = useApi<TagsBackendResponse>({
+  const { result: videos } = useApi<VideosResponse>({
     url: `/videos/tags/?tags=${tags?.join(",")}`,
     method: "get",
     onBootstrap: true,
   });
 
+  const largeVideoCards = useMemo(() => {
+    return videos?.videos?.map((item) => {
+      if (item?.video?._id === currrentVideoId) return null;
+      return (
+        <Card
+          type="sm"
+          key={item?.video?._id}
+          video={item?.video}
+          user={item?.user}
+        />
+      );
+    });
+  }, [videos?.videos, currrentVideoId]);
+
+  const smallVideoCards = useMemo(() => {
+    return videos?.videos?.map((item) => {
+      if (item?.video?._id === currrentVideoId) return null;
+
+      return (
+        <ReccomendationVideoSmall
+          key={item?.video?._id}
+          video={item?.video}
+          user={item?.user}
+        />
+      );
+    });
+  }, [videos?.videos, currrentVideoId]);
+
   return (
     <Container>
       <LargeDevicesVideos>
-        {videos?.videos &&
-          videos?.videos?.map((video) => {
-            if (video?.video?._id === currrentVideoId) return null;
-            return (
-              <Card
-                type="sm"
-                key={video?.video?._id}
-                video={video?.video}
-                user={video?.user}
-              />
-            );
-          })}
+        {videos?.videos && largeVideoCards}
       </LargeDevicesVideos>
       <SmallDevicesVideos>
-        {videos?.videos &&
-          videos?.videos?.map((video) => {
-            if (video?.video?._id === currrentVideoId) return null;
-            return (
-              <ReccomendationVideoSmall
-                key={video?.video?._id}
-                video={video?.video}
-                user={video?.user}
-              />
-            );
-          })}
+        {videos?.videos && smallVideoCards}
       </SmallDevicesVideos>
     </Container>
   );

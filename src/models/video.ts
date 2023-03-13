@@ -1,6 +1,7 @@
 import { User } from "./user";
 import { CustomSuccessResponse } from "./user";
-export interface Video extends CustomUser {
+
+export interface Video {
   _id: string;
   userId: string;
   title: string;
@@ -17,12 +18,21 @@ export interface Video extends CustomUser {
   updatedAt: string;
 }
 
+export interface SearchVideoResponse extends CustomSuccessResponse {
+  videos: Array<Video>;
+}
+export interface GetVideosWithUser {
+  video: Video;
+  user: User;
+}
+
 export interface CustomUser {
   user: User;
 }
 
 export interface VideosResponse extends CustomSuccessResponse {
-  videos: Array<Video>;
+  videos: Array<GetVideosWithUser>;
+  count: number;
 }
 
 export interface VideoResponse extends CustomSuccessResponse {

@@ -62,24 +62,17 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
         />
 
         <Details type={type} isHistoryPageCard={isHistoryPageCard}>
-          {type === "sm" && user ? (
-            <ChannelImage
-              type={type}
-              src={user?.img ? user?.img : "/images/user.png"}
-            />
-          ) : (
-            <ChannelImage
-              type={type}
-              src={video?.user?.img ? video?.user?.img : "/images/user.png"}
-            />
-          )}
+          <ChannelImage
+            type={type}
+            src={user?.img ? user?.img : "/images/user.png"}
+          />
 
           <Texts>
             <Title>{video?.title?.slice(0, 25)}..</Title>
             {type === "sm" && user ? (
               <ChannelName>{user?.name}</ChannelName>
             ) : (
-              <ChannelName>{video?.user?.name}</ChannelName>
+              <ChannelName>{user?.name}</ChannelName>
             )}
             <Info>
               {video?.views} views •{" "}

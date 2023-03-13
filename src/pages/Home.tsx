@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from "react";
 import Card from "../components/Card";
-import { Video, VideosResponse } from "../models/video";
+import { GetVideosWithUser, Video, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
@@ -18,7 +18,7 @@ interface HomeProps {
   type?: string;
 }
 const Home = ({ type }: HomeProps) => {
-  const [data, setData] = useState<Video[]>([]);
+  const [data, setData] = useState<GetVideosWithUser[]>([]);
   const { filters } = useFilters();
   const { makeCall: getVideos, result } = useApi<VideosResponse>({
     url: `/videos/${type}`,
@@ -50,19 +50,21 @@ const Home = ({ type }: HomeProps) => {
     });
   }, [data, filters?.tag]);
 
+  const videoCards = useMemo(() => {
+    return filteredData?.map((item) => {
+      return (
+        <Card key={item?.video?._id} video={item?.video} user={item?.user} />
+      );
+    });
+  }, [filteredData]);
+
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
           {type === "random" ? <CategoriesSroll /> : undefined}
-          <Wrapper>
-            {filteredData &&
-              filteredData?.length > 0 &&
-              filteredData?.map((video) => {
-                return <Card key={video?._id} video={video} />;
-              })}
-          </Wrapper>
+          <Wrapper>{filteredData?.length > 0 && videoCards}</Wrapper>
         </VideosWrapper>
       </Container>
 

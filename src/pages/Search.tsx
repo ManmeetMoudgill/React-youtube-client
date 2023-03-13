@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useState, useCallback } from "react";
+import React, { memo, useEffect, useState, useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useApi } from "../shell/hooks/custom-http";
-import { Video, VideosResponse } from "../models/video";
+import { Video, SearchVideoResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
@@ -15,7 +15,7 @@ import {
 const Search = () => {
   const location = useLocation();
 
-  const { makeCall: getVideosBySearch, result } = useApi<VideosResponse>({
+  const { makeCall: getVideosBySearch, result } = useApi<SearchVideoResponse>({
     url: `/videos/search${location?.search}`,
     method: "get",
     onBootstrap: false,
@@ -37,17 +37,19 @@ const Search = () => {
     });
   }, [location?.search, getVideosBySearchMemoizedFn]);
 
+  const videoCards = useMemo(() => {
+    return data?.map((video) => {
+      return <Card key={video?._id} video={video} />;
+    });
+  }, [data]);
+
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
           <Wrapper arraylength={data?.length}>
-            {data &&
-              data?.length > 0 &&
-              data?.map((video) => {
-                return <Card key={video?._id} video={video} />;
-              })}
+            {data && data?.length > 0 && videoCards}
           </Wrapper>
         </VideosWrapper>
       </Container>

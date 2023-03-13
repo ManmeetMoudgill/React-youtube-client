@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback } from "react";
+import React, { memo, useEffect, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import Card from "../components/Card";
@@ -54,25 +54,25 @@ const History = () => {
     }
   }, [getVideosHistoryMemoized, user?._id, dispatch]);
 
+  const videoCards = useMemo(() => {
+    return videoHistory?.map((video) => {
+      return (
+        <Card
+          key={video?.video?._id}
+          isHistoryPageCard
+          video={video?.video}
+          id={video?._id}
+        />
+      );
+    });
+  }, [videoHistory]);
+
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
-          <Wrapper>
-            {videoHistory &&
-              videoHistory?.length > 0 &&
-              videoHistory?.map((video) => {
-                return (
-                  <Card
-                    key={video?.video?._id}
-                    isHistoryPageCard
-                    video={video?.video}
-                    id={video?._id}
-                  />
-                );
-              })}
-          </Wrapper>
+          <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
         </VideosWrapper>
       </Container>
       {result && videoHistory?.length === 0 ? (

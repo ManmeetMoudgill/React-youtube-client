@@ -1,13 +1,13 @@
-import { Video } from "../../models/video";
+import { GetVideosWithUser, Video } from "../../models/video";
 
 interface FilterVideosProps {
-  data: Video[];
+  data: GetVideosWithUser[];
   tag: string;
 }
 
 export const filterVideos = ({ data, tag }: FilterVideosProps) => {
   if (tag && tag !== "all") {
-    return data?.filter((item) => item.tags?.includes(tag));
+    return data?.filter((item) => item.video?.tags?.includes(tag));
   }
 
   return data;
