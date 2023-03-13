@@ -6,57 +6,69 @@ import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import CategoriesSroll from "../components/CategoriesSroll";
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
-import { filterVideos } from "./utils";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import {
   Wrapper,
   VideosWrapper,
   Container,
   NotFoundComponent,
 } from "./styled-components/Home";
+import { AxiosRequestConfig } from "axios";
+import { Typography } from "@mui/material";
 interface HomeProps {
   type?: string;
 }
 const Home = ({ type }: HomeProps) => {
   const [data, setData] = useState<GetVideosWithUser[]>([]);
   const { filters } = useFilters();
+  const [page, setPage] = useState<number>(1);
+
   const { makeCall: getVideos, result } = useApi<VideosResponse>({
-    url: `/videos/${type}`,
+    url: `/videos/${type}?page=${page}&category=${filters?.tag || "all"}`,
     method: "get",
     onBootstrap: false,
   });
 
-  const getVideosMemoizedFn = useCallback(() => {
-    return getVideos();
-  }, [getVideos]);
+  const getVideosMemoizedFn = useCallback(
+    (params?: AxiosRequestConfig) => {
+      return getVideos(params);
+    },
+    [getVideos]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getVideosMemoizedFn();
+      const res = await getVideosMemoizedFn({
+        url: `/videos/${type}?page=${page}&category=${filters?.tag || "all"}`,
+      });
       if (
         res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
         res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
       ) {
-        setData(res?.videos || []);
+        setData((prev) => {
+          return page === 1
+            ? res?.videos || []
+            : [...prev, ...(res?.videos || [])];
+        });
       }
     };
     fetchData();
-  }, [getVideosMemoizedFn]);
-
-  const filteredData = useMemo(() => {
-    return filterVideos({
-      data,
-      tag: filters?.tag,
-    });
-  }, [data, filters?.tag]);
+  }, [getVideosMemoizedFn, type, filters?.tag, page]);
 
   const videoCards = useMemo(() => {
-    return filteredData?.map((item) => {
+    return data?.map((item) => {
       return (
         <Card key={item?.video?._id} video={item?.video} user={item?.user} />
       );
     });
-  }, [filteredData]);
+  }, [data]);
+
+  const fetchMoreData = useCallback(() => {
+    if (result && data?.length > result?.count) return;
+    setPage((prev) => prev + 1);
+  }, [result, data?.length]);
 
   return (
     <>
@@ -64,11 +76,20 @@ const Home = ({ type }: HomeProps) => {
         <SideBar />
         <VideosWrapper>
           {type === "random" ? <CategoriesSroll /> : undefined}
-          <Wrapper>{filteredData?.length > 0 && videoCards}</Wrapper>
+          {result && (
+            <InfiniteScroll
+              dataLength={data?.length || 0}
+              next={fetchMoreData}
+              hasMore={data?.length < result?.count}
+              loader={<Typography>Loading...</Typography>}
+            >
+              <Wrapper>{data?.length > 0 && videoCards}</Wrapper>
+            </InfiniteScroll>
+          )}
         </VideosWrapper>
       </Container>
 
-      {result && filteredData?.length === 0 ? (
+      {result && data?.length === 0 ? (
         <NotFoundComponent>
           <NotFound />
         </NotFoundComponent>
