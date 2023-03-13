@@ -2,7 +2,6 @@ import React, { memo, useEffect, useMemo, useCallback } from "react";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
-import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import { formatDistanceToNow } from "date-fns";
 
 import { useParams } from "react-router-dom";
@@ -30,6 +29,15 @@ import { CommentsResponse } from "../models/comment";
 import CommentComponent from "../components/Comment";
 import RecommendationComponent from "../components/Recommendation";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 import {
   ReccomendationContainer,
   VideoFrame,
@@ -52,6 +60,8 @@ import {
   Title,
 } from "./styled-components/Video";
 import { CustomSuccessResponse } from "../models/user";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 interface LikeDislikeProps {
   isLike: boolean;
 }
@@ -60,6 +70,16 @@ const VideoPage = () => {
   const params = useParams();
   const user = useSelector((state: RootState) => state?.user);
   const result = useSelector((state: RootState) => state?.video);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   console.log(result);
   const dispatch = useDispatch();
 
@@ -190,6 +210,10 @@ const VideoPage = () => {
     [user?.user, result?.data?.video?.likes, result?.data?.video?.dislikes]
   );
 
+  const videoUrl = useMemo(() => {
+    return `http://localhost/video/${result?.data?.video?._id}`;
+  }, [result?.data?.video?._id]);
+
   return (
     <>
       {result?.data && result?.data !== null ? (
@@ -221,12 +245,62 @@ const VideoPage = () => {
                     <LikeDislikeComponent isLike={false} />{" "}
                     {result?.data?.video?.dislikes?.length}
                   </Button>
-                  <Button>
+
+                  <Button
+                    id="share-positioned-button"
+                    aria-controls={open ? "share-positioned-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
                     <ReplyOutlinedIcon /> Share
                   </Button>
-                  <Button>
-                    <AddTaskOutlinedIcon /> Save
-                  </Button>
+                  <Menu
+                    id="share-positioned-menu"
+                    aria-labelledby="share-positioned-button"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                  >
+                    <MenuItem>
+                      <EmailShareButton url={videoUrl}>
+                        Share via email
+                      </EmailShareButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <WhatsappShareButton url={videoUrl}>
+                        Share via whatsapp
+                      </WhatsappShareButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <FacebookShareButton url={videoUrl}>
+                        Shre via facebook
+                      </FacebookShareButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <TelegramShareButton url={videoUrl}>
+                        Shre via telegram
+                      </TelegramShareButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <LinkedinShareButton url={videoUrl}>
+                        Shre via linkedin
+                      </LinkedinShareButton>
+                    </MenuItem>
+                    <MenuItem>
+                      <TwitterShareButton url={videoUrl}>
+                        Shre via twitter
+                      </TwitterShareButton>
+                    </MenuItem>
+                  </Menu>
                 </Buttons>
               </Details>
               <Hr />
