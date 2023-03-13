@@ -14,9 +14,8 @@ import {
 } from "./styled-components/Category";
 const Category = () => {
   const params = useParams();
-
   const { makeCall: getVideoBasedOnCategory, result } = useApi<VideosResponse>({
-    url: `/videos/tags/?tags=${params?.category}`,
+    url: `/videos/tags/?tags=${params?.id}`,
     method: "get",
     onBootstrap: false,
   });
@@ -27,8 +26,9 @@ const Category = () => {
   }, [getVideoBasedOnCategory]);
 
   useEffect(() => {
-    if (!params?.category) return;
+    if (!params?.id) return;
     const fetchData = async () => {
+      console.log("inside the fetchData");
       getVideoBasedOnCategoryMemoizedFn().then((res) => {
         if (
           res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
@@ -39,7 +39,7 @@ const Category = () => {
       });
     };
     fetchData();
-  }, [params?.category, getVideoBasedOnCategoryMemoizedFn]);
+  }, [params?.id, getVideoBasedOnCategoryMemoizedFn]);
 
   const videoCards = useMemo(() => {
     return data?.map((video) => {
