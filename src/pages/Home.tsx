@@ -26,7 +26,7 @@ const Home = ({ type }: HomeProps) => {
   const [page, setPage] = useState<number>(1);
 
   const { makeCall: getVideos, result } = useApi<VideosResponse>({
-    url: `/videos/${type}?page=${page}&category=${filters?.tag || "all"}`,
+    url: `/videos/${type}?page=${page}`,
     method: "get",
     onBootstrap: false,
   });
@@ -40,8 +40,12 @@ const Home = ({ type }: HomeProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const isSubscriptionPage = type === "sub";
+      const category = isSubscriptionPage
+        ? ""
+        : `&category=${filters?.tag}` || "&category=all";
       const res = await getVideosMemoizedFn({
-        url: `/videos/${type}?page=${page}&category=${filters?.tag || "all"}`,
+        url: `/videos/${type}?page=${page}${category}`,
       });
       if (
         res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
