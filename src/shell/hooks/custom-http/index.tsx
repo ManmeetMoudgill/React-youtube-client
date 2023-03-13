@@ -56,10 +56,11 @@ export function useApi<BackendResponse = any>({
           ...params,
         });
         setResult(response?.data);
+        dispatch({ type: "SET_LOADING", isLoading: false });
         return response?.data;
       } catch (error: any) {
-        console.error(error);
-        return undefined;
+        dispatch({ type: "SET_LOADING", isLoading: false });
+        return error?.response?.data as BackendResponse;
       } finally {
         removeLoading();
         dispatch({ type: "SET_LOADING", isLoading: false });

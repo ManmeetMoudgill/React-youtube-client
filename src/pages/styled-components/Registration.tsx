@@ -16,9 +16,13 @@ const Wrapper = styled.div`
   position: relative;
   top: 2rem;
   background-color: white;
+  justify-content: center;
   border: 1px solid #f5f5f5;
   padding: 20px 50px;
   gap: 10px;
+  @media (min-width: 320px) and (max-width: 720px) {
+    border: none;
+  }
 `;
 
 const Title = styled.h1`

@@ -5,6 +5,7 @@ import { LinearProgress } from "@mui/material";
 import { RoutesConfig } from "./routes-config";
 import { PrivateRoute } from "../components/PrivateRoute";
 import VideoPage from "../pages/Video";
+import CategoryPage from "../pages/Category";
 interface CreateShellRoutesParams {
   addLoading: () => void;
   removeLoading: () => void;
@@ -39,10 +40,6 @@ export const createShellRoutes = ({
   const SearchLazyLoadComponent = lazy(() => {
     addLoading();
     return import("../pages/Search").finally(() => removeLoading());
-  });
-
-  const CategoryLazyLoadComponent = lazy(() => {
-    return import("../pages/Category").finally(() => removeLoading());
   });
 
   const routes = [
@@ -84,7 +81,7 @@ export const createShellRoutes = ({
         },
         {
           path: "/category/:id",
-          element: <CategoryLazyLoadComponent />,
+          element: <CategoryPage />,
         },
         {
           path: "/video/:id",

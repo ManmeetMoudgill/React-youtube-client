@@ -4,20 +4,17 @@ import { useDispatch } from "react-redux";
 import { useEventCallback } from "@mui/material";
 import { logout } from "../../shell/reudx/slicers/user";
 
-import {
-  emptyVideosFromHistory,
-  removeVideo,
-} from "../../shell/reudx/slicers/video";
+import { emptyVideosFromHistory } from "../../shell/reudx/slicers/video";
 import { HTTP_RESPONSE_STATUS_CODE } from "../../constants";
 import { CustomResponse as ErrorResponse } from "../../models/user";
 import { createToastError } from "../errors";
+import { useEffect } from "react";
 export const AxiosProvider = ({ children }: any) => {
   const dispatch = useDispatch();
 
   const handleUnauthorizedAccess = useEventCallback(() => {
     dispatch(logout());
     dispatch(emptyVideosFromHistory());
-    dispatch(removeVideo());
   });
 
   const instance = axios.create({
@@ -29,41 +26,49 @@ export const AxiosProvider = ({ children }: any) => {
 
   // Add a request interceptor
 
-  instance.interceptors.request.use(
-    function (config) {
-      return config;
-    },
-    function (error) {
-      // Do something with request error
-      return Promise.reject(error);
-    }
-  );
-
-  // Add a response interceptor
-
-  instance.interceptors.response.use(
-    function (response) {
-      return response;
-    },
-    function (error: AxiosError) {
-      if (error.response?.status === HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED) {
-        handleUnauthorizedAccess();
+  useEffect(() => {
+    instance.interceptors.request.use(
+      function (config) {
+        return config;
+      },
+      function (error) {
+        // Do something with request error
+        return Promise.reject(error);
       }
-      const { response } = error;
+    );
 
-      const backendResponseError = response?.data as ErrorResponse;
-      createToastError(
-        `${backendResponseError?.status || error?.response?.status} - ${
-          backendResponseError?.message || error?.message
-        }`,
-        "error"
-      );
+    // Add a response interceptor
 
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
-      return Promise.reject(error);
-    }
-  );
+    instance.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error: AxiosError) {
+        if (
+          error.response?.status === HTTP_RESPONSE_STATUS_CODE.UN_AUTHORIZED
+        ) {
+          handleUnauthorizedAccess();
+        }
+        const { response } = error;
+
+        const backendResponseError = response?.data as ErrorResponse;
+        createToastError(
+          `${backendResponseError?.status || error?.response?.status} - ${
+            backendResponseError?.message || error?.message
+          }`,
+          "error"
+        );
+        return Promise.reject(error);
+
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+      }
+    );
+  }, [
+    handleUnauthorizedAccess,
+    instance.interceptors.request,
+    instance.interceptors.response,
+  ]);
 
   return (
     <AxiosContext.Provider value={{ instance }}>

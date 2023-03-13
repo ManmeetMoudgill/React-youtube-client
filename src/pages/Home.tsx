@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, useMemo } from "react";
+import React, { memo, useEffect, useState, useMemo, useCallback } from "react";
 import Card from "../components/Card";
 import { Video, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
@@ -20,29 +20,35 @@ interface HomeProps {
 const Home = ({ type }: HomeProps) => {
   const [data, setData] = useState<Video[]>([]);
   const { filters } = useFilters();
-  const { makeCall: getVideos, isLoading } = useApi<VideosResponse>({
+  const { makeCall: getVideos, result } = useApi<VideosResponse>({
     url: `/videos/${type}`,
     method: "get",
     onBootstrap: false,
   });
 
+  const getVideosMemoizedFn = useCallback(() => {
+    return getVideos();
+  }, [getVideos]);
+
   useEffect(() => {
-    getVideos().then((res) => {
+    const fetchData = async () => {
+      const res = await getVideosMemoizedFn();
       if (
         res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
         res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
       ) {
-        setData(res.videos);
+        setData(res?.videos || []);
       }
-    });
-  }, [getVideos]);
+    };
+    fetchData();
+  }, [getVideosMemoizedFn]);
 
   const filteredData = useMemo(() => {
     return filterVideos({
       data,
       tag: filters?.tag,
     });
-  }, [data, filters.tag]);
+  }, [data, filters?.tag]);
 
   return (
     <>
@@ -52,15 +58,19 @@ const Home = ({ type }: HomeProps) => {
           {type === "random" ? <CategoriesSroll /> : undefined}
           <Wrapper>
             {filteredData &&
+              filteredData?.length > 0 &&
               filteredData?.map((video) => {
                 return <Card key={video?._id} video={video} />;
               })}
           </Wrapper>
         </VideosWrapper>
       </Container>
-      <NotFoundComponent>
-        {!isLoading && filteredData?.length === 0 && <NotFound />}
-      </NotFoundComponent>
+
+      {result && filteredData?.length === 0 ? (
+        <NotFoundComponent>
+          <NotFound />
+        </NotFoundComponent>
+      ) : undefined}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import Card from "../components/Card";
@@ -6,10 +6,10 @@ import { useApi } from "../shell/hooks/custom-http";
 import { VideoHistoryResponseType } from "../models/video";
 import { useDispatch } from "react-redux";
 import { addToVideoHistory } from "../shell/reudx/slicers/video";
-import { useHttpLoading } from "../shell/hooks/use-http-loading";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { createSelector } from "reselect";
 import {
   Container,
   VideosWrapper,
@@ -17,21 +17,33 @@ import {
   NotFoundComponent,
 } from "./styled-components/History";
 const History = () => {
-  const user = useSelector((state: RootState) => state.user.user);
-  const videoHistory = useSelector(
-    (state: RootState) => state.video.videoHistory
-  );
-  const dispatch = useDispatch();
-  const { isLoading } = useHttpLoading();
+  const getUser = (state: RootState) => state?.user?.user;
+  const getVideoHistory = (state: RootState) => state?.video?.videoHistory;
 
-  const { makeCall: getVideosHistory } = useApi<VideoHistoryResponseType>({
-    url: `/users/videosHistory/${user?._id}`,
-    method: "get",
-  });
+  const getVideoHistoryWithUser = createSelector(
+    [getUser, getVideoHistory],
+    (user, videoHistory) => ({
+      user,
+      videoHistory,
+    })
+  );
+
+  const { user, videoHistory } = useSelector(getVideoHistoryWithUser);
+  const dispatch = useDispatch();
+
+  const { makeCall: getVideosHistory, result } =
+    useApi<VideoHistoryResponseType>({
+      url: `/users/videosHistory/${user?._id}`,
+      method: "get",
+    });
+
+  const getVideosHistoryMemoized = useCallback(() => {
+    return getVideosHistory();
+  }, [getVideosHistory]);
 
   useEffect(() => {
     if (user?._id) {
-      getVideosHistory().then((res) => {
+      getVideosHistoryMemoized().then((res) => {
         if (
           res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
           res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
@@ -40,7 +52,7 @@ const History = () => {
         }
       });
     }
-  }, [dispatch, getVideosHistory, user?._id]);
+  }, [getVideosHistoryMemoized, user?._id, dispatch]);
 
   return (
     <>
@@ -48,22 +60,26 @@ const History = () => {
         <SideBar />
         <VideosWrapper>
           <Wrapper>
-            {videoHistory?.map((video) => {
-              return (
-                <Card
-                  key={video?.video?._id}
-                  isHistoryPageCard
-                  video={video?.video}
-                  id={video?._id}
-                />
-              );
-            })}
+            {videoHistory &&
+              videoHistory?.length > 0 &&
+              videoHistory?.map((video) => {
+                return (
+                  <Card
+                    key={video?.video?._id}
+                    isHistoryPageCard
+                    video={video?.video}
+                    id={video?._id}
+                  />
+                );
+              })}
           </Wrapper>
         </VideosWrapper>
       </Container>
-      <NotFoundComponent>
-        {!isLoading && videoHistory?.length === 0 && <NotFound />}
-      </NotFoundComponent>
+      {result && videoHistory?.length === 0 ? (
+        <NotFoundComponent>
+          <NotFound />
+        </NotFoundComponent>
+      ) : undefined}
     </>
   );
 };

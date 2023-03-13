@@ -4,6 +4,7 @@ const Container = styled.div`
   background-color: white;
   min-height: 100vh;
   color: black;
+  height: 100%;
   position: fixed;
   font-size: 14px;
   max-width: 250px;

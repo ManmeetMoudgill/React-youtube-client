@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo } from "react";
+import React, { memo, useEffect, useMemo, useCallback } from "react";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
@@ -51,25 +51,24 @@ import {
   Content,
   Title,
 } from "./styled-components/Video";
+import { CustomSuccessResponse } from "../models/user";
+interface LikeDislikeProps {
+  isLike: boolean;
+}
 
 const VideoPage = () => {
   const params = useParams();
-  const user = useSelector((state: RootState) => state.user);
-
+  const user = useSelector((state: RootState) => state?.user);
+  const result = useSelector((state: RootState) => state?.video);
+  console.log(result);
   const dispatch = useDispatch();
-  const result = useSelector((state: RootState) => state.video);
 
-  const { makeCall: getVideo } = useApi<VideoResponse>({
-    url: `/videos/find/${params?.id}`,
-    method: "get",
-  });
-
-  const { makeCall: likeVideo } = useApi({
+  const { makeCall: likeVideo } = useApi<CustomSuccessResponse>({
     url: `/users/like/${params?.id}`,
     method: "post",
   });
 
-  const { makeCall: dislikeVideo } = useApi({
+  const { makeCall: dislikeVideo } = useApi<CustomSuccessResponse>({
     url: `/users/dislike/${params?.id}`,
     method: "post",
   });
@@ -87,6 +86,11 @@ const VideoPage = () => {
   const { makeCall: insertVideoIntoHistory } = useApi({
     url: `/users/videosHistory`,
     method: "post",
+  });
+
+  const { makeCall: getVideo } = useApi<VideoResponse>({
+    url: `/videos/find/${params?.id}`,
+    method: "get",
   });
 
   useEffect(() => {
@@ -107,63 +111,45 @@ const VideoPage = () => {
         }
       }
     });
-  }, [dispatch, getVideo, insertVideoIntoHistory, user?.user, params?.id]);
+  }, [getVideo, user?.user, params?.id, dispatch, insertVideoIntoHistory]);
 
-  const handleLike = useEventCallback(async () => {
-    likeVideo().then((res: { success: boolean; status: number }) => {
-      if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
-        dispatch(likeVideoAction(user?.user?._id as string));
-      }
-    });
-  });
-
-  const handleDislike = useEventCallback(async () => {
-    dislikeVideo().then((res: { success: boolean; status: number }) => {
-      if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
-        dispatch(dislikeVideoAction(user?.user?._id as string));
-      }
-    });
-  });
-
-  const LikeComponent = useEventCallback((): JSX.Element => {
-    if (!user?.user) {
-      return <ThumbUpOutlinedIcon />;
+  const handleLike = useCallback(async () => {
+    const response = await likeVideo();
+    const res = response as CustomSuccessResponse;
+    if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
+      dispatch(likeVideoAction(user?.user?._id as string));
     }
+  }, [dispatch, likeVideo, user?.user]);
 
-    if (result?.data?.video?.likes?.includes(user?.user?._id)) {
-      return <ThumbUpIcon />;
+  const handleDislike = useCallback(async () => {
+    const response = await dislikeVideo();
+    const res = response as CustomSuccessResponse;
+    if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
+      dispatch(dislikeVideoAction(user?.user?._id as string));
     }
-    return <ThumbUpOutlinedIcon />;
-  });
-
-  const DislikeComponent = useEventCallback((): JSX.Element => {
-    if (!user?.user) {
-      return <ThumbDownOffAltOutlinedIcon />;
-    }
-
-    if (result?.data?.video?.dislikes?.includes(user?.user?._id)) {
-      return <ThumbDownIcon />;
-    }
-    return <ThumbDownOffAltOutlinedIcon />;
-  });
+  }, [dispatch, dislikeVideo, user?.user]);
 
   const subscribeChannelFunc = useEventCallback(async () => {
-    subscribeChannel().then(() => {
+    const response = await subscribeChannel();
+    const res = response as CustomSuccessResponse;
+    if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
       dispatch(incrementSubscribersAction());
       dispatch(subscribeToChannelAction(result?.data?.video?.userId as string));
-    });
+    }
   });
 
   const unSubscribeChannelFunc = useEventCallback(async () => {
-    unSubscribeChannel().then(() => {
+    const response = await unSubscribeChannel();
+    const res = response as CustomSuccessResponse;
+    if (res.success && res.status === HTTP_RESPONSE_STATUS_CODE.OK) {
       dispatch(decrementSubscribersAction());
       dispatch(
         unSubscribeToChannelAction(result?.data?.video?.userId as string)
       );
-    });
+    }
   });
 
-  const haveISubscribed = useMemo(() => {
+  const haveSubscribed = useMemo(() => {
     if (!user?.user) return false;
 
     return (
@@ -178,9 +164,35 @@ const VideoPage = () => {
     onBootstrap: true,
   });
 
+  const LikeDislikeComponent = useCallback(
+    ({ isLike }: LikeDislikeProps): JSX.Element => {
+      if (!user?.user) {
+        return isLike ? (
+          <ThumbUpOutlinedIcon />
+        ) : (
+          <ThumbDownOffAltOutlinedIcon />
+        );
+      }
+
+      const hasLiked = result?.data?.video?.likes?.includes(user?.user?._id);
+      const hasDisliked = result?.data?.video?.dislikes?.includes(
+        user?.user?._id
+      );
+
+      if (isLike && hasLiked) {
+        return <ThumbUpIcon />;
+      } else if (!isLike && hasDisliked) {
+        return <ThumbDownIcon />;
+      }
+
+      return isLike ? <ThumbUpOutlinedIcon /> : <ThumbDownOffAltOutlinedIcon />;
+    },
+    [user?.user, result?.data?.video?.likes, result?.data?.video?.dislikes]
+  );
+
   return (
     <>
-      {result?.data ? (
+      {result?.data && result?.data !== null ? (
         <>
           <Container>
             <Content>
@@ -202,10 +214,12 @@ const VideoPage = () => {
                 </Info>
                 <Buttons>
                   <Button onClick={handleLike}>
-                    <LikeComponent /> {result?.data?.video?.likes?.length}
+                    <LikeDislikeComponent isLike={true} />{" "}
+                    {result?.data?.video?.likes?.length}
                   </Button>
                   <Button onClick={handleDislike}>
-                    <DislikeComponent /> {result?.data?.video?.dislikes?.length}
+                    <LikeDislikeComponent isLike={false} />{" "}
+                    {result?.data?.video?.dislikes?.length}
                   </Button>
                   <Button>
                     <ReplyOutlinedIcon /> Share
@@ -232,12 +246,12 @@ const VideoPage = () => {
                 {user?.user?._id !== result?.data?.user?._id ? (
                   <Subscribe
                     onClick={
-                      haveISubscribed
+                      haveSubscribed
                         ? unSubscribeChannelFunc
                         : subscribeChannelFunc
                     }
                   >
-                    {haveISubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
+                    {haveSubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
                   </Subscribe>
                 ) : undefined}
               </Channel>

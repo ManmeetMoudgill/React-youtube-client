@@ -4,13 +4,16 @@ import {
   Container,
   MainContainer,
 } from "./styled-components/NotFound";
-export const NotFound = () => {
+interface NotFoundProps {
+  text?: string;
+}
+export const NotFound = ({ text }: NotFoundProps) => {
   return (
     <>
       <MainContainer>
         <Container>
           <Image src="/images/no-data-found.webp" />
-          <NotFoundData>No Result Found</NotFoundData>
+          <NotFoundData>{text || "No Result Found"}</NotFoundData>
           <TryAgain>Try Again Later</TryAgain>
         </Container>
       </MainContainer>

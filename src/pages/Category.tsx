@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../shell/hooks/custom-http";
 import { VideoType } from "../models/video";
@@ -15,7 +15,7 @@ import {
 import { TagsBackendResponse } from "../components/Recommendation";
 const Category = () => {
   const params = useParams();
-  const { isLoading, makeCall: getVideoBasedOnCategory } =
+  const { makeCall: getVideoBasedOnCategory, result } =
     useApi<TagsBackendResponse>({
       url: `/videos/tags/?tags=${params?.category}`,
       method: "get",
@@ -23,17 +23,24 @@ const Category = () => {
     });
   const [data, setData] = useState<Array<VideoType>>([]);
 
+  const getVideoBasedOnCategoryMemoizedFn = useCallback(() => {
+    return getVideoBasedOnCategory();
+  }, [getVideoBasedOnCategory]);
+
   useEffect(() => {
     if (!params?.category) return;
-    getVideoBasedOnCategory().then((res) => {
-      if (
-        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-      ) {
-        setData(res?.videos);
-      }
-    });
-  }, [params?.category, getVideoBasedOnCategory]);
+    const fetchData = async () => {
+      getVideoBasedOnCategoryMemoizedFn().then((res) => {
+        if (
+          res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+          res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+        ) {
+          setData(res?.videos);
+        }
+      });
+    };
+    fetchData();
+  }, [params?.category, getVideoBasedOnCategoryMemoizedFn]);
 
   return (
     <>
@@ -41,8 +48,8 @@ const Category = () => {
         <SideBar />
         <VideosWrapper>
           <Wrapper>
-            {!isLoading &&
-              data &&
+            {data &&
+              data?.length > 0 &&
               data?.map((video) => {
                 return (
                   <Card
@@ -55,9 +62,11 @@ const Category = () => {
           </Wrapper>
         </VideosWrapper>
       </Container>
-      <NotFoundComponent>
-        {!isLoading && data?.length === 0 && <NotFound />}
-      </NotFoundComponent>
+      {result && data?.length === 0 ? (
+        <NotFoundComponent>
+          <NotFound />
+        </NotFoundComponent>
+      ) : undefined}
     </>
   );
 };
