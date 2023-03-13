@@ -1,4 +1,4 @@
-import { GetVideosWithUser, Video } from "../../models/video";
+import { GetVideosWithUser } from "../../models/video";
 
 interface FilterVideosProps {
   data: GetVideosWithUser[];

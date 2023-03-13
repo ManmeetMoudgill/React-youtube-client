@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from "react";
 import Card from "../components/Card";
-import { GetVideosWithUser, Video, VideosResponse } from "../models/video";
+import { GetVideosWithUser, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
