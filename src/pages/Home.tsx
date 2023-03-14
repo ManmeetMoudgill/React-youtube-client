@@ -69,7 +69,7 @@ const Home = ({ type }: HomeProps) => {
   useEffect(() => {
     debouncedFetchData();
     return () => debouncedFetchData.cancel();
-  }, [debouncedFetchData, filters]);
+  }, [debouncedFetchData]);
 
   const videoCards = useMemo(() => {
     return data?.map((item) => {
