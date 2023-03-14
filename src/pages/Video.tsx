@@ -80,7 +80,6 @@ const VideoPage = () => {
     setAnchorEl(null);
   };
 
-  console.log(result);
   const dispatch = useDispatch();
 
   const { makeCall: likeVideo } = useApi<CustomSuccessResponse>({
