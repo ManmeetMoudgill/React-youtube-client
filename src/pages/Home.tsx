@@ -17,7 +17,6 @@ import {
 } from "./styled-components/Home";
 import { AxiosRequestConfig } from "axios";
 import { Typography } from "@mui/material";
-import { filter } from "lodash";
 interface HomeProps {
   type?: string;
 }

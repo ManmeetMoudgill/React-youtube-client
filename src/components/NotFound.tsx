@@ -1,4 +1,4 @@
-import { Image, TryAgain } from "./styled-components/NotFound";
+import { TryAgain } from "./styled-components/NotFound";
 import {
   NotFound as NotFoundData,
   Container,
@@ -12,7 +12,6 @@ export const NotFound = ({ text }: NotFoundProps) => {
     <>
       <MainContainer>
         <Container>
-          <Image src="/images/no-data-found.webp" />
           <NotFoundData>{text || "No Result Found"}</NotFoundData>
           <TryAgain>Try Again Later</TryAgain>
         </Container>

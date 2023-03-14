@@ -24,7 +24,7 @@ const Image = styled.img`
 `;
 
 const NotFound = styled.h3`
-  font-size: 3em;
+  font-size: 2.5em;
   font-weight: 500;
   @media (min-width: 320px) and (max-width: 350px) {
     font-size: 1rem;

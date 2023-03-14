@@ -28,6 +28,7 @@ const CategoryButton = ({ name }: CategoryButtonProps) => {
     setFilters({
       ...filters,
       tag: name?.toLocaleLowerCase(),
+      page: 1,
     });
   });
 
