@@ -8,7 +8,7 @@ import CategoriesSroll from "../components/CategoriesSroll";
 import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import debounce from "lodash.debounce";
 import {
   Wrapper,
   VideosWrapper,
@@ -17,16 +17,16 @@ import {
 } from "./styled-components/Home";
 import { AxiosRequestConfig } from "axios";
 import { Typography } from "@mui/material";
+import { filter } from "lodash";
 interface HomeProps {
   type?: string;
 }
 const Home = ({ type }: HomeProps) => {
   const [data, setData] = useState<GetVideosWithUser[]>([]);
-  const { filters } = useFilters();
-  const [page, setPage] = useState<number>(1);
+  const { filters, setFilters } = useFilters();
 
   const { makeCall: getVideos, result } = useApi<VideosResponse>({
-    url: `/videos/${type}?page=${page}`,
+    url: `/videos/${type}?page=${filters?.page}`,
     method: "get",
     onBootstrap: false,
   });
@@ -38,28 +38,39 @@ const Home = ({ type }: HomeProps) => {
     [getVideos]
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const isSubscriptionPage = type === "sub";
-      const category = isSubscriptionPage
-        ? ""
-        : `&category=${filters?.tag}` || "&category=all";
-      const res = await getVideosMemoizedFn({
-        url: `/videos/${type}?page=${page}${category}`,
+  const fetchData = useCallback(async () => {
+    //when user clicks on a category, we need to reset the page to 1
+    const isSubscriptionPage = type === "sub";
+    const category = isSubscriptionPage
+      ? ""
+      : filters?.tag
+      ? `&category=${filters?.tag}` || "&category=all"
+      : "";
+    const res = await getVideosMemoizedFn({
+      url: `/videos/${type}?page=${filters?.page}${category}`,
+    });
+    if (
+      res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+      res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+    ) {
+      setData((prev) => {
+        return filters?.page === 1
+          ? res?.videos || []
+          : [...prev, ...(res?.videos || [])];
       });
-      if (
-        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-      ) {
-        setData((prev) => {
-          return page === 1
-            ? res?.videos || []
-            : [...prev, ...(res?.videos || [])];
-        });
-      }
-    };
-    fetchData();
-  }, [getVideosMemoizedFn, type, filters?.tag, page]);
+    }
+  }, [filters?.page, filters?.tag, getVideosMemoizedFn, type]);
+
+  // memoize the debounced function using useMemo
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, 300),
+    [fetchData]
+  );
+
+  useEffect(() => {
+    debouncedFetchData();
+    return () => debouncedFetchData.cancel();
+  }, [debouncedFetchData, filters]);
 
   const videoCards = useMemo(() => {
     return data?.map((item) => {
@@ -71,8 +82,11 @@ const Home = ({ type }: HomeProps) => {
 
   const fetchMoreData = useCallback(() => {
     if (result && data?.length > result?.count) return;
-    setPage((prev) => prev + 1);
-  }, [result, data?.length]);
+    setFilters({
+      ...filters,
+      page: filters?.page + 1,
+    });
+  }, [result, data?.length, filters, setFilters]);
 
   return (
     <>

@@ -2,7 +2,6 @@ import { createContext } from "react";
 
 export const initialValues = {
   page: 1,
-  rowsPerPage: 10,
   tag: "",
 };
 
@@ -13,7 +12,6 @@ export interface FilterContextType {
 
 export interface FilterType {
   page: number;
-  rowsPerPage: number;
   tag: string;
 }
 
