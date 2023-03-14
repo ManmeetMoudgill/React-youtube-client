@@ -133,11 +133,7 @@ const Navbar = () => {
                 });
               }}
             >
-              <Img
-                src={
-                  "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
-                }
-              />
+              <Img src={"/images/logo.png"} />
               <YoutubeName>ManmeetYoutube</YoutubeName>
             </Logo>
           </Link>
