@@ -1,11 +1,17 @@
-import React, { memo, useEffect, useState, useMemo, useCallback } from "react";
+import React, {
+  memo,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useReducer,
+} from "react";
 import Card from "../components/Card";
 import { GetVideosWithUser, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import CategoriesSroll from "../components/CategoriesSroll";
-import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
 import debounce from "lodash.debounce";
@@ -20,12 +26,49 @@ import { Typography } from "@mui/material";
 interface HomeProps {
   type?: string;
 }
+
+export interface State {
+  page: number;
+  category: string;
+}
+
+export enum ActionType {
+  SET_PAGE = "SET_PAGE",
+  SET_CATEGORY = "SET_CATEGORY",
+}
+
+export type Action =
+  | { type: ActionType.SET_PAGE; payload: number }
+  | { type: ActionType.SET_CATEGORY; payload: string };
+
+const initialState: State = {
+  page: 1,
+  category: "",
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "SET_PAGE":
+      return { ...state, page: action.payload };
+    case "SET_CATEGORY":
+      return { ...state, category: action.payload };
+    default:
+      return state;
+  }
+};
+
+//create a reducer to handle thepageingation and the category filter
+
 const Home = ({ type }: HomeProps) => {
   const [data, setData] = useState<GetVideosWithUser[]>([]);
-  const { filters, setFilters } = useFilters();
+
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+    reducer,
+    initialState
+  );
 
   const { makeCall: getVideos, result } = useApi<VideosResponse>({
-    url: `/videos/${type}?page=${filters?.page}`,
+    url: `/videos/${type}?page=${state?.page}`,
     method: "get",
     onBootstrap: false,
   });
@@ -42,23 +85,23 @@ const Home = ({ type }: HomeProps) => {
     const isSubscriptionPage = type === "sub";
     const category = isSubscriptionPage
       ? ""
-      : filters?.tag
-      ? `&category=${filters?.tag}` || "&category=all"
+      : state?.category
+      ? `&category=${state?.category}` || "&category=all"
       : "";
     const res = await getVideosMemoizedFn({
-      url: `/videos/${type}?page=${filters?.page}${category}`,
+      url: `/videos/${type}?page=${state?.page}${category}`,
     });
     if (
       res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        return filters?.page === 1
+        return state?.page === 1
           ? res?.videos || []
           : [...prev, ...(res?.videos || [])];
       });
     }
-  }, [filters?.page, filters?.tag, getVideosMemoizedFn, type]);
+  }, [getVideosMemoizedFn, state?.page, state?.category, type]);
 
   // memoize the debounced function using useMemo
   const debouncedFetchData = useMemo(
@@ -81,18 +124,19 @@ const Home = ({ type }: HomeProps) => {
 
   const fetchMoreData = useCallback(() => {
     if (result && data?.length > result?.count) return;
-    setFilters({
-      ...filters,
-      page: filters?.page + 1,
-    });
-  }, [result, data?.length, filters, setFilters]);
+
+    //DISPATCH THE ACTION TO SET THE PAGE
+    dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
+  }, [result, data?.length, dispatch, state?.page]);
 
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
-          {type === "random" ? <CategoriesSroll /> : undefined}
+          {type === "random" ? (
+            <CategoriesSroll dispatch={dispatch} state={state} />
+          ) : undefined}
           {result && (
             <InfiniteScroll
               dataLength={data?.length || 0}
