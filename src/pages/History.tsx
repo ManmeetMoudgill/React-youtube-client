@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback, useMemo } from "react";
+import React, { memo, useEffect, useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../shell/reudx";
 import Card from "../components/Card";
@@ -10,15 +10,23 @@ import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import { createSelector } from "reselect";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import {
   Container,
   VideosWrapper,
   Wrapper,
   NotFoundComponent,
 } from "./styled-components/History";
+import { Typography } from "@mui/material";
+
 const History = () => {
   const getUser = (state: RootState) => state?.user?.user;
   const getVideoHistory = (state: RootState) => state?.video?.videoHistory;
+
+  const rowsPerPage = 8;
+  const start = 0;
+  const [end, setEnd] = useState(rowsPerPage);
 
   const getVideoHistoryWithUser = createSelector(
     [getUser, getVideoHistory],
@@ -54,8 +62,19 @@ const History = () => {
     }
   }, [getVideosHistoryMemoized, user?._id, dispatch]);
 
+  const data = useMemo(() => {
+    return videoHistory?.slice(start, end);
+  }, [videoHistory, start, end]);
+
+  const incrementData = useCallback(() => {
+    if (end < videoHistory?.length) {
+      const newEnd = end + videoHistory?.length - end;
+      setEnd(newEnd);
+    }
+  }, [end, videoHistory?.length, setEnd]);
+
   const videoCards = useMemo(() => {
-    return videoHistory?.map((video) => {
+    return data?.map((video) => {
       return (
         <Card
           key={video?.video?._id}
@@ -65,14 +84,21 @@ const History = () => {
         />
       );
     });
-  }, [videoHistory]);
+  }, [data]);
 
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
-          <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
+          <InfiniteScroll
+            dataLength={videoHistory?.length}
+            next={incrementData}
+            hasMore={data?.length < videoHistory?.length}
+            loader={<Typography>Loading...</Typography>}
+          >
+            <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
+          </InfiniteScroll>
         </VideosWrapper>
       </Container>
       {result && videoHistory?.length === 0 ? (
