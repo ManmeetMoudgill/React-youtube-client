@@ -23,12 +23,8 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = () => {
-  const { isLoading } = useHttpLoading();
-
   return (
     <>
-      {isLoading ? <LinearProgress color="warning" /> : null}
-
       <Container>
         <BrowserRouter>
           <Main>
