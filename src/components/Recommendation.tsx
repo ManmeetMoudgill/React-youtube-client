@@ -1,5 +1,12 @@
-import React, { memo, useMemo } from "react";
-import { VideosResponse } from "../models/video";
+import React, {
+  memo,
+  useMemo,
+  useReducer,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
+import { GetVideosWithUser, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import {
   Container,
@@ -8,20 +15,91 @@ import {
 } from "./styled-components/Reccomendation";
 import Card from "./Card";
 import ReccomendationVideoSmall from "./ReccomendationVideoSmall";
+import { AxiosRequestConfig } from "axios";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import debounce from "lodash.debounce";
+import { Typography } from "@mui/material";
+import InfiniteScrollComponent from "./InfiniteScroll";
 type Props = {
   tags: string[];
   currrentVideoId: string;
 };
 
+export interface State {
+  page: number;
+}
+
+export enum ActionType {
+  SET_PAGE = "SET_PAGE",
+}
+
+export type Action = { type: ActionType.SET_PAGE; payload: number };
+
+const initialState: State = {
+  page: 1,
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "SET_PAGE":
+      return { ...state, page: action.payload };
+    default:
+      return state;
+  }
+};
+
 const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
-  const { result: videos } = useApi<VideosResponse>({
-    url: `/videos/tags/?tags=${tags?.join(",")}`,
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+    reducer,
+    initialState
+  );
+
+  const [data, setData] = useState<GetVideosWithUser[]>([]);
+
+  const { result, makeCall: getVideosByTags } = useApi<VideosResponse>({
+    url: `/videos/tags/?tags=${tags?.join(",")}&page=${state?.page}`,
     method: "get",
-    onBootstrap: true,
+    onBootstrap: false,
   });
 
+  const getVideosByTagsMemoizedFn = useCallback(
+    (params?: AxiosRequestConfig) => {
+      return getVideosByTags(params);
+    },
+    [getVideosByTags]
+  );
+
+  const fetchData = useCallback(async () => {
+    //when user clicks on a category, we need to reset the page to 1
+
+    const res = await getVideosByTagsMemoizedFn({
+      url: `/videos/tags/?tags=${tags?.join(",")}&page=${state?.page}`,
+    });
+    if (
+      res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+      res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+    ) {
+      setData((prev) => {
+        return state?.page === 1
+          ? res?.videos || []
+          : [...prev, ...(res?.videos || [])];
+      });
+    }
+  }, [state?.page, tags, getVideosByTagsMemoizedFn]);
+
+  // memoize the debounced function using useMemo
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, 300),
+    [fetchData]
+  );
+
+  useEffect(() => {
+    debouncedFetchData();
+    return () => debouncedFetchData.cancel();
+  }, [debouncedFetchData]);
+
   const largeVideoCards = useMemo(() => {
-    return videos?.videos?.map((item) => {
+    return data?.map((item) => {
       if (item?.video?._id === currrentVideoId) return null;
       return (
         <Card
@@ -32,10 +110,10 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
         />
       );
     });
-  }, [videos?.videos, currrentVideoId]);
+  }, [data, currrentVideoId]);
 
   const smallVideoCards = useMemo(() => {
-    return videos?.videos?.map((item) => {
+    return data?.map((item) => {
       if (item?.video?._id === currrentVideoId) return null;
 
       return (
@@ -46,15 +124,37 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
         />
       );
     });
-  }, [videos?.videos, currrentVideoId]);
+  }, [data, currrentVideoId]);
+
+  const fetchMoreData = () => {
+    dispatch({ type: ActionType.SET_PAGE, payload: state.page + 1 });
+  };
 
   return (
     <Container>
       <LargeDevicesVideos>
-        {videos?.videos && largeVideoCards}
+        {result && (
+          <InfiniteScrollComponent
+            dataLength={data?.length || 0}
+            next={fetchMoreData}
+            hasMore={data?.length < result?.count}
+            loader={<Typography>Loading...</Typography>}
+          >
+            {largeVideoCards}
+          </InfiniteScrollComponent>
+        )}
       </LargeDevicesVideos>
       <SmallDevicesVideos>
-        {videos?.videos && smallVideoCards}
+        {result && (
+          <InfiniteScrollComponent
+            dataLength={data?.length || 0}
+            next={fetchMoreData}
+            hasMore={data?.length < result?.count}
+            loader={<Typography>Loading...</Typography>}
+          >
+            {smallVideoCards}
+          </InfiniteScrollComponent>
+        )}
       </SmallDevicesVideos>
     </Container>
   );

@@ -58,6 +58,8 @@ import {
   Container,
   Content,
   Title,
+  ChannelInfoLeftContainer,
+  ChannelInfoRightContainer,
 } from "./styled-components/Video";
 import { CustomSuccessResponse } from "../models/user";
 import Menu from "@mui/material/Menu";
@@ -305,28 +307,30 @@ const VideoPage = () => {
               <Hr />
               <Channel>
                 <ChannelInfo>
-                  <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
-                  <ChannelDetail>
-                    <ChannelName>{result?.data?.user?.name}</ChannelName>
-                    <ChannelCounter>
-                      {result?.data?.user?.subscribers} subscribers
-                    </ChannelCounter>
-                    <Description>
-                      {result?.data?.video?.description}
-                    </Description>
-                  </ChannelDetail>
+                  <ChannelInfoLeftContainer>
+                    <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
+                    <ChannelDetail>
+                      <ChannelName>{result?.data?.user?.name}</ChannelName>
+                      <ChannelCounter>
+                        {result?.data?.user?.subscribers} subscribers
+                      </ChannelCounter>
+                    </ChannelDetail>
+                  </ChannelInfoLeftContainer>
+                  <ChannelInfoRightContainer>
+                    {user?.user?._id !== result?.data?.user?._id ? (
+                      <Subscribe
+                        onClick={
+                          haveSubscribed
+                            ? unSubscribeChannelFunc
+                            : subscribeChannelFunc
+                        }
+                      >
+                        {haveSubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
+                      </Subscribe>
+                    ) : undefined}
+                  </ChannelInfoRightContainer>
                 </ChannelInfo>
-                {user?.user?._id !== result?.data?.user?._id ? (
-                  <Subscribe
-                    onClick={
-                      haveSubscribed
-                        ? unSubscribeChannelFunc
-                        : subscribeChannelFunc
-                    }
-                  >
-                    {haveSubscribed ? "UNSUBSCRIBE" : "SUBSCRIBE"}
-                  </Subscribe>
-                ) : undefined}
+                <Description>{result?.data?.video?.description}</Description>
               </Channel>
               <Hr />
               {comments?.comments?.map((comment) => {

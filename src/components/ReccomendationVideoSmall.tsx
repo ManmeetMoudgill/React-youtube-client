@@ -30,7 +30,7 @@ const ReccomendationVideoSmall = ({ video, user }: RecomendationCardProps) => {
         <RightContainer>
           <Details>
             <Texts>
-              <Title>{video?.title}</Title>
+              <Title>{video?.title?.slice(0, 25)}....</Title>
               <ChannelName>{user?.name}</ChannelName>
 
               <Info>

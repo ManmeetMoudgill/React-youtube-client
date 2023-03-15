@@ -62,15 +62,14 @@ const Hr = styled.hr`
 
 const Channel = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
 const ChannelInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  @media (min-width: 320px) and (max-width: 750px) {
-    padding: 0.5rem;
-  }
 `;
 
 const Image = styled.img`
@@ -85,7 +84,11 @@ const Image = styled.img`
 const ChannelDetail = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.text};
+  margin-left: 0.8rem;
+  @media (min-width: 320px) and (max-width: 750px) {
+    margin-left: 0rem;
+  }
+  color: black;
 `;
 
 const ChannelName = styled.span`
@@ -101,7 +104,7 @@ const ChannelCounter = styled.span`
 `;
 
 const Description = styled.p`
-  font-size: 14px;
+  font-size: 1rem;
   @media (min-width: 320px) and (max-width: 750px) {
     font-size: 0.8rem;
   }
@@ -142,6 +145,13 @@ const ReccomendationContainer = styled.div`
   flex: 3;
 `;
 
+const ChannelInfoLeftContainer = styled.div`
+  display: flex;
+`;
+
+const ChannelInfoRightContainer = styled.div`
+  display: flex;
+`;
 export {
   ReccomendationContainer,
   VideoFrame,
@@ -162,4 +172,6 @@ export {
   Container,
   Content,
   Title,
+  ChannelInfoLeftContainer,
+  ChannelInfoRightContainer,
 };
