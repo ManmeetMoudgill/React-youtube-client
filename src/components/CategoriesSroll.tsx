@@ -47,6 +47,7 @@ const CategoryButton = ({ name, dispatch, state }: CategoryButtonProps) => {
   return (
     <>
       <CategoryButtonItem
+        key={name}
         isClicked={state?.category === name?.toLocaleLowerCase()}
         onClick={changeFilters}
       >
