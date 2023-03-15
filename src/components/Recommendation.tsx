@@ -28,8 +28,8 @@ import {
   ActionType,
 } from "../pages/utils/index";
 type Props = {
-  tags: string[];
-  currrentVideoId: string;
+  tags?: string[];
+  currrentVideoId?: string;
 };
 
 const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {

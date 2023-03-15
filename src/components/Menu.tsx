@@ -38,15 +38,7 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
   const navigate = useNavigate();
   const closeSide = useEventCallback(() => {
     setOpenSideBar(false);
-    scrollToTop();
   });
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   return (
     <Container>
@@ -86,7 +78,7 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
           to="/"
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          <Item onClick={scrollToTop}>
+          <Item>
             <HomeIcon />
             Home
           </Item>
@@ -115,7 +107,6 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
         <Item
           onClick={() => {
             navigate("/history");
-            scrollToTop();
           }}
         >
           <HistoryOutlinedIcon />

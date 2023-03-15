@@ -109,7 +109,7 @@ const VideoPage = () => {
     method: "post",
   });
 
-  const { makeCall: getVideo } = useApi<VideoResponse>({
+  const { makeCall: getVideo, result: videoResult } = useApi<VideoResponse>({
     url: `/videos/find/${params?.id}`,
     method: "get",
   });
@@ -217,20 +217,20 @@ const VideoPage = () => {
 
   return (
     <>
-      {result?.data && result?.data !== null ? (
+      {videoResult && (
         <>
           <Container>
             <Content>
               <VideoWrapper>
-                <VideoFrame src={result?.data?.video?.videoUrl} controls />
+                <VideoFrame src={videoResult?.data?.video?.videoUrl} controls />
               </VideoWrapper>
               <Title></Title>
               <Details>
                 <Info>
-                  {result?.data?.video?.views} views •{" "}
-                  {result?.data?.video?.createdAt
+                  {videoResult?.data?.video?.views} views •{" "}
+                  {videoResult?.data?.video?.createdAt
                     ? formatDistanceToNow(
-                        new Date(result?.data?.video?.createdAt),
+                        new Date(videoResult?.data?.video?.createdAt),
                         {
                           addSuffix: true,
                         }
@@ -240,11 +240,11 @@ const VideoPage = () => {
                 <Buttons>
                   <Button onClick={handleLike}>
                     <LikeDislikeComponent isLike={true} />{" "}
-                    {result?.data?.video?.likes?.length}
+                    {videoResult?.data?.video?.likes?.length}
                   </Button>
                   <Button onClick={handleDislike}>
                     <LikeDislikeComponent isLike={false} />{" "}
-                    {result?.data?.video?.dislikes?.length}
+                    {videoResult?.data?.video?.dislikes?.length}
                   </Button>
 
                   <Button
@@ -310,14 +310,14 @@ const VideoPage = () => {
                   <ChannelInfoLeftContainer>
                     <Image src="https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo" />
                     <ChannelDetail>
-                      <ChannelName>{result?.data?.user?.name}</ChannelName>
+                      <ChannelName>{videoResult?.data?.user?.name}</ChannelName>
                       <ChannelCounter>
-                        {result?.data?.user?.subscribers} subscribers
+                        {videoResult?.data?.user?.subscribers} subscribers
                       </ChannelCounter>
                     </ChannelDetail>
                   </ChannelInfoLeftContainer>
                   <ChannelInfoRightContainer>
-                    {user?.user?._id !== result?.data?.user?._id ? (
+                    {user?.user?._id !== videoResult?.data?.user?._id ? (
                       <Subscribe
                         onClick={
                           haveSubscribed
@@ -330,7 +330,9 @@ const VideoPage = () => {
                     ) : undefined}
                   </ChannelInfoRightContainer>
                 </ChannelInfo>
-                <Description>{result?.data?.video?.description}</Description>
+                <Description>
+                  {videoResult?.data?.video?.description}
+                </Description>
               </Channel>
               <Hr />
               {comments?.comments?.map((comment) => {
@@ -341,13 +343,13 @@ const VideoPage = () => {
             </Content>
             <ReccomendationContainer>
               <RecommendationComponent
-                currrentVideoId={result?.data?.video?._id}
-                tags={result?.data?.video?.tags}
+                currrentVideoId={videoResult?.data?.video?._id}
+                tags={videoResult?.data?.video?.tags}
               />
             </ReccomendationContainer>
           </Container>
         </>
-      ) : undefined}
+      )}
     </>
   );
 };
