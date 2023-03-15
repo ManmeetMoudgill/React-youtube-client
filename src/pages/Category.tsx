@@ -52,7 +52,6 @@ const Category = () => {
   );
 
   const fetchData = useCallback(async () => {
-    if (!params?.id) return;
     const res = await getVideoBasedOnCategoryMemoizedFn({
       url: `/videos/tags/?tags=${params?.id}&page=${state?.page}`,
     });
@@ -61,8 +60,8 @@ const Category = () => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        if (!res?.videos) {
-          return prev || [];
+        if (res?.videos?.length === 0) {
+          return [];
         }
         const newData = [...res.videos];
         if (state?.page === 1) {
@@ -116,7 +115,9 @@ const Category = () => {
               hasMore={data?.length < result?.count}
               loader={<Typography>Loading...</Typography>}
             >
-              <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
+              <Wrapper arrayLength={videoCards?.length}>
+                {videoCards?.length > 0 && videoCards}
+              </Wrapper>
             </InfiniteScroll>
           )}
         </VideosWrapper>

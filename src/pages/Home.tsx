@@ -67,8 +67,8 @@ const Home = ({ type }: HomeProps) => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        if (!res?.videos) {
-          return prev || [];
+        if (res?.videos?.length === 0) {
+          return [];
         }
         const newData = [...res.videos];
         if (state?.page === 1) {
@@ -127,7 +127,9 @@ const Home = ({ type }: HomeProps) => {
               hasMore={data?.length < result?.count}
               loader={<CircularProgress size="small" />}
             >
-              <Wrapper>{data?.length > 0 && videoCards}</Wrapper>
+              <Wrapper arrayLength={data?.length}>
+                {data?.length > 0 && videoCards}
+              </Wrapper>
             </InfiniteScroll>
           )}
         </VideosWrapper>

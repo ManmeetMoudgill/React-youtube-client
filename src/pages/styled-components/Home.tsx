@@ -33,8 +33,14 @@ const VideosWrapper = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
-  display: grid;
+interface WapperProps {
+  arrayLength: number;
+}
+const Wrapper = styled.div<WapperProps>`
+  display: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "flex" : "grid"};
+  flex-wrap: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "wrap" : "no-wrap"};
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1rem;
   max-width: 100%;
