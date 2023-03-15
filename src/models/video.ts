@@ -18,9 +18,7 @@ export interface Video {
   updatedAt: string;
 }
 
-export interface SearchVideoResponse extends CustomSuccessResponse {
-  videos: Array<Video>;
-}
+
 export interface GetVideosWithUser {
   video: Video;
   user: User;
