@@ -20,32 +20,16 @@ import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import debounce from "lodash.debounce";
 import { Typography } from "@mui/material";
 import InfiniteScrollComponent from "./InfiniteScroll";
+import {
+  reducer,
+  initialState,
+  State,
+  Action,
+  ActionType,
+} from "../pages/utils/index";
 type Props = {
   tags: string[];
   currrentVideoId: string;
-};
-
-export interface State {
-  page: number;
-}
-
-export enum ActionType {
-  SET_PAGE = "SET_PAGE",
-}
-
-export type Action = { type: ActionType.SET_PAGE; payload: number };
-
-const initialState: State = {
-  page: 1,
-};
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "SET_PAGE":
-      return { ...state, page: action.payload };
-    default:
-      return state;
-  }
 };
 
 const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {

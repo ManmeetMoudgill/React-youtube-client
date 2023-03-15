@@ -5,7 +5,7 @@ import {
   CategoryButtonItem,
 } from "./styled-components/CategoriesScroll";
 import { CategoriesData } from "../constants";
-import { Action, ActionType, State } from "../pages/Home";
+import { Action, ActionType, State } from "../pages/utils/home";
 
 interface CategoryScrollProps {
   dispatch: React.Dispatch<Action>;

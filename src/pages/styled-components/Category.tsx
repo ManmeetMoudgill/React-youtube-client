@@ -51,6 +51,8 @@ const Wrapper = styled.div`
 const NotFoundComponent = styled.div`
   position: absolute;
   top: 20%;
+  width: 80%;
+  padding: 2rem;
   left: 10%;
 `;
 
