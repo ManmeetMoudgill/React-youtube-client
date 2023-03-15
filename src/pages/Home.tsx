@@ -22,7 +22,7 @@ import {
   NotFoundComponent,
 } from "./styled-components/Home";
 import { AxiosRequestConfig } from "axios";
-import { Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { State, initialState, reducer, Action, ActionType } from "./utils/home";
 interface HomeProps {
   type?: string;
@@ -67,9 +67,21 @@ const Home = ({ type }: HomeProps) => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        return state?.page === 1
-          ? res?.videos || []
-          : [...prev, ...(res?.videos || [])];
+        if (!res?.videos) {
+          return prev || [];
+        }
+        const newData = [...res.videos];
+        if (state?.page === 1) {
+          return newData;
+        }
+        if (prev) {
+          const dataArray = [...prev, ...res.videos];
+          const uniqueData = dataArray.filter(
+            (item, index) => dataArray.indexOf(item) === index
+          );
+          return uniqueData;
+        }
+        return newData;
       });
     }
   }, [getVideosMemoizedFn, state?.page, state?.category, type]);
@@ -113,7 +125,7 @@ const Home = ({ type }: HomeProps) => {
               dataLength={data?.length || 0}
               next={fetchMoreData}
               hasMore={data?.length < result?.count}
-              loader={<Typography>Loading...</Typography>}
+              loader={<CircularProgress size="small" />}
             >
               <Wrapper>{data?.length > 0 && videoCards}</Wrapper>
             </InfiniteScroll>

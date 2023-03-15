@@ -63,9 +63,21 @@ const Search = () => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        return state?.page === 1
-          ? res?.videos || []
-          : [...prev, ...(res?.videos || [])];
+        if (!res?.videos) {
+          return prev || [];
+        }
+        const newData = [...res.videos];
+        if (state?.page === 1) {
+          return newData;
+        }
+        if (prev) {
+          const dataArray = [...prev, ...res.videos];
+          const uniqueData = dataArray.filter(
+            (item, index) => dataArray.indexOf(item) === index
+          );
+          return uniqueData;
+        }
+        return newData;
       });
     }
   }, [state?.page, location?.search, getVideosBySearchMemoizedFn]);
