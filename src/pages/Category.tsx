@@ -84,6 +84,11 @@ const Category = () => {
 
   const IsScreenHeightVeryBig = window.innerHeight > 1000;
 
+  useEffect(() => {
+    if (params?.id) {
+      dispatch({ type: ActionType.SET_PAGE, payload: 1 });
+    }
+  }, [params?.id, dispatch]);
   // memoize the debounced function using useMemo
   const debouncedFetchData = useMemo(
     () => debounce(fetchData, 300),
