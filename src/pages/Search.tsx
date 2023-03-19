@@ -12,6 +12,9 @@ import { GetVideosWithUser, VideosResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
+import { Box, Button, CircularProgress } from "@mui/material";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
 import debounce from "lodash.debounce";
@@ -22,7 +25,6 @@ import {
   NotFoundComponent,
 } from "./styled-components/Search";
 import { AxiosRequestConfig } from "axios";
-import { CircularProgress } from "@mui/material";
 import {
   reducer,
   initialState,
@@ -52,6 +54,10 @@ const Search = () => {
     [getVideosBySearch]
   );
 
+  useEffect(() => {
+    dispatch({ type: ActionType.SET_PAGE, payload: 1 });
+  }, [location?.search]);
+
   const fetchData = useCallback(async () => {
     //when user clicks on a category, we need to reset the page to 1
 
@@ -65,6 +71,7 @@ const Search = () => {
       setData((prev) => {
         const videos = res?.videos;
         const newData = videos?.length === 0 ? [] : [...videos];
+
         if (state?.page === 1) {
           return newData;
         }
@@ -108,6 +115,32 @@ const Search = () => {
     dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
   }, [result, data?.length, dispatch, state?.page]);
 
+  const IsScreenHeightVeryBig = window.innerHeight > 1000;
+  const LoadButton = useMemo((): JSX.Element => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "hidden",
+        }}
+      >
+        <Button
+          onClick={fetchMoreData}
+          style={{
+            display: `${IsScreenHeightVeryBig ? "flex" : "none"}`,
+            justifyContent: "center",
+            alignItems: "center",
+            overflowY: "hidden",
+          }}
+        >
+          <AutorenewIcon />
+          Load more
+        </Button>
+      </Box>
+    );
+  }, [fetchMoreData, IsScreenHeightVeryBig]);
   return (
     <>
       <Container>
@@ -117,12 +150,29 @@ const Search = () => {
             <InfiniteScroll
               dataLength={data?.length || 0}
               next={fetchMoreData}
-              hasMore={data?.length < result?.count}
-              loader={<CircularProgress size="1rem" />}
+              hasMore={data?.length < result?.totalVideos}
+              loader={
+                <div
+                  style={{
+                    display: `${IsScreenHeightVeryBig ? "none" : "flex"}`,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    overflowY: "hidden",
+                  }}
+                >
+                  <CircularProgress size="1rem" />
+                </div>
+              }
             >
               <Wrapper arraylength={data?.length}>
                 {data?.length > 0 && videoCards}
               </Wrapper>
+
+              {IsScreenHeightVeryBig &&
+              result &&
+              data?.length < result?.totalVideos
+                ? LoadButton
+                : undefined}
             </InfiniteScroll>
           )}
         </VideosWrapper>

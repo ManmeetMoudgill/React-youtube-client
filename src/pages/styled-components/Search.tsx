@@ -38,9 +38,9 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   display: ${({ arraylength }) =>
-    arraylength && arraylength <= 3 ? "flex" : "grid"};
+    arraylength && arraylength <= 4 ? "flex" : "grid"};
   flex-wrap: ${({ arraylength }) =>
-    arraylength && arraylength <= 3 ? "wrap" : "no-wrap"};
+    arraylength && arraylength <= 4 ? "wrap" : "no-wrap"};
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
   max-width: 100%;

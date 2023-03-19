@@ -18,7 +18,6 @@ export interface Video {
   updatedAt: string;
 }
 
-
 export interface GetVideosWithUser {
   video: Video;
   user: User;
@@ -31,6 +30,7 @@ export interface CustomUser {
 export interface VideosResponse extends CustomSuccessResponse {
   videos: Array<GetVideosWithUser>;
   count: number;
+  totalVideos: number;
 }
 
 export interface VideoResponse extends CustomSuccessResponse {

@@ -7,10 +7,13 @@ import { VideoHistoryResponseType } from "../models/video";
 import { useDispatch } from "react-redux";
 import { addToVideoHistory } from "../shell/reudx/slicers/video";
 import { NotFound } from "../components/NotFound";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+
 import SideBar from "../components/SideBar";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import { createSelector } from "reselect";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Box, Button, CircularProgress } from "@mui/material";
 
 import {
   Container,
@@ -18,7 +21,6 @@ import {
   Wrapper,
   NotFoundComponent,
 } from "./styled-components/History";
-import { Typography } from "@mui/material";
 
 const History = () => {
   const getUser = (state: RootState) => state?.user?.user;
@@ -73,6 +75,34 @@ const History = () => {
     }
   }, [end, videoHistory?.length, setEnd]);
 
+  const IsScreenHeightVeryBig = window.innerHeight > 1000;
+
+  const LoadButton = useMemo((): JSX.Element => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "hidden",
+        }}
+      >
+        <Button
+          onClick={incrementData}
+          style={{
+            display: `${IsScreenHeightVeryBig ? "flex" : "none"}`,
+            justifyContent: "center",
+            alignItems: "center",
+            overflowY: "hidden",
+          }}
+        >
+          <AutorenewIcon />
+          Load more
+        </Button>
+      </Box>
+    );
+  }, [incrementData, IsScreenHeightVeryBig]);
+
   const videoCards = useMemo(() => {
     return data?.map((video) => {
       return (
@@ -91,13 +121,29 @@ const History = () => {
       <Container>
         <SideBar />
         <VideosWrapper>
+          {data?.length}
+          {videoHistory?.length}
           <InfiniteScroll
             dataLength={videoHistory?.length}
             next={incrementData}
             hasMore={data?.length < videoHistory?.length}
-            loader={<Typography>Loading...</Typography>}
+            loader={
+              <div
+                style={{
+                  display: `${IsScreenHeightVeryBig ? "none" : "flex"}`,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflowY: "hidden",
+                }}
+              >
+                <CircularProgress size="1rem" />
+              </div>
+            }
           >
             <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
+            {IsScreenHeightVeryBig && data?.length < videoHistory?.length
+              ? LoadButton
+              : undefined}
           </InfiniteScroll>
         </VideosWrapper>
       </Container>
