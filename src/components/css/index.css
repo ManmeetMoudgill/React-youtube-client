@@ -47,3 +47,6 @@
 
 .infinite-scroll-component__outerdiv {
   width: 100% !important; }
+
+body {
+  padding-right: 0 !important; }

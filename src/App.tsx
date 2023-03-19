@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <ToastContainer position="top-right" theme="colored" />
+        <ToastContainer autoClose={2000} position="top-right" theme="colored" />
         <UserProvider>
           <HttpLoadingProvider>
             <FilterProvider>
