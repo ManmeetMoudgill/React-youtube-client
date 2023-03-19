@@ -16,6 +16,7 @@
     "env-cmd": "^10.1.0",
     "firebase": "^9.17.1",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "luxon": "^3.2.1",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
@@ -33,6 +34,10 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
+<<<<<<< HEAD
+=======
+  "proxy": "http://localhost:8000/api",
+>>>>>>> dev
   "scripts": {
     "start": "env-cmd -f ./src/.env react-scripts start",
     "build": "env-cmd -f ./src/.env react-scripts build",

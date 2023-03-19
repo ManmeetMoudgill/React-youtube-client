@@ -81,6 +81,7 @@ const Navbar = () => {
 
   const handleClick = useEventCallback(
     (event: React.MouseEvent<HTMLElement>) => {
+      document.body.style.padding = "0px !important";
       setAnchorEl(event.currentTarget);
     }
   );

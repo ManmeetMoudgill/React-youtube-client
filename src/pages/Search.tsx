@@ -22,7 +22,7 @@ import {
   NotFoundComponent,
 } from "./styled-components/Search";
 import { AxiosRequestConfig } from "axios";
-import { Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import {
   reducer,
   initialState,
@@ -63,19 +63,19 @@ const Search = () => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        if (res?.videos?.length === 0) {
-          return [];
-        }
-        const newData = [...res.videos];
+        const videos = res?.videos;
+        const newData = videos?.length === 0 ? [] : [...videos];
         if (state?.page === 1) {
           return newData;
         }
         if (prev) {
-          const dataArray = [...prev, ...res.videos];
-          const uniqueData = dataArray.filter(
-            (item, index) => dataArray.indexOf(item) === index
+          const dataArray = [...prev, ...videos];
+          const removedDuplicatedData = dataArray.filter(
+            (item, index) =>
+              dataArray.findIndex((i) => i?.video?._id === item?.video?._id) ===
+              index
           );
-          return uniqueData;
+          return removedDuplicatedData;
         }
         return newData;
       });
@@ -118,7 +118,7 @@ const Search = () => {
               dataLength={data?.length || 0}
               next={fetchMoreData}
               hasMore={data?.length < result?.count}
-              loader={<Typography>Loading...</Typography>}
+              loader={<CircularProgress size="1rem" />}
             >
               <Wrapper arraylength={data?.length}>
                 {data?.length > 0 && videoCards}

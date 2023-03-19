@@ -21,8 +21,8 @@ const Container = styled.div<ContainerProps>`
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
   gap: 11px;
-  @media (min-width: 320px) and (max-width: 950px) {
-    width: ${(props) => (props?.type === "sm" ? "100%" : "auto")};
+  @media screen and (min-width: 1300px) and (max-width: 2600px) {
+    min-width: ${(props) => (props?.type === "sm" ? "100%" : "300px")};
   }
 `;
 

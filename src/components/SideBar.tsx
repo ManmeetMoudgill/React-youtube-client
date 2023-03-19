@@ -1,5 +1,5 @@
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
-import React, { memo, useCallback } from "react";
+import { memo } from "react";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
@@ -9,17 +9,7 @@ import {
   Wrapper,
   IconName,
 } from "./styled-components/Sidebar";
-import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 const SideBar = () => {
-  const { setFilters, filters } = useFilters();
-
-  const emptyPaginationAndTag = useCallback(() => {
-    setFilters({
-      ...filters,
-      tag: "",
-      page: 1,
-    });
-  }, [filters, setFilters]);
   return (
     <>
       <SideBarContainer>
@@ -32,7 +22,7 @@ const SideBar = () => {
               color: "inherit",
             }}
           >
-            <Item onClick={emptyPaginationAndTag}>
+            <Item>
               <HomeIcon className="sidebar-icon" />
               <IconName>Home</IconName>
             </Item>
@@ -45,7 +35,7 @@ const SideBar = () => {
               color: "inherit",
             }}
           >
-            <Item onClick={emptyPaginationAndTag}>
+            <Item>
               <SubscriptionsOutlinedIcon className="sidebar-icon" />
               <IconName>Subscriptions</IconName>
             </Item>
@@ -58,7 +48,7 @@ const SideBar = () => {
               color: "inherit",
             }}
           >
-            <Item onClick={emptyPaginationAndTag}>
+            <Item>
               <HistoryOutlinedIcon className="sidebar-icon" />
               <IconName>History</IconName>
             </Item>
