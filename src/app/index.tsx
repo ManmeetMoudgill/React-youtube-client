@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
-import { useHttpLoading } from "../shell/hooks/use-http-loading";
-import { LinearProgress } from "@mui/material";
 import { memo } from "react";
 import "./css/app.css";
 import AppRoutes from "../router";
@@ -23,12 +21,8 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = () => {
-  const { isLoading } = useHttpLoading();
-
   return (
     <>
-      {isLoading ? <LinearProgress color="warning" /> : null}
-
       <Container>
         <BrowserRouter>
           <Main>

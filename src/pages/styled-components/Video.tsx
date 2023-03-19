@@ -62,20 +62,19 @@ const Hr = styled.hr`
 
 const Channel = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
 const ChannelInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  @media (min-width: 320px) and (max-width: 750px) {
-    padding: 0.5rem;
-  }
 `;
 
 const Image = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   @media (min-width: 320px) and (max-width: 750px) {
     display: none;
@@ -85,7 +84,11 @@ const Image = styled.img`
 const ChannelDetail = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.text};
+  margin-left: 0.8rem;
+  @media (min-width: 320px) and (max-width: 750px) {
+    margin-left: 0rem;
+  }
+  color: black;
 `;
 
 const ChannelName = styled.span`
@@ -101,7 +104,7 @@ const ChannelCounter = styled.span`
 `;
 
 const Description = styled.p`
-  font-size: 14px;
+  font-size: 1rem;
   @media (min-width: 320px) and (max-width: 750px) {
     font-size: 0.8rem;
   }
@@ -109,16 +112,25 @@ const Description = styled.p`
 
 const Subscribe = styled.button`
   background-color: #cc1a00;
+  position: relative;
+  right: 0.2rem;
   font-weight: 500;
   color: white;
   border: none;
   border-radius: 3px;
   height: max-content;
-  padding: 10px 20px;
+  font-size: 0.8rem;
+  width: 9rem;
+  text-align: center;
+  padding: 10px 10px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
   @media (min-width: 320px) and (max-width: 750px) {
     min-width: 7rem;
     margin-right: 0.5rem;
+  }
+  &:hover {
+    background-color: #b31a00;
   }
 `;
 
@@ -133,6 +145,13 @@ const ReccomendationContainer = styled.div`
   flex: 3;
 `;
 
+const ChannelInfoLeftContainer = styled.div`
+  display: flex;
+`;
+
+const ChannelInfoRightContainer = styled.div`
+  display: flex;
+`;
 export {
   ReccomendationContainer,
   VideoFrame,
@@ -153,4 +172,6 @@ export {
   Container,
   Content,
   Title,
+  ChannelInfoLeftContainer,
+  ChannelInfoRightContainer,
 };

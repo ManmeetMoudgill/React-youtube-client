@@ -13,12 +13,14 @@ import { useDispatch } from "react-redux";
 import { logout } from "../shell/reudx/slicers/user";
 import UploadVideo from "./Upload";
 import ClearIcon from "@mui/icons-material/Clear";
+import styled from "styled-components";
 import {
   emptyVideosFromHistory,
   removeVideo,
 } from "../shell/reudx/slicers/video";
 import "./css/index.css";
 import MenuComponent from "./Menu";
+import { LinearProgress } from "@mui/material";
 import { useClickOutside } from "../shell/hooks/click-outside/useClickOutside";
 import {
   Container,
@@ -39,9 +41,16 @@ import {
   Search,
   YoutubeName,
 } from "./styled-components/Navbar";
-import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import { useApi } from "../shell/hooks/custom-http";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import { useHttpLoading } from "../shell/hooks/use-http-loading";
+
+const LoadingContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+`;
 
 const Navbar = () => {
   const { user } = useSelector((state: RootState) => state?.user);
@@ -108,11 +117,13 @@ const Navbar = () => {
   });
 
   const navigate = useNavigate();
-  const { setFilters, filters } = useFilters();
-
+  const { isLoading } = useHttpLoading();
   return (
     <>
       <Container>
+        <LoadingContainer>
+          {isLoading ? <LinearProgress color="warning" /> : null}
+        </LoadingContainer>
         <LeftContainer>
           <IconButton onClick={() => setOpenSideBar(!openSideBar)}>
             <ReorderIcon />
@@ -125,19 +136,8 @@ const Navbar = () => {
               color: "inherit",
             }}
           >
-            <Logo
-              onClick={() => {
-                setFilters({
-                  ...filters,
-                  tag: "",
-                });
-              }}
-            >
-              <Img
-                src={
-                  "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
-                }
-              />
+            <Logo>
+              <Img src={"/images/logo.png"} />
               <YoutubeName>ManmeetYoutube</YoutubeName>
             </Logo>
           </Link>

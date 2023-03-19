@@ -1,18 +1,29 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import "./css/index.css";
-import { useEventCallback } from "@mui/material";
-import { useFilters } from "../shell/providers/filter-provider/filter-provider";
 import {
   Container,
   CategoryButtonItem,
 } from "./styled-components/CategoriesScroll";
 import { CategoriesData } from "../constants";
+import { Action, ActionType, State } from "../pages/utils/home";
 
-const CategorisSroll = () => {
+interface CategoryScrollProps {
+  dispatch: React.Dispatch<Action>;
+  state: State;
+}
+
+const CategorisSroll = ({ dispatch, state }: CategoryScrollProps) => {
   return (
     <Container className="filter--container">
       {CategoriesData?.map((item) => {
-        return <CategoryButton key={item?.id} name={item?.name} />;
+        return (
+          <CategoryButton
+            dispatch={dispatch}
+            state={state}
+            key={item?.id}
+            name={item?.name}
+          />
+        );
       })}
     </Container>
   );
@@ -20,21 +31,24 @@ const CategorisSroll = () => {
 
 interface CategoryButtonProps {
   name: string;
+  dispatch: React.Dispatch<Action>;
+  state: State;
 }
-const CategoryButton = ({ name }: CategoryButtonProps) => {
-  const { setFilters, filters } = useFilters();
-
-  const changeFilters = useEventCallback(() => {
-    setFilters({
-      ...filters,
-      tag: name?.toLocaleLowerCase(),
+const CategoryButton = ({ name, dispatch, state }: CategoryButtonProps) => {
+  const changeFilters = useCallback(() => {
+    if (!dispatch) return;
+    dispatch({
+      type: ActionType.SET_CATEGORY,
+      payload: name?.toLocaleLowerCase(),
     });
-  });
+    dispatch({ type: ActionType.SET_PAGE, payload: 1 });
+  }, [dispatch, name]);
 
   return (
     <>
       <CategoryButtonItem
-        isClicked={filters?.tag === name?.toLocaleLowerCase()}
+        key={name}
+        isClicked={state?.category === name?.toLocaleLowerCase()}
         onClick={changeFilters}
       >
         {name}

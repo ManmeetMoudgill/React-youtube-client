@@ -15,7 +15,6 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 600px;
-  border: 2px solid green;
   min-height: 500px;
   z-index: 10000;
   background-color: white;

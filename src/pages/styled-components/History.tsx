@@ -9,6 +9,7 @@ const Container = styled.div`
 const VideosWrapper = styled.div`
   display: flex;
   flex: 1;
+  width: 100%;
   margin-left: 7rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
   @media (min-width: 320px) and (max-width: 400px) {
@@ -29,6 +30,7 @@ const VideosWrapper = styled.div`
     margin-left: 7rem;
   }
 `;
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -50,6 +52,8 @@ const Wrapper = styled.div`
 const NotFoundComponent = styled.div`
   position: absolute;
   top: 20%;
+  width: 80%;
+  padding: 2rem;
   left: 10%;
 `;
 

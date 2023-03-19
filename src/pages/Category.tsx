@@ -1,7 +1,14 @@
-import React, { memo, useEffect, useState } from "react";
+import React, {
+  memo,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useReducer,
+} from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../shell/hooks/custom-http";
-import { VideoType } from "../models/video";
+import { GetVideosWithUser, VideosResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
@@ -12,52 +19,114 @@ import {
   Wrapper,
   NotFoundComponent,
 } from "./styled-components/Category";
-import { TagsBackendResponse } from "../components/Recommendation";
+import {
+  reducer,
+  initialState,
+  State,
+  Action,
+  ActionType,
+} from "../pages/utils/index";
+import { Typography } from "@mui/material";
+import { AxiosRequestConfig } from "axios";
+import debounce from "lodash.debounce";
+import InfiniteScroll from "react-infinite-scroll-component";
 const Category = () => {
   const params = useParams();
-  const { isLoading, makeCall: getVideoBasedOnCategory } =
-    useApi<TagsBackendResponse>({
-      url: `/videos/tags/?tags=${params?.category}`,
-      method: "get",
-      onBootstrap: false,
+  const [data, setData] = useState<GetVideosWithUser[]>([]);
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+    reducer,
+    initialState
+  );
+
+  const { makeCall: getVideoBasedOnCategory, result } = useApi<VideosResponse>({
+    url: `/videos/tags/?tags=${params?.id}&page=${state?.page}`,
+    method: "get",
+    onBootstrap: false,
+  });
+
+  const getVideoBasedOnCategoryMemoizedFn = useCallback(
+    (params?: AxiosRequestConfig) => {
+      return getVideoBasedOnCategory(params);
+    },
+    [getVideoBasedOnCategory]
+  );
+
+  const fetchData = useCallback(async () => {
+    const res = await getVideoBasedOnCategoryMemoizedFn({
+      url: `/videos/tags/?tags=${params?.id}&page=${state?.page}`,
     });
-  const [data, setData] = useState<Array<VideoType>>([]);
+    if (
+      res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+      res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+    ) {
+      setData((prev) => {
+        if (res?.videos?.length === 0) {
+          return [];
+        }
+        const newData = [...res.videos];
+        if (state?.page === 1) {
+          return newData;
+        }
+        if (prev) {
+          const dataArray = [...prev, ...res.videos];
+          const uniqueData = dataArray.filter(
+            (item, index) => dataArray.indexOf(item) === index
+          );
+          return uniqueData;
+        }
+        return newData;
+      });
+    }
+  }, [state?.page, params?.id, getVideoBasedOnCategoryMemoizedFn]);
+
+  // memoize the debounced function using useMemo
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, 300),
+    [fetchData]
+  );
 
   useEffect(() => {
-    if (!params?.category) return;
-    getVideoBasedOnCategory().then((res) => {
-      if (
-        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-      ) {
-        setData(res?.videos);
-      }
+    debouncedFetchData();
+    return () => debouncedFetchData.cancel();
+  }, [debouncedFetchData]);
+
+  const videoCards = useMemo(() => {
+    return data?.map((video) => {
+      return (
+        <Card key={video?.video?._id} video={video?.video} user={video?.user} />
+      );
     });
-  }, [params?.category, getVideoBasedOnCategory]);
+  }, [data]);
+
+  const fetchMoreData = useCallback(() => {
+    if (result && data?.length > result?.count) return;
+    dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
+  }, [result, data?.length, dispatch, state?.page]);
 
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
-          <Wrapper>
-            {!isLoading &&
-              data &&
-              data?.map((video) => {
-                return (
-                  <Card
-                    key={video?.video?._id}
-                    video={video?.video}
-                    user={video?.user}
-                  />
-                );
-              })}
-          </Wrapper>
+          {result && (
+            <InfiniteScroll
+              dataLength={data?.length || 0}
+              next={fetchMoreData}
+              hasMore={data?.length < result?.count}
+              loader={<Typography>Loading...</Typography>}
+            >
+              <Wrapper arrayLength={videoCards?.length}>
+                {videoCards?.length > 0 && videoCards}
+              </Wrapper>
+            </InfiniteScroll>
+          )}
         </VideosWrapper>
       </Container>
-      <NotFoundComponent>
-        {!isLoading && data?.length === 0 && <NotFound />}
-      </NotFoundComponent>
+      {result && data?.length === 0 ? (
+        <NotFoundComponent>
+          <NotFound />
+        </NotFoundComponent>
+      ) : undefined}
     </>
   );
 };

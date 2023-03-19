@@ -1,53 +1,137 @@
-import React, { memo, useEffect, useState } from "react";
+import React, {
+  memo,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useReducer,
+} from "react";
 import { useLocation } from "react-router-dom";
 import { useApi } from "../shell/hooks/custom-http";
-import { Video, VideosResponse } from "../models/video";
+import { GetVideosWithUser, VideosResponse } from "../models/video";
 import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import InfiniteScroll from "react-infinite-scroll-component";
+import debounce from "lodash.debounce";
 import {
   Container,
   Wrapper,
   VideosWrapper,
   NotFoundComponent,
 } from "./styled-components/Search";
+import { AxiosRequestConfig } from "axios";
+import { Typography } from "@mui/material";
+import {
+  reducer,
+  initialState,
+  State,
+  Action,
+  ActionType,
+} from "./utils/index";
 const Search = () => {
   const location = useLocation();
+  const [data, setData] = useState<GetVideosWithUser[]>([]);
 
-  const { makeCall: getVideosBySearch } = useApi<VideosResponse>({
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+    reducer,
+    initialState
+  );
+
+  const { makeCall: getVideosBySearch, result } = useApi<VideosResponse>({
     url: `/videos/search${location?.search}`,
     method: "get",
     onBootstrap: false,
   });
 
-  const [data, setData] = useState<Video[] | undefined>(undefined);
-  useEffect(() => {
-    getVideosBySearch().then((res) => {
-      if (
-        res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
-        res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
-      ) {
-        setData(res?.videos);
-      }
+  const getVideosBySearchMemoizedFn = useCallback(
+    (params?: AxiosRequestConfig) => {
+      return getVideosBySearch(params);
+    },
+    [getVideosBySearch]
+  );
+
+  const fetchData = useCallback(async () => {
+    //when user clicks on a category, we need to reset the page to 1
+
+    const res = await getVideosBySearchMemoizedFn({
+      url: `/videos/search${location?.search}&page=${state?.page}`,
     });
-  }, [location?.search, getVideosBySearch]);
+    if (
+      res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+      res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+    ) {
+      setData((prev) => {
+        if (res?.videos?.length === 0) {
+          return [];
+        }
+        const newData = [...res.videos];
+        if (state?.page === 1) {
+          return newData;
+        }
+        if (prev) {
+          const dataArray = [...prev, ...res.videos];
+          const uniqueData = dataArray.filter(
+            (item, index) => dataArray.indexOf(item) === index
+          );
+          return uniqueData;
+        }
+        return newData;
+      });
+    }
+  }, [state?.page, location?.search, getVideosBySearchMemoizedFn]);
+
+  // memoize the debounced function using useMemo
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, 300),
+    [fetchData]
+  );
+
+  useEffect(() => {
+    debouncedFetchData();
+    return () => debouncedFetchData.cancel();
+  }, [debouncedFetchData]);
+
+  const videoCards = useMemo(() => {
+    return data?.map((video) => {
+      return (
+        <Card key={video?.video?._id} video={video?.video} user={video?.user} />
+      );
+    });
+  }, [data]);
+
+  const fetchMoreData = useCallback(() => {
+    if (result && data?.length > result?.count) return;
+
+    //DISPATCH THE ACTION TO SET THE PAGE
+    dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
+  }, [result, data?.length, dispatch, state?.page]);
 
   return (
     <>
       <Container>
         <SideBar />
         <VideosWrapper>
-          <Wrapper arraylength={data?.length}>
-            {data?.map((video) => {
-              return <Card key={video?._id} video={video} />;
-            })}
-          </Wrapper>
+          {result && (
+            <InfiniteScroll
+              dataLength={data?.length || 0}
+              next={fetchMoreData}
+              hasMore={data?.length < result?.count}
+              loader={<Typography>Loading...</Typography>}
+            >
+              <Wrapper arraylength={data?.length}>
+                {data?.length > 0 && videoCards}
+              </Wrapper>
+            </InfiniteScroll>
+          )}
         </VideosWrapper>
       </Container>
-      <NotFoundComponent>
-        {data?.length === 0 && <NotFound />}
-      </NotFoundComponent>
+      {result && data?.length === 0 ? (
+        <NotFoundComponent>
+          <NotFound />
+        </NotFoundComponent>
+      ) : undefined}
     </>
   );
 };

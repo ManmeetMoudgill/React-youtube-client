@@ -2,9 +2,12 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   padding: 0.5rem;
+  margin-bottom: 1rem;
   @media (min-width: 320px) and (max-width: 500px) {
     flex-direction: column;
     flex: 1;
+  }
+  @media (min-width: 501px) and (max-width: 750px) {
     padding: 0.5rem;
   }
 `;

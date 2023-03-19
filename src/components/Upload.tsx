@@ -60,18 +60,6 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
 
   const { user } = useSelector((state: RootState) => state?.user);
 
-  const handleVideoFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setVideo(e.target.files[0]);
-    }
-  };
-
-  const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImg(e.target.files[0]);
-    }
-  };
-
   const handeChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -132,6 +120,21 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
     }
   });
 
+  const handleVideoFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setVideoPerc(0);
+      setVideo(e.target.files[0]);
+      removeVideoFromFirebase();
+    }
+  };
+
+  const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImgPerc(0);
+      setImg(e.target.files[0]);
+      removeImageFromFirebase();
+    }
+  };
   const removeImageFromFirebase = useEventCallback(() => {
     if (urls?.imgUrl !== "") {
       const storage = getStorage(app);
@@ -247,7 +250,6 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
               Upload Img
             </MuiButton>
           ) : undefined}
-
           {imgPerc === 100 && img && urls?.imgUrl ? (
             <MuiButton
               startIcon={<DeleteIcon />}

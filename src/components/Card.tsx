@@ -1,3 +1,4 @@
+import LazyLoad from "react-lazy-load";
 import { formatDistanceToNow } from "date-fns";
 import { memo } from "react";
 import { Link } from "react-router-dom";
@@ -49,74 +50,66 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
   });
 
   return (
-    <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
-      <Container
-        type={type}
-        className="animate__animated animate__fadeIn animate__delay-0.5s "
-      >
-        <VideoComponent
-          muted
-          type={type}
-          src={video?.videoUrl}
-          poster={video?.imgUrl}
-        />
+    <LazyLoad>
+      <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
+        <Container type={type}>
+          <VideoComponent
+            muted
+            type={type}
+            src={video?.videoUrl}
+            poster={video?.imgUrl}
+          />
 
-        <Details type={type} isHistoryPageCard={isHistoryPageCard}>
-          {type === "sm" && user ? (
+          <Details type={type} isHistoryPageCard={isHistoryPageCard}>
             <ChannelImage
               type={type}
               src={user?.img ? user?.img : "/images/user.png"}
             />
-          ) : (
-            <ChannelImage
-              type={type}
-              src={video?.user?.img ? video?.user?.img : "/images/user.png"}
-            />
-          )}
 
-          <Texts>
-            <Title>{video?.title?.slice(0, 25)}..</Title>
-            {type === "sm" && user ? (
-              <ChannelName>{user?.name}</ChannelName>
-            ) : (
-              <ChannelName>{video?.user?.name}</ChannelName>
-            )}
-            <Info>
-              {video?.views} views •{" "}
-              {video?.createdAt
-                ? formatDistanceToNow(new Date(video?.createdAt), {
-                    addSuffix: true,
-                  })
-                : ""}
-            </Info>
-          </Texts>
-          {isHistoryPageCard ? (
-            <>
-              <Box
-                sx={{
-                  zIndex: 1000,
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                }}
-              >
-                <Tooltip title="Remove Video">
-                  <IconButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDelete();
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </>
-          ) : undefined}
-        </Details>
-      </Container>
-    </Link>
+            <Texts>
+              <Title>{video?.title?.slice(0, 25)}..</Title>
+              {type === "sm" && user ? (
+                <ChannelName>{user?.name}</ChannelName>
+              ) : (
+                <ChannelName>{user?.name}</ChannelName>
+              )}
+              <Info>
+                {video?.views} views •{" "}
+                {video?.createdAt
+                  ? formatDistanceToNow(new Date(video?.createdAt), {
+                      addSuffix: true,
+                    })
+                  : ""}
+              </Info>
+            </Texts>
+            {isHistoryPageCard ? (
+              <>
+                <Box
+                  sx={{
+                    zIndex: 1000,
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                  }}
+                >
+                  <Tooltip title="Remove Video">
+                    <IconButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleDelete();
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </>
+            ) : undefined}
+          </Details>
+        </Container>
+      </Link>
+    </LazyLoad>
   );
 };
 

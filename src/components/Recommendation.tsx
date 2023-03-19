@@ -1,5 +1,12 @@
-import React, { memo } from "react";
-import { VideoType } from "../models/video";
+import React, {
+  memo,
+  useMemo,
+  useReducer,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
+import { GetVideosWithUser, VideosResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import {
   Container,
@@ -8,53 +15,142 @@ import {
 } from "./styled-components/Reccomendation";
 import Card from "./Card";
 import ReccomendationVideoSmall from "./ReccomendationVideoSmall";
+import { AxiosRequestConfig } from "axios";
+import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import debounce from "lodash.debounce";
+import { Typography } from "@mui/material";
+import InfiniteScrollComponent from "./InfiniteScroll";
+import {
+  reducer,
+  initialState,
+  State,
+  Action,
+  ActionType,
+} from "../pages/utils/index";
 type Props = {
-  tags: string[];
-  currrentVideoId: string;
+  tags?: string[];
+  currrentVideoId?: string;
 };
 
-export interface TagsBackendResponse {
-  message: string;
-  status: number;
-  success: boolean;
-  videos: Array<VideoType>;
-}
-
 const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
-  const { result: videos } = useApi<TagsBackendResponse>({
-    url: `/videos/tags/?tags=${tags?.join(",")}`,
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+    reducer,
+    initialState
+  );
+
+  const [data, setData] = useState<GetVideosWithUser[]>([]);
+
+  const { result, makeCall: getVideosByTags } = useApi<VideosResponse>({
+    url: `/videos/tags/?tags=${tags?.join(",")}&page=${state?.page}`,
     method: "get",
-    onBootstrap: true,
+    onBootstrap: false,
   });
+
+  const getVideosByTagsMemoizedFn = useCallback(
+    (params?: AxiosRequestConfig) => {
+      return getVideosByTags(params);
+    },
+    [getVideosByTags]
+  );
+
+  const fetchData = useCallback(async () => {
+    //when user clicks on a category, we need to reset the page to 1
+
+    const res = await getVideosByTagsMemoizedFn({
+      url: `/videos/tags/?tags=${tags?.join(",")}&page=${state?.page}`,
+    });
+    if (
+      res?.status === HTTP_RESPONSE_STATUS_CODE.OK ||
+      res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
+    ) {
+      setData((prev) => {
+        if (res?.videos?.length === 0) {
+          return [];
+        }
+        const newData = [...res.videos];
+        if (state?.page === 1) {
+          return newData;
+        }
+        if (prev) {
+          const dataArray = [...prev, ...res.videos];
+          const uniqueData = dataArray.filter(
+            (item, index) => dataArray.indexOf(item) === index
+          );
+          return uniqueData;
+        }
+        return newData;
+      });
+    }
+  }, [state?.page, tags, getVideosByTagsMemoizedFn]);
+
+  // memoize the debounced function using useMemo
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, 300),
+    [fetchData]
+  );
+
+  useEffect(() => {
+    debouncedFetchData();
+    return () => debouncedFetchData.cancel();
+  }, [debouncedFetchData]);
+
+  const largeVideoCards = useMemo(() => {
+    return data?.map((item) => {
+      if (item?.video?._id === currrentVideoId) return null;
+      return (
+        <Card
+          type="sm"
+          key={item?.video?._id}
+          video={item?.video}
+          user={item?.user}
+        />
+      );
+    });
+  }, [data, currrentVideoId]);
+
+  const smallVideoCards = useMemo(() => {
+    return data?.map((item) => {
+      if (item?.video?._id === currrentVideoId) return null;
+
+      return (
+        <ReccomendationVideoSmall
+          key={item?.video?._id}
+          video={item?.video}
+          user={item?.user}
+        />
+      );
+    });
+  }, [data, currrentVideoId]);
+
+  const fetchMoreData = () => {
+    dispatch({ type: ActionType.SET_PAGE, payload: state.page + 1 });
+  };
 
   return (
     <Container>
       <LargeDevicesVideos>
-        {videos?.videos &&
-          videos?.videos?.map((video) => {
-            if (video?.video?._id === currrentVideoId) return null;
-            return (
-              <Card
-                type="sm"
-                key={video?.video?._id}
-                video={video?.video}
-                user={video?.user}
-              />
-            );
-          })}
+        {result && (
+          <InfiniteScrollComponent
+            dataLength={data?.length || 0}
+            next={fetchMoreData}
+            hasMore={data?.length < result?.count}
+            loader={<Typography>Loading...</Typography>}
+          >
+            {largeVideoCards}
+          </InfiniteScrollComponent>
+        )}
       </LargeDevicesVideos>
       <SmallDevicesVideos>
-        {videos?.videos &&
-          videos?.videos?.map((video) => {
-            if (video?.video?._id === currrentVideoId) return null;
-            return (
-              <ReccomendationVideoSmall
-                key={video?.video?._id}
-                video={video?.video}
-                user={video?.user}
-              />
-            );
-          })}
+        {result && (
+          <InfiniteScrollComponent
+            dataLength={data?.length || 0}
+            next={fetchMoreData}
+            hasMore={data?.length < result?.count}
+            loader={<Typography>Loading...</Typography>}
+          >
+            {smallVideoCards}
+          </InfiniteScrollComponent>
+        )}
       </SmallDevicesVideos>
     </Container>
   );

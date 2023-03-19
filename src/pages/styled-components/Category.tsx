@@ -29,8 +29,15 @@ const VideosWrapper = styled.div`
     margin-left: 7rem;
   }
 `;
-const Wrapper = styled.div`
-  display: grid;
+
+interface WrapperProps {
+  arrayLength?: number;
+}
+const Wrapper = styled.div<WrapperProps>`
+  display: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "flex" : "grid"};
+  flex-wrap: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "wrap" : "no-wrap"};
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1rem;
   max-width: 100%;
@@ -51,6 +58,8 @@ const Wrapper = styled.div`
 const NotFoundComponent = styled.div`
   position: absolute;
   top: 20%;
+  width: 80%;
+  padding: 2rem;
   left: 10%;
 `;
 

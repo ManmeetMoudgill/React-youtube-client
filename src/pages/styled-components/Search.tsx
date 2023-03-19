@@ -60,6 +60,8 @@ const Wrapper = styled.div<WrapperProps>`
 const NotFoundComponent = styled.div`
   position: absolute;
   top: 20%;
+  width: 80%;
+  padding: 2rem;
   left: 10%;
 `;
 

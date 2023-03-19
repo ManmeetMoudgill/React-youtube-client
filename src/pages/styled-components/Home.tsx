@@ -14,9 +14,12 @@ const VideosWrapper = styled.div`
   margin-left: 7rem;
   padding: 0.5rem 1rem 0.5rem 1.5rem;
   @media (min-width: 320px) and (max-width: 400px) {
+    padding: 0 1rem 0 1.5rem;
     margin-left: 3rem;
   }
   @media (min-width: 401px) and (max-width: 720px) {
+    padding: 0.2rem 1rem 0.2rem 1.5rem;
+
     margin-left: 4.5rem;
   }
   @media (min-width: 721px) and (max-width: 1000px) {
@@ -30,8 +33,14 @@ const VideosWrapper = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
-  display: grid;
+interface WapperProps {
+  arrayLength: number;
+}
+const Wrapper = styled.div<WapperProps>`
+  display: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "flex" : "grid"};
+  flex-wrap: ${({ arrayLength }) =>
+    arrayLength && arrayLength <= 3 ? "wrap" : "no-wrap"};
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1rem;
   max-width: 100%;
