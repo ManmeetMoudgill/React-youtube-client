@@ -63,11 +63,7 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
             }}
           >
             <Logo onClick={() => {}}>
-              <Img
-                src={
-                  "https://github.com/safak/youtube2022/blob/react-video-ui/src/img/logo.png?raw=true"
-                }
-              />
+              <Img src={"/images/logo.png"} />
               ManmeetYoutube
             </Logo>
           </Link>
@@ -107,6 +103,7 @@ const Menu = ({ isOpen, setOpenSideBar }: MenuProps) => {
         <Item
           onClick={() => {
             navigate("/history");
+            setOpenSideBar(!isOpen);
           }}
         >
           <HistoryOutlinedIcon />

@@ -73,6 +73,8 @@ const VideoPage = () => {
   const user = useSelector((state: RootState) => state?.user);
   const result = useSelector((state: RootState) => state?.video);
 
+  console.log("result", result);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -240,11 +242,11 @@ const VideoPage = () => {
                 <Buttons>
                   <Button onClick={handleLike}>
                     <LikeDislikeComponent isLike={true} />{" "}
-                    {videoResult?.data?.video?.likes?.length}
+                    {result?.data?.video?.likes?.length}
                   </Button>
                   <Button onClick={handleDislike}>
                     <LikeDislikeComponent isLike={false} />{" "}
-                    {videoResult?.data?.video?.dislikes?.length}
+                    {result?.data?.video?.dislikes?.length}
                   </Button>
 
                   <Button

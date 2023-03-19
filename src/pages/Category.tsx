@@ -26,10 +26,10 @@ import {
   Action,
   ActionType,
 } from "../pages/utils/index";
-import { Typography } from "@mui/material";
 import { AxiosRequestConfig } from "axios";
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { CircularProgress } from "@mui/material";
 const Category = () => {
   const params = useParams();
   const [data, setData] = useState<GetVideosWithUser[]>([]);
@@ -60,19 +60,19 @@ const Category = () => {
       res?.status === HTTP_RESPONSE_STATUS_CODE.CREATED
     ) {
       setData((prev) => {
-        if (res?.videos?.length === 0) {
-          return [];
-        }
-        const newData = [...res.videos];
+        const videos = res?.videos;
+        const newData = videos?.length === 0 ? [] : [...videos];
         if (state?.page === 1) {
           return newData;
         }
         if (prev) {
-          const dataArray = [...prev, ...res.videos];
-          const uniqueData = dataArray.filter(
-            (item, index) => dataArray.indexOf(item) === index
+          const dataArray = [...prev, ...videos];
+          const removedDuplicatedData = dataArray.filter(
+            (item, index) =>
+              dataArray.findIndex((i) => i?.video?._id === item?.video?._id) ===
+              index
           );
-          return uniqueData;
+          return removedDuplicatedData;
         }
         return newData;
       });
@@ -113,7 +113,7 @@ const Category = () => {
               dataLength={data?.length || 0}
               next={fetchMoreData}
               hasMore={data?.length < result?.count}
-              loader={<Typography>Loading...</Typography>}
+              loader={<CircularProgress size="1rem" />}
             >
               <Wrapper arrayLength={videoCards?.length}>
                 {videoCards?.length > 0 && videoCards}
