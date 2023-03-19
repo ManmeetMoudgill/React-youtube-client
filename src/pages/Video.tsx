@@ -3,8 +3,7 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import { formatDistanceToNow } from "date-fns";
-
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { VideoResponse } from "../models/video";
 import { useApi } from "../shell/hooks/custom-http";
 import { useSelector } from "react-redux";
@@ -64,6 +63,8 @@ import {
 import { CustomSuccessResponse } from "../models/user";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import ErrorBoundary from "../components/ErrorBoundary";
+import ErrorFallback from "../components/ErrorFallBack";
 interface LikeDislikeProps {
   isLike: boolean;
 }
@@ -109,7 +110,11 @@ const VideoPage = () => {
     method: "post",
   });
 
-  const { makeCall: getVideo, result: videoResult } = useApi<VideoResponse>({
+  const {
+    makeCall: getVideo,
+    result: videoResult,
+    error,
+  } = useApi<VideoResponse>({
     url: `/videos/find/${params?.id}`,
     method: "get",
   });
@@ -215,9 +220,17 @@ const VideoPage = () => {
     return `http://localhost/video/${result?.data?.video?._id}`;
   }, [result?.data?.video?._id]);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      navigate("/404");
+    }
+  }, [error, navigate]);
+
   return (
-    <>
-      {videoResult && (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      {videoResult && !error && (
         <>
           <Container>
             <Content>
@@ -350,7 +363,7 @@ const VideoPage = () => {
           </Container>
         </>
       )}
-    </>
+    </ErrorBoundary>
   );
 };
 

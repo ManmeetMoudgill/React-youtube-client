@@ -6,6 +6,7 @@ import { RoutesConfig } from "./routes-config";
 import { PrivateRoute } from "../components/PrivateRoute";
 import VideoPage from "../pages/Video";
 import CategoryPage from "../pages/Category";
+import PageNotFound from "../components/PageNotFound";
 interface CreateShellRoutesParams {
   addLoading: () => void;
   removeLoading: () => void;
@@ -90,6 +91,14 @@ export const createShellRoutes = ({
         {
           path: "/signin",
           element: <RegistrationComponent />,
+        },
+        {
+          path: "/video",
+          element: <PageNotFound />,
+        },
+        {
+          path: "*",
+          element: <PageNotFound />,
         },
       ],
     },
