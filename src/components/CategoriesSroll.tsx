@@ -4,8 +4,9 @@ import {
   Container,
   CategoryButtonItem,
 } from "./styled-components/CategoriesScroll";
-import { CategoriesData } from "../constants";
 import { Action, ActionType, State } from "../pages/utils/home";
+import { useApi } from "../shell/hooks/custom-http";
+import { CategoryResponse } from "../models/Category";
 
 interface CategoryScrollProps {
   dispatch: React.Dispatch<Action>;
@@ -13,18 +14,26 @@ interface CategoryScrollProps {
 }
 
 const CategorisSroll = ({ dispatch, state }: CategoryScrollProps) => {
+  const { result: CategoriesData } = useApi<CategoryResponse>({
+    url: `/videos/categories`,
+    method: "get",
+    onBootstrap: true,
+  });
+
   return (
     <Container className="filter--container">
-      {CategoriesData?.map((item) => {
-        return (
-          <CategoryButton
-            dispatch={dispatch}
-            state={state}
-            key={item?.id}
-            name={item?.name}
-          />
-        );
-      })}
+      {CategoriesData && CategoriesData?.categories?.length !== 0
+        ? CategoriesData?.categories?.map((item) => {
+            return (
+              <CategoryButton
+                dispatch={dispatch}
+                state={state}
+                key={item?._id}
+                name={item?.name}
+              />
+            );
+          })
+        : undefined}
     </Container>
   );
 };
