@@ -6,7 +6,7 @@ export interface AxiosContextType {
 
 const initialState: AxiosContextType = {
   instance: axios.create({
-    baseURL: ``,
+    baseURL: `${process.env.REACT_APP_API_URL}`,
     headers: {
       "Content-Type": "application/json",
     },
