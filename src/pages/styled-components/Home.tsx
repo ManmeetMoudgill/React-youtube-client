@@ -37,30 +37,12 @@ interface WapperProps {
   arrayLength: number;
 }
 const Wrapper = styled.div<WapperProps>`
-  display: ${({ arrayLength }) =>
-    arrayLength && arrayLength <= 3 ? "flex" : "grid"};
-  flex-wrap: ${({ arrayLength }) =>
-    arrayLength && arrayLength <= 3 ? "wrap" : "no-wrap"};
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  display: ${(props) => (props.arrayLength >= 3 ? "grid" : "flex")};
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   max-width: 100%;
   padding-right: 1rem;
   margin-top: 2rem;
-  @media (min-width: 320px) and (max-width: 649px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-  @media (min-width: 650px) and (max-width: 820px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  @media (min-width: 821px) and (max-width: 1000px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  @media (min-width: 1001px) and (max-width: 1200px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  @media (min-width: 1201px) and (max-width: 2600px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 `;
 const NotFoundComponent = styled.div`
   position: absolute;

@@ -50,6 +50,7 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
 
   useEffect(() => {
     dispatch({ type: ActionType.SET_PAGE, payload: 1 });
+    window.scrollTo(0, 0);
   }, [tags]);
 
   const getVideosByTagsMemoizedFn = useCallback(
@@ -133,7 +134,6 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
   }, [state.page, dispatch]);
 
   const IsScreenHeightVeryBig = window.innerHeight > 1000;
-
   const LoadButton = useMemo((): JSX.Element => {
     return (
       <Box

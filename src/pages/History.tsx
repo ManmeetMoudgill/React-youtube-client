@@ -121,8 +121,6 @@ const History = () => {
       <Container>
         <SideBar />
         <VideosWrapper>
-          {data?.length}
-          {videoHistory?.length}
           <InfiniteScroll
             dataLength={videoHistory?.length}
             next={incrementData}
@@ -140,7 +138,9 @@ const History = () => {
               </div>
             }
           >
-            <Wrapper>{videoCards?.length > 0 && videoCards}</Wrapper>
+            <Wrapper arrayLength={videoCards?.length}>
+              {videoCards?.length > 0 && videoCards}
+            </Wrapper>
             {IsScreenHeightVeryBig && data?.length < videoHistory?.length
               ? LoadButton
               : undefined}
