@@ -15,6 +15,7 @@ import CategoriesSroll from "../components/CategoriesSroll";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
 import InfiniteScroll from "react-infinite-scroll-component";
 import debounce from "lodash.debounce";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import {
   Wrapper,
   VideosWrapper,
@@ -22,7 +23,7 @@ import {
   NotFoundComponent,
 } from "./styled-components/Home";
 import { AxiosRequestConfig } from "axios";
-import { CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { State, initialState, reducer, Action, ActionType } from "./utils/home";
 interface HomeProps {
   type?: string;
@@ -112,6 +113,33 @@ const Home = ({ type }: HomeProps) => {
     dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
   }, [result, data?.length, dispatch, state?.page]);
 
+  const IsScreenHeightVeryBig = window.innerHeight > 1000;
+
+  const LoadButton = useMemo((): JSX.Element => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "hidden",
+        }}
+      >
+        <Button
+          onClick={fetchMoreData}
+          style={{
+            display: `${IsScreenHeightVeryBig ? "flex" : "none"}`,
+            justifyContent: "center",
+            alignItems: "center",
+            overflowY: "hidden",
+          }}
+        >
+          <AutorenewIcon />
+          Load more
+        </Button>
+      </Box>
+    );
+  }, [fetchMoreData, IsScreenHeightVeryBig]);
   return (
     <>
       <Container>
@@ -125,11 +153,26 @@ const Home = ({ type }: HomeProps) => {
               dataLength={data?.length || 0}
               next={fetchMoreData}
               hasMore={data?.length < result?.count}
-              loader={<CircularProgress size="1rem" />}
+              loader={
+                <div
+                  style={{
+                    display: `${IsScreenHeightVeryBig ? "none" : "flex"}`,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    overflowY: "hidden",
+                  }}
+                >
+                  <CircularProgress size="1rem" />
+                </div>
+              }
             >
               <Wrapper arrayLength={data?.length}>
                 {data?.length > 0 && videoCards}
               </Wrapper>
+
+              {IsScreenHeightVeryBig && result && data?.length < result?.count
+                ? LoadButton
+                : undefined}
             </InfiniteScroll>
           )}
         </VideosWrapper>

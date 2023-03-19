@@ -31,23 +31,17 @@ const VideosWrapper = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
-  display: grid;
+interface WrapperProps {
+  arrayLength?: number;
+}
+const Wrapper = styled.div<WrapperProps>`
+  display: ${(props) =>
+    props.arrayLength && props.arrayLength < 3 ? "flex" : "grid"};
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 1rem;
+  gap: 1rem;
   max-width: 100%;
   padding-right: 1rem;
   margin-top: 2rem;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-
-  @media (max-width: 576px) {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-  @media (min-width: 320px) and (max-width: 500px) {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
 `;
 const NotFoundComponent = styled.div`
   position: absolute;

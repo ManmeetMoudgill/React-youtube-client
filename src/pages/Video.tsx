@@ -73,8 +73,6 @@ const VideoPage = () => {
   const user = useSelector((state: RootState) => state?.user);
   const result = useSelector((state: RootState) => state?.video);
 
-  console.log("result", result);
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

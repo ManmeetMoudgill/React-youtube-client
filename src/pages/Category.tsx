@@ -13,6 +13,8 @@ import Card from "../components/Card";
 import { NotFound } from "../components/NotFound";
 import SideBar from "../components/SideBar";
 import { HTTP_RESPONSE_STATUS_CODE } from "../constants";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+
 import {
   Container,
   VideosWrapper,
@@ -29,7 +31,8 @@ import {
 import { AxiosRequestConfig } from "axios";
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
+
 const Category = () => {
   const params = useParams();
   const [data, setData] = useState<GetVideosWithUser[]>([]);
@@ -79,6 +82,8 @@ const Category = () => {
     }
   }, [state?.page, params?.id, getVideoBasedOnCategoryMemoizedFn]);
 
+  const IsScreenHeightVeryBig = window.innerHeight > 1000;
+
   // memoize the debounced function using useMemo
   const debouncedFetchData = useMemo(
     () => debounce(fetchData, 300),
@@ -102,6 +107,31 @@ const Category = () => {
     if (result && data?.length > result?.count) return;
     dispatch({ type: ActionType.SET_PAGE, payload: state?.page + 1 });
   }, [result, data?.length, dispatch, state?.page]);
+  const LoadButton = useMemo((): JSX.Element => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "hidden",
+        }}
+      >
+        <Button
+          onClick={fetchMoreData}
+          style={{
+            display: `${IsScreenHeightVeryBig ? "flex" : "none"}`,
+            justifyContent: "center",
+            alignItems: "center",
+            overflowY: "hidden",
+          }}
+        >
+          <AutorenewIcon />
+          Load more
+        </Button>
+      </Box>
+    );
+  }, [fetchMoreData, IsScreenHeightVeryBig]);
 
   return (
     <>
@@ -113,11 +143,26 @@ const Category = () => {
               dataLength={data?.length || 0}
               next={fetchMoreData}
               hasMore={data?.length < result?.count}
-              loader={<CircularProgress size="1rem" />}
+              loader={
+                <div
+                  style={{
+                    display: `${IsScreenHeightVeryBig ? "none" : "flex"}`,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    overflowY: "hidden",
+                  }}
+                >
+                  <CircularProgress size="1rem" />
+                </div>
+              }
             >
               <Wrapper arrayLength={videoCards?.length}>
                 {videoCards?.length > 0 && videoCards}
               </Wrapper>
+
+              {IsScreenHeightVeryBig && result && data?.length < result?.count
+                ? LoadButton
+                : undefined}
             </InfiniteScroll>
           )}
         </VideosWrapper>
