@@ -2,6 +2,7 @@ import { ReactElement, useMemo } from "react";
 import { useHttpLoading } from "../shell/hooks/use-http-loading";
 import { createShellRoutes } from "./shell-config";
 import { useRoutes } from "react-router-dom";
+import PageNotFound from "../components/PageNotFound";
 
 export default function AppRoutes(): ReactElement | null {
   const { addLoading, removeLoading } = useHttpLoading();
@@ -14,5 +15,5 @@ export default function AppRoutes(): ReactElement | null {
   }, [addLoading, removeLoading]);
 
   const routes = useRoutes(shellRoutes);
-  return routes;
+  return <>{routes || PageNotFound}</>;
 }

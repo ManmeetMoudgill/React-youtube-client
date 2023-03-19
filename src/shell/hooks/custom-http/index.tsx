@@ -14,6 +14,7 @@ interface ApiConfig {
 
 interface UseApiResult<BackendResponse> {
   result: BackendResponse | undefined;
+  error: string;
   makeCall: (
     params?: AxiosRequestConfig
   ) => Promise<BackendResponse | undefined>;
@@ -40,6 +41,7 @@ export function useApi<BackendResponse = any>({
   const { instance } = useAxios();
   const [result, setResult] = useState<BackendResponse | undefined>(undefined);
   const { addLoading, removeLoading } = useHttpLoading();
+  const [error, setError] = useState<string>("");
   const [isLoading, dispatch] = useReducer(reducer, false);
 
   const makeCall = useEventCallback(
@@ -59,8 +61,10 @@ export function useApi<BackendResponse = any>({
         dispatch({ type: "SET_LOADING", isLoading: false });
         return response?.data;
       } catch (error: any) {
+        setError(
+          `${error?.code}: ${error?.response?.data?.message || error?.message}`
+        );
         dispatch({ type: "SET_LOADING", isLoading: false });
-        return error?.response?.data as BackendResponse;
       } finally {
         removeLoading();
         dispatch({ type: "SET_LOADING", isLoading: false });
@@ -74,5 +78,5 @@ export function useApi<BackendResponse = any>({
     }
   }, [makeCall, onBootstrap]);
 
-  return { result, makeCall, isLoading };
+  return { result, makeCall, isLoading, error };
 }

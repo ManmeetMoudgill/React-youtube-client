@@ -43,7 +43,7 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
   const [data, setData] = useState<GetVideosWithUser[]>([]);
 
   const { result, makeCall: getVideosByTags } = useApi<VideosResponse>({
-    url: `/videos/tags/?tags=${tags?.join(",")}&page=${state?.page}`,
+    url: `/videos/tags/?tags=${tags?.join(",")}&page=1`,
     method: "get",
     onBootstrap: false,
   });
@@ -130,8 +130,13 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
   }, [data, currrentVideoId]);
 
   const fetchMoreData = useCallback(() => {
+    if (
+      (result && data?.length > result?.count) ||
+      result?.videos?.length === 0
+    )
+      return;
     dispatch({ type: ActionType.SET_PAGE, payload: state.page + 1 });
-  }, [state.page, dispatch]);
+  }, [state.page, dispatch, result, data]);
 
   const IsScreenHeightVeryBig = window.innerHeight > 1000;
   const LoadButton = useMemo((): JSX.Element => {
@@ -166,7 +171,9 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
           <InfiniteScrollComponent
             dataLength={data?.length || 0}
             next={fetchMoreData}
-            hasMore={data?.length < result?.count}
+            hasMore={
+              result?.videos?.length !== 0 && data?.length < result?.count
+            }
             loader={
               <div
                 style={{
@@ -193,7 +200,18 @@ const RecommendationComponent = ({ tags, currrentVideoId }: Props) => {
             dataLength={data?.length || 0}
             next={fetchMoreData}
             hasMore={data?.length < result?.count}
-            loader={<CircularProgress size="1rem" />}
+            loader={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflowY: "hidden",
+                }}
+              >
+                <CircularProgress size="1rem" />
+              </div>
+            }
           >
             {smallVideoCards}
           </InfiniteScrollComponent>
