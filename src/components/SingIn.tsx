@@ -32,7 +32,7 @@ const SingIn = () => {
 
   const { makeCall: singInMakeCall, isLoading: singInLoading } =
     useApi<UserResponse>({
-      url: "/auth/sign-",
+      url: "/auth/sign-in",
       method: "post",
       data: {
         email: signIn.email,
