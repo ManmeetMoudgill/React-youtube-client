@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { useState } from "react";
 import { IconButton, LinearProgress, useEventCallback } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -55,7 +55,14 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
     imgUrl: "",
     videoUrl: "",
   });
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState<
+    Partial<{
+      title: string;
+      description: string;
+      imgUrl: string;
+      videoUrl: string;
+    }>
+  >({});
   const [tags, setTags] = useState<Array<string> | []>([]);
 
   const { user } = useSelector((state: RootState) => state?.user);
@@ -160,7 +167,7 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
           createToastError("Video uploaded successfully", "success");
 
           setOpenDialog(false);
-          navigate(`/video/${video._id}`);
+          navigate(`/video/detail/${video._id}`);
         }
       })
       .catch(async () => {
@@ -168,6 +175,26 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
         removeVideoFromFirebase();
       });
   });
+
+  const isCreateVideoDisabled = useMemo(() => {
+    const isImgUrlEmpty = !inputs?.imgUrl;
+    const isVideoUrlEmpty = !inputs?.videoUrl;
+    const isTitleEmpty = !inputs?.title;
+    const isDescEmpty = !inputs?.description;
+    const isTagsEmpty = !tags?.length;
+    const isImgPercNot100 = imgPerc !== 100;
+    const isVideoPercNot100 = videoPerc !== 100;
+
+    return (
+      isImgUrlEmpty ||
+      isVideoUrlEmpty ||
+      isTitleEmpty ||
+      isDescEmpty ||
+      isTagsEmpty ||
+      isImgPercNot100 ||
+      isVideoPercNot100
+    );
+  }, [imgPerc, videoPerc, inputs]);
 
   return (
     <Container>
@@ -263,7 +290,9 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
             </MuiButton>
           ) : undefined}
         </ButtonContainer>
-        <Button onClick={handleUpload}>Create a video</Button>
+        <Button onClick={handleUpload} disabled={isCreateVideoDisabled}>
+          Create a video
+        </Button>
       </Wrapper>
     </Container>
   );

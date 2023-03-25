@@ -26,7 +26,7 @@ const History = () => {
   const getUser = (state: RootState) => state?.user?.user;
   const getVideoHistory = (state: RootState) => state?.video?.videoHistory;
 
-  const rowsPerPage = 8;
+  const rowsPerPage = 10;
   const start = 0;
   const [end, setEnd] = useState(rowsPerPage);
 
