@@ -21,7 +21,7 @@ interface RecomendationCardProps {
 
 const ReccomendationVideoSmall = ({ video, user }: RecomendationCardProps) => {
   return (
-    <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
+    <Link to={`/video/detail/${video?._id}`} style={{ textDecoration: "none" }}>
       <Container>
         <LeftContainer>
           <Image src={video?.imgUrl} title={video?.title} />

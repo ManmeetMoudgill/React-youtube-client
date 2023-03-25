@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "homepage": ".",
+  "type": "commonjs",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -25,7 +26,6 @@
     "react-lazy-load": "^4.0.1",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
-    "react-scripts": "5.0.1",
     "react-share": "^4.4.1",
     "react-toastify": "^9.1.1",
     "redux-persist": "^6.0.0",
@@ -35,10 +35,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "env-cmd -f ./src/.env react-scripts start",
-    "build": "env-cmd -f ./src/.env react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
     "sass": "npm run sass-app && sass-comp",
     "sass-app": "node-sass -o src/app/css src/app/app.scss",
     "sass-app:watch": "node-sass -o src/app/css src/app/app.scss -w",
@@ -69,6 +68,10 @@
     "@types/luxon": "^3.2.0",
     "@types/react-redux": "^7.1.25",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^3.1.0",
+    "vite": "^4.2.1",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.7"
   }
 }

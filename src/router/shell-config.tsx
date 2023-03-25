@@ -53,11 +53,11 @@ export const createShellRoutes = ({
           element: <HomeLazyLoadComponent type="random" />,
         },
         {
-          path: "/trends",
+          path: "trends",
           element: <HomeLazyLoadComponent type="trend" />,
         },
         {
-          path: "/subscriptions",
+          path: "subscriptions",
           element: <PrivateRoute />,
           children: [
             {
@@ -67,7 +67,7 @@ export const createShellRoutes = ({
           ],
         },
         {
-          path: "/history",
+          path: "history",
           element: <PrivateRoute />,
           children: [
             {
@@ -77,24 +77,30 @@ export const createShellRoutes = ({
           ],
         },
         {
-          path: "/search",
+          path: "search",
           element: <SearchLazyLoadComponent />,
         },
         {
-          path: "/category/:id",
+          path: "category/:id",
           element: <CategoryPage />,
         },
         {
-          path: "/video/:id",
-          element: <VideoPage />,
-        },
-        {
-          path: "/signin",
+          path: "signin",
           element: <RegistrationComponent />,
         },
         {
-          path: "/video",
-          element: <PageNotFound />,
+          path: "video",
+          element: <Outlet />,
+          children: [
+            {
+              path: "",
+              element: <PageNotFound />,
+            },
+            {
+              path: "detail/:id",
+              element: <VideoPage />,
+            },
+          ],
         },
         {
           path: "*",

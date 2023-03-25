@@ -18,7 +18,11 @@ export const AxiosProvider = ({ children }: any) => {
   });
 
   const instance = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL}`,
+    baseURL: `${
+      import.meta.env.MODE === "d"
+        ? import.meta.env.VITE_API_DEV_URL
+        : import.meta.env.VITE_API_PROD_URL
+    }`,
     headers: {
       "Content-Type": "application/json",
     },

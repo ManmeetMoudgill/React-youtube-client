@@ -217,7 +217,11 @@ const VideoPage = () => {
   );
 
   const videoUrl = useMemo(() => {
-    return `http://localhost/video/${result?.data?.video?._id}`;
+    return `http://${
+      import.meta.env.MODE === "development"
+        ? import.meta.env.VITE_API_DEV_URL
+        : import.meta.env.VITE_API_PROD_URL
+    }/video/detail/${result?.data?.video?._id}`;
   }, [result?.data?.video?._id]);
 
   const navigate = useNavigate();

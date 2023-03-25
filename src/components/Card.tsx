@@ -51,7 +51,10 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
 
   return (
     <LazyLoad>
-      <Link to={`/video/${video?._id}`} style={{ textDecoration: "none" }}>
+      <Link
+        to={`/video/detail/${video?._id}`}
+        style={{ textDecoration: "none" }}
+      >
         <Container type={type}>
           <VideoComponent
             muted
