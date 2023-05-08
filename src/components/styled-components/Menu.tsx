@@ -43,6 +43,9 @@ const Logo = styled.div`
   align-items: center;
   gap: 5px;
   font-weight: bold;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 1rem;
+  }
 `;
 
 const Img = styled.img`
@@ -59,6 +62,9 @@ const Item = styled.div`
   &:hover {
     background-color: #f5f5f5;
     border-radius: 0.4rem;
+  }
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 1rem;
   }
 `;
 

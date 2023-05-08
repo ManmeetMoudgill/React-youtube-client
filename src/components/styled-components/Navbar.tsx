@@ -38,6 +38,9 @@ const YoutubeName = styled.h5`
   @media (min-width: 320px) and (max-width: 400px) {
     font-size: 0.8rem;
   }
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 1rem;
+  }
 `;
 const RightContainer = styled.div`
   display: flex;

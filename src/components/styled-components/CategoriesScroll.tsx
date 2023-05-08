@@ -53,9 +53,14 @@ const CategoryButtonItem = styled.button<ButtonProps>`
     font-size: 0.8rem;
     height: 1.6rem;
   }
-  @media (min-width: 1201px) and (max-width: 2600px) {
+  @media (min-width: 1201px) and (max-width: 1500px) {
     min-width: 6rem;
     font-size: 0.8rem;
+    height: 2.5rem;
+  }
+  @media (min-width: 1501px) and (max-width: 2600px) {
+    min-width: 6rem;
+    font-size: 0.1.2rem;
     height: 2.5rem;
   }
 `;
