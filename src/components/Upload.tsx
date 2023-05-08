@@ -194,7 +194,7 @@ const UploadVideo = ({ setOpenDialog }: Props) => {
       isImgPercNot100 ||
       isVideoPercNot100
     );
-  }, [imgPerc, videoPerc, inputs]);
+  }, [imgPerc, videoPerc, inputs, tags?.length]);
 
   return (
     <Container>

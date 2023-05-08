@@ -4,13 +4,12 @@ export interface AxiosContextType {
   instance: AxiosInstance;
 }
 
-console.log(import.meta.env);
 const initialState: AxiosContextType = {
   instance: axios.create({
     baseURL: `${
-      import.meta.env.MODE === "development"
-        ? import.meta.env.VITE_API_DEV_URL
-        : import.meta.env.VITE_API_PROD_URL
+      process.env.MODE === "development"
+        ? process.env.REACT_API_DEV_URL
+        : process.env.REACT_API_PROD_URL
     }`,
     headers: {
       "Content-Type": "application/json",
