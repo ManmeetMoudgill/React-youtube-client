@@ -37,12 +37,20 @@ interface WapperProps {
   arrayLength: number;
 }
 const Wrapper = styled.div<WapperProps>`
-  display: ${(props) => (props.arrayLength >= 3 ? "grid" : "flex")};
+  display: ${(props) => (props.arrayLength >= 4 ? "grid" : "flex")};
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   max-width: 100%;
   padding-right: 1rem;
   margin-top: 2rem;
+  //create two grid columns only for small screens
+  @media (min-width: 320px) and (max-width: 650px) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  @media (min-width: 1300px) and (max-width: 4200px) {
+    gap: 3rem;
+    display: ${(props) => (props.arrayLength >= 6 ? "grid" : "flex")};
+  }
 `;
 const NotFoundComponent = styled.div`
   position: absolute;

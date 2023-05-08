@@ -218,9 +218,9 @@ const VideoPage = () => {
 
   const videoUrl = useMemo(() => {
     return `http://${
-      process.env.MODE === "development"
-        ? process.env.REACT_API_DEV_URL
-        : process.env.REACT_API_PROD_URL
+      process.env.NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_URL
+        : process.env.REACT_APP_PROD_URL
     }/video/detail/${result?.data?.video?._id}`;
   }, [result?.data?.video?._id]);
 

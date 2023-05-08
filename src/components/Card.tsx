@@ -70,7 +70,7 @@ const Card = ({ type, video, isHistoryPageCard, user, id }: CardProps) => {
             />
 
             <Texts>
-              <Title>{video?.title?.slice(0, 25)}..</Title>
+              <Title>{video?.title?.slice(0, 20)}..</Title>
               {type === "sm" && user ? (
                 <ChannelName>{user?.name}</ChannelName>
               ) : (

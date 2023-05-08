@@ -37,6 +37,9 @@ const Details = styled.div`
 
 const Info = styled.span`
   color: #606060;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 16px;
+  }
 `;
 
 const Buttons = styled.div`
@@ -52,6 +55,9 @@ const Button = styled.div`
   cursor: pointer;
   @media (min-width: 320px) and (max-width: 450px) {
     font-size: 0;
+  }
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 18px;
   }
 `;
 
@@ -94,6 +100,9 @@ const ChannelDetail = styled.div`
 const ChannelName = styled.span`
   font-weight: 500;
   font-size: 1.2rem;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const ChannelCounter = styled.span`
@@ -101,12 +110,18 @@ const ChannelCounter = styled.span`
   margin-bottom: 20px;
   color: #606060;
   font-size: 12px;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 15px;
+  }
 `;
 
 const Description = styled.p`
   font-size: 1rem;
   @media (min-width: 320px) and (max-width: 750px) {
     font-size: 0.8rem;
+  }
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 1.1rem;
   }
 `;
 

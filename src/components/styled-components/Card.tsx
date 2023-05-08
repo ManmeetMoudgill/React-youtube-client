@@ -21,9 +21,6 @@ const Container = styled.div<ContainerProps>`
   cursor: pointer;
   display: ${(props) => props?.type === "sm" && "flex"};
   gap: 11px;
-  @media screen and (min-width: 1300px) and (max-width: 2600px) {
-    min-width: ${(props) => (props?.type === "sm" ? "100%" : "300px")};
-  }
 `;
 
 const Video = styled.video<ImageProps>`
@@ -33,6 +30,12 @@ const Video = styled.video<ImageProps>`
   background-color: #999;
   border-radius: 15px;
   flex: 1;
+  @media (min-width: 320px) and (max-width: 650px) {
+    height: ${(props) => (props?.type === "sm" ? "8.5rem" : "180px")};
+  }
+  @media (min-width: 1600px) and (max-width: 4200px) {
+    height: ${(props) => (props?.type === "sm" ? "13rem" : "202px")};
+  }
 `;
 
 const Details = styled.div<DetailsProps>`
@@ -60,17 +63,26 @@ const Title = styled.h1`
   margin: 0px;
   font-weight: 500;
   color: black;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 20px;
+  }
 `;
 
 const ChannelName = styled.h2`
   font-size: 14px;
   color: #606060;
   margin: 5px 0px;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 18px;
+  }
 `;
 
 const Info = styled.div`
   font-size: 14px;
   color: #606060;
+  @media (min-width: 1500px) and (max-width: 4200px) {
+    font-size: 16px;
+  }
 `;
 
 export {

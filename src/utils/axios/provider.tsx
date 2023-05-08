@@ -18,11 +18,7 @@ export const AxiosProvider = ({ children }: any) => {
   });
 
   const instance = axios.create({
-    baseURL: `${
-      process.env.MODE === "development"
-        ? process.env.REACT_API_DEV_URL
-        : process.env.REACT_API_PROD_URL
-    }`,
+    baseURL: ``,
     headers: {
       "Content-Type": "application/json",
     },
