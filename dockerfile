@@ -8,6 +8,7 @@ WORKDIR /app
 ENV NODE_OPTIONS="--openssl-legacy-provider"
 # Installing dependencies
 COPY ./package.json ./
+COPY ./package-lock.json ./
 RUN npm ci
 
 # Copying all the files in our project
