@@ -37,8 +37,8 @@
   },
   "proxy": "http://localhost:8000/api",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env react-scripts start",
+    "build": "env-cmd -f .env react-scripts build",
     "sass": "npm run sass-app && sass-comp",
     "sass-app": "node-sass -o src/app/css src/app/app.scss",
     "sass-app:watch": "node-sass -o src/app/css src/app/app.scss -w",
