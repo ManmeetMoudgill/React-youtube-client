@@ -10,6 +10,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+console.log("hello there");
+
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
